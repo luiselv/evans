@@ -1,0 +1,13 @@
+# Build
+bin/
+obj/
+*.suo
+*.user
+
+# Configuraciones locales
+*.local.config
+Settings.Local.settings
+
+# Bases de datos
+*.mdf
+*.ldf
