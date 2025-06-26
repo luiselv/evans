@@ -3,6 +3,7 @@ bin/
 obj/
 *.suo
 *.user
+.gitignore
 
 # Configuraciones locales
 *.local.config
