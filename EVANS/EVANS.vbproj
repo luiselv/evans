@@ -81,11 +81,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <!-- Manifiesto.vb y frmRptManifiesto excluidos — regenerar en VS2022 con CR 13 -->
+  <!-- frmRptManifiestoStub excluido — archivo real incluido -->
   <ItemGroup>
-    <Compile Remove="Manifiesto.vb" />
-    <Compile Remove="frmRptManifiesto.vb" />
-    <Compile Remove="frmRptManifiesto.Designer.vb" />
+    <Compile Remove="frmRptManifiestoStub.vb" />
   </ItemGroup>
 
   <!-- Icono — SDK no incluye .ico como Content por defecto -->
