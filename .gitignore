@@ -1,14 +1,38 @@
-# Build
+# Build output
 bin/
 obj/
+
+# Visual Studio
 *.suo
 *.user
-.gitignore
+*.userosscache
+*.sln.docstates
+.vs/
+UpgradeLog.htm
+UpgradeReport*
 
-# Configuraciones locales
+# Local configs
 *.local.config
 Settings.Local.settings
 
 # Bases de datos
 *.mdf
 *.ldf
+
+# Backups y temporales
+Backup/
+*.bak
+*.tmp
+
+# Crystal Reports cache
+*.rpt.bak
+
+# Logs
+*.log
+
+# Claude Code
+.atl/
+
+# OS
+Thumbs.db
+Desktop.ini
