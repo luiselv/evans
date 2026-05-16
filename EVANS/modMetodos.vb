@@ -406,7 +406,7 @@ Module modMetodos
 
         Dim nombreBD As String = Now.Year.ToString
         Dim cmd As New SqlCommand
-        Dim ruta As String = Application.StartupPath() + "\DATA\"
+        Dim ruta As String = System.Windows.Forms.Application.StartupPath() + "\DATA\"
         Try
             If Not System.IO.Directory.Exists(ruta) Then
                 System.IO.Directory.CreateDirectory(ruta)
@@ -1108,7 +1108,7 @@ Module modMetodos
     Public Function CargarFuentes() As String()
 
         Try
-            Dim fuentesInstaladas As New Drawing.Text.InstalledFontCollection()
+            Dim fuentesInstaladas As New System.Drawing.Text.InstalledFontCollection()
 
             ' Obtenemos un array con los objetos FontFamily
             Dim fontFamilies() As FontFamily = fuentesInstaladas.Families
@@ -1134,9 +1134,9 @@ Module modMetodos
     Function ExportarAExcel(ByVal ElGrid As DataGridView) As Boolean
 
         'Creamos las variables
-        Dim exApp As New Microsoft.Office.Interop.Excel.Application
-        Dim exLibro As Microsoft.Office.Interop.Excel.Workbook
-        Dim exHoja As Microsoft.Office.Interop.Excel.Worksheet
+        Dim exApp As Object = CreateObject("Excel.Application")
+        Dim exLibro As Object
+        Dim exHoja As Object
 
         Try
             'Añadimos el Libro al programa, y la hoja al libro

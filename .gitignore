@@ -36,3 +36,6 @@ Backup/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Local DLL copies (interop, third-party — not committed)
+lib/
