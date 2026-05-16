@@ -50,7 +50,7 @@
                 .PrinterSettings.DefaultPageSettings.Margins.Top = 10
                 .PrinterSettings.DefaultPageSettings.Margins.Left = 20
                 .PrinterSettings.DefaultPageSettings.Margins.Right = 5
-                .Print(Me, PowerPacks.Printing.PrintForm.PrintOption.Scrollable)
+                .Print(Me, Microsoft.VisualBasic.PowerPacks.Printing.PrintForm.PrintOption.Scrollable)
             End With
 
             Cursor.Current = Cursors.Default

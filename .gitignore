@@ -36,3 +36,8 @@ Backup/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Local DLL copies — ignorar contenido de lib/ excepto lib/cr/ (Crystal Reports vendored)
+lib/*
+!lib/cr/
+!lib/cr/*.dll
