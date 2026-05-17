@@ -149,4 +149,41 @@ public class LegacySchemaTests : TestBase
 
         Assert.True(id > 0);
     }
+
+    [Fact]
+    public async Task YearlyDb_HasPrimaryKeysOnHeaderTables()
+    {
+        await using var conn = YearlyConn();
+        var count = await ExecScalarAsync(conn, @"
+            SELECT COUNT(*) FROM sys.key_constraints
+            WHERE type = 'PK' AND name IN (
+                'PK_GuiaRemision','PK_Comprobante','PK_Manifiesto','PK_Recepcion')");
+        Assert.Equal(4, count);
+    }
+
+    [Fact]
+    public async Task YearlyDb_HasIndexesOnDetailTables()
+    {
+        await using var conn = YearlyConn();
+        var count = await ExecScalarAsync(conn, @"
+            SELECT COUNT(*) FROM sys.indexes
+            WHERE name IN (
+                'IX_DetalleGuia_GREM','IX_DetalleComprobante_COMP',
+                'IX_DetalleManifiesto_MANI','IX_DetalleManifiesto_GREM',
+                'IX_DetalleRecepcion_RECE')");
+        Assert.Equal(5, count);
+    }
+
+    [Fact]
+    public async Task YearlyDb_HasIndexesOnFilterColumns()
+    {
+        await using var conn = YearlyConn();
+        var count = await ExecScalarAsync(conn, @"
+            SELECT COUNT(*) FROM sys.indexes
+            WHERE name IN (
+                'IX_GuiaRemision_SerieNumero','IX_GuiaRemision_Fecha',
+                'IX_Comprobante_SerieNumero','IX_Comprobante_Fecha',
+                'IX_Manifiesto_Fecha')");
+        Assert.Equal(5, count);
+    }
 }

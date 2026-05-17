@@ -132,8 +132,13 @@ Entregables:
    - Buscar Cliente por nombre devuelve filas (verifica `SqlDataReader` patrón)
    - Crear/Listar Cliente (CRUD completo)
    - Login + Autenticar setea `objUsuarioActual` correctamente
+6. **F0-DB: Endurecimiento aditivo de BDs anuales transaccionales** — las BDs anuales (`2010`, `2014`, `2019`, `2026`…) tienen CERO PKs/índices en producción (causa raíz: `CrearBD()` usa `SELECT TOP 0 * INTO` que no copia constraints). Entregables:
+   - `db/schema-yearly.sql`: PKs sobre columnas IDENTITY existentes + índices sobre joins y filtros frecuentes. Solo aditivo — sin tocar tipos, nullability ni queries (ADR 0003 intacto).
+   - `db/indexes-yearly.sql`: script idempotente (`IF NOT EXISTS`) para aplicar los mismos constraints sobre BDs históricas ya existentes sin recrearlas ni mover datos.
+   - `EVANS\modMetodos.vb` `CrearBD()`: agregar `ALTER TABLE ... ADD CONSTRAINT PK_*` y `CREATE NONCLUSTERED INDEX IX_*` después del clone por `SELECT TOP 0 * INTO`, para que cada BD de año nuevo nazca con PKs e índices.
+   - 3 tests en `EVANS.Tests/LegacySchemaTests.cs` que verifican PKs e índices en `sys.key_constraints` / `sys.indexes` dentro del contenedor Testcontainers.
 
-**Acceptance**: build verde en CI, 8 tests pasando contra SQL Server en Docker, ADRs (Architecture Decision Records) iniciales escritos en `docs/adr/`.
+**Acceptance**: build verde en CI, 8 tests pasando contra SQL Server en Docker, ADRs (Architecture Decision Records) iniciales escritos en `docs/adr/`, 3 tests de schema pasando en EVANS.Tests.
 
 **Riesgo**: la migración a SDK-style puede romper la regeneración de `Designer.vb` para los 24 forms que usan Dotnetrix.TabControl. **Mitigación**: smoke test (abrir cada form en el designer) antes de mergear.
 
@@ -256,7 +261,7 @@ Cada contexto sigue el template de Fase 2. Orden por dificultad descendente:
 ### Fase 4 — Endurecer y consolidar (Semanas 26–28)
 
 Una vez que todo está en .NET 8 con tests:
-1. Performance pass: medir y optimizar queries Dapper, agregar índices si hace falta
+1. Performance pass: medir y optimizar queries Dapper (los índices base de las BDs anuales se agregaron en Fase 0 — F0-DB)
 2. Logging estructurado con Serilog + sinks (archivo local + opcional Seq para desarrollo)
 3. Telemetría con OpenTelemetry (preparado para producción cuando haga falta)
 4. Migración opcional a .NET 10 LTS (cuando salga, ~noviembre 2026) — debería ser cambio de TargetFramework + verificar tests
