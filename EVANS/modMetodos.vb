@@ -433,6 +433,25 @@ Module modMetodos
             "Select Top 0 * into [" + nombreBD + "].dbo.DetalleRecepcion From [2010].dbo.DetalleRecepcion;" & vbCrLf & _
             "Select Top 0 * into [" + nombreBD + "].dbo.Recepcion From [2010].dbo.Recepcion;"
             cmd.ExecuteNonQuery()
+
+            cmd.CommandText = "ALTER TABLE [" + nombreBD + "].dbo.GuiaRemision ADD CONSTRAINT PK_GuiaRemision PRIMARY KEY (GREM_CODIGO);" & vbCrLf & _
+            "ALTER TABLE [" + nombreBD + "].dbo.Comprobante ADD CONSTRAINT PK_Comprobante PRIMARY KEY (COMP_CODIGO);" & vbCrLf & _
+            "ALTER TABLE [" + nombreBD + "].dbo.Manifiesto ADD CONSTRAINT PK_Manifiesto PRIMARY KEY (MANI_CODIGO);" & vbCrLf & _
+            "ALTER TABLE [" + nombreBD + "].dbo.Recepcion ADD CONSTRAINT PK_Recepcion PRIMARY KEY (RECE_CODIGO);"
+            cmd.ExecuteNonQuery()
+
+            cmd.CommandText = "CREATE NONCLUSTERED INDEX IX_DetalleGuia_GREM ON [" + nombreBD + "].dbo.DetalleGuia(GREM_CODIGO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_DetalleComprobante_COMP ON [" + nombreBD + "].dbo.DetalleComprobante(COMP_CODIGO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_DetalleManifiesto_MANI ON [" + nombreBD + "].dbo.DetalleManifiesto(MANI_CODIGO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_DetalleManifiesto_GREM ON [" + nombreBD + "].dbo.DetalleManifiesto(GREM_CODIGO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_DetalleRecepcion_RECE ON [" + nombreBD + "].dbo.DetalleRecepcion(RECE_CODIGO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_GuiaRemision_SerieNumero ON [" + nombreBD + "].dbo.GuiaRemision(GREM_SERIE,GREM_NUMERO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_GuiaRemision_Fecha ON [" + nombreBD + "].dbo.GuiaRemision(GREM_FECHAEMISION);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_Comprobante_SerieNumero ON [" + nombreBD + "].dbo.Comprobante(COMP_SERIE,COMP_NUMERO);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_Comprobante_Fecha ON [" + nombreBD + "].dbo.Comprobante(COMP_FECHA);" & vbCrLf & _
+            "CREATE NONCLUSTERED INDEX IX_Manifiesto_Fecha ON [" + nombreBD + "].dbo.Manifiesto(MANI_FECHA);"
+            cmd.ExecuteNonQuery()
+
             Return True
 
         Catch ex As SqlException

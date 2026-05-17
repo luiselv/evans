@@ -31,3 +31,28 @@ jobs:
 
       - name: Build
         run: dotnet build EVANS/EVANS.vbproj --configuration Release --no-restore
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('EVANS.Tests/EVANS.Tests.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore EVANS.Tests/EVANS.Tests.csproj
+
+      - name: Test
+        run: dotnet test EVANS.Tests/EVANS.Tests.csproj --no-restore --logger "console;verbosity=normal"
