@@ -16,7 +16,7 @@ public static class SeedData
             "INSERT INTO dbo.DESTINO(dest_nombre,dest_distanciavirtual) VALUES('Lima',0)",
             "INSERT INTO dbo.CLIENTE(clie_nombre,clie_nroidentificacion,iden_codigo) VALUES('Remitente Test','12345678',1)",
             "INSERT INTO dbo.CLIENTE(clie_nombre,clie_nroidentificacion,iden_codigo) VALUES('Destinatario Test','87654321',1)",
-            "INSERT INTO dbo.EMPRESA(empr_nombre,empr_ruc,empr_direccion) VALUES('Transportista Test','20000000001','Av. Test 123')",
+            "SET IDENTITY_INSERT dbo.EMPRESA ON; INSERT INTO dbo.EMPRESA(empr_codigo,empr_nombre,empr_ruc,empr_direccion) VALUES(1,'Transportista Test','20000000001','Av. Test 123'); SET IDENTITY_INSERT dbo.EMPRESA OFF",
             "INSERT INTO dbo.VEHICULO(vehi_placa,vehi_marca,vehi_confvehicular,vehi_certinscripcion) VALUES('ABC-123','Toyota','B2','CERT-001')",
             "INSERT INTO dbo.CARRETA(carr_placa) VALUES('XYZ-999')",
             "INSERT INTO dbo.CHOFER(chof_nombre,chof_licencia,empr_codigo,esta_codigo) VALUES('Juan Chofer','LIC-001',1,1)",
