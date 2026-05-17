@@ -1,132 +1,135 @@
 -- Yearly transactional database schema
--- Derived from VB.NET business classes (clsGuiaRemision, clsComprobante, clsManifiesto, clsRecepcion)
--- Mirrors structure created by CrearBD() in modMetodos.vb
+-- Derived from production SQL Server DB (attached as "2014", copy of 2010).
+-- Real DB has no PKs, no FKs, no defaults, no CHECK constraints.
+-- Recepcion/DetalleRecepcion not present in pre-2014 DBs but exist in clsRecepcion.vb.
 
 CREATE TABLE GuiaRemision (
-    grem_codigo         INT           IDENTITY(1,1) PRIMARY KEY,
-    grem_serie          NVARCHAR(4)   NOT NULL,
-    grem_numero         NVARCHAR(6)   NOT NULL,
-    grem_fechaemision   DATETIME      NOT NULL,
-    grem_fechatraslado  DATETIME      NOT NULL,
-    clie_remitente      INT           NOT NULL,
-    grem_tipodirpartida INT           NOT NULL,
-    grem_direccionpartida NVARCHAR(100) NOT NULL,
-    clie_destinatario   INT           NOT NULL,
-    grem_tipodirdestino INT           NOT NULL,
-    grem_direcciondestino NVARCHAR(100) NOT NULL,
-    dest_codigo         INT           NOT NULL,
-    vehi_codigo         INT           NOT NULL,
-    carr_codigo         INT           NOT NULL,
-    chof_codigo         INT           NOT NULL,
-    empr_codigo         INT           NOT NULL,
-    esta_codigo         INT           NOT NULL,
-    grem_bultos         INT           NOT NULL DEFAULT 0,
-    grem_pesototal      FLOAT         NOT NULL DEFAULT 0,
-    grem_costototal     FLOAT         NOT NULL DEFAULT 0,
-    grem_impreso        INT           NOT NULL DEFAULT 0,
-    tico_codigo         INT           NOT NULL,
-    grem_docventa       NVARCHAR(20)  NULL,
-    grem_observacion    NVARCHAR(250) NULL,
-    usu_codigo          INT           NOT NULL,
-    grem_enviado        INT           NOT NULL DEFAULT 0,
-    grem_manifiesto     INT           NOT NULL DEFAULT 0,
-    grem_nromanifiesto  NVARCHAR(20)  NULL
+    GREM_CODIGO          INT           IDENTITY(1,1) NOT NULL,
+    GREM_SERIE           NVARCHAR(4)   NULL,
+    GREM_NUMERO          NVARCHAR(6)   NULL,
+    GREM_FECHAEMISION    DATETIME      NULL,
+    GREM_FECHATRASLADO   DATETIME      NULL,
+    CLIE_REMITENTE       INT           NULL,
+    GREM_TIPODIRPARTIDA  INT           NULL,
+    GREM_DIRECCIONPARTIDA NVARCHAR(100) NULL,
+    CLIE_DESTINATARIO    INT           NULL,
+    GREM_TIPODIRDESTINO  INT           NULL,
+    GREM_DIRECCIONDESTINO NVARCHAR(100) NULL,
+    DEST_CODIGO          INT           NULL,
+    VEHI_CODIGO          INT           NULL,
+    CARR_CODIGO          INT           NULL,
+    CHOF_CODIGO          INT           NULL,
+    EMPR_CODIGO          INT           NULL,
+    ESTA_CODIGO          INT           NULL,
+    GREM_BULTOS          INT           NULL,
+    GREM_PESOTOTAL       FLOAT         NULL,
+    GREM_COSTOTOTAL      FLOAT         NULL,
+    GREM_IMPRESO         INT           NULL,
+    TICO_CODIGO          INT           NULL,
+    GREM_DOCVENTA        NVARCHAR(20)  NULL,
+    GREM_OBSERVACION     NVARCHAR(250) NULL,
+    USU_CODIGO           INT           NULL,
+    GREM_ENVIADO         INT           NULL,
+    GREM_MANIFIESTO      INT           NULL,
+    GREM_NROMANIFIESTO   VARCHAR(15)   NULL
 );
 GO
 
 CREATE TABLE DetalleGuia (
-    grem_codigo         INT           NOT NULL,
-    degr_cantidad       FLOAT         NOT NULL DEFAULT 0,
-    degr_descripcion    NVARCHAR(100) NOT NULL,
-    degr_peso           FLOAT         NOT NULL DEFAULT 0,
-    degr_unidad         NVARCHAR(30)  NULL,
-    degr_costo          FLOAT         NOT NULL DEFAULT 0,
-    degr_tipodoc        VARCHAR(20)   NULL,
-    degr_nrodoc         VARCHAR(20)   NULL
+    GREM_CODIGO          INT           NOT NULL,
+    DEGR_CANTIDAD        FLOAT         NULL,
+    DEGR_DESCRIPCION     NVARCHAR(100) NULL,
+    DEGR_PESO            FLOAT         NULL,
+    DEGR_UNIDAD          NVARCHAR(30)  NULL,
+    DEGR_COSTO           FLOAT         NULL,
+    DEGR_TIPODOC         VARCHAR(20)   NULL,
+    DEGR_NRODOC          VARCHAR(20)   NULL
 );
 GO
 
 CREATE TABLE Comprobante (
-    comp_codigo         INT           IDENTITY(1,1) PRIMARY KEY,
-    comp_serie          NVARCHAR(4)   NOT NULL,
-    comp_numero         NVARCHAR(6)   NOT NULL,
-    comp_fecha          DATETIME      NOT NULL,
-    clie_destinatario   INT           NOT NULL,
-    comp_direccion      NVARCHAR(100) NULL,
-    tico_codigo         INT           NOT NULL,
-    esta_codigo         INT           NOT NULL,
-    comp_grt            NVARCHAR(20)  NULL,
-    clie_remitente      INT           NOT NULL,
-    empr_codigo         INT           NOT NULL,
-    dest_codigo         INT           NOT NULL,
-    comp_manifiesto     NVARCHAR(10)  NULL,
-    comp_valorventa     FLOAT         NOT NULL DEFAULT 0,
-    comp_igv            FLOAT         NOT NULL DEFAULT 0,
-    comp_total          FLOAT         NOT NULL DEFAULT 0,
-    comp_impreso        INT           NOT NULL DEFAULT 0,
-    usu_codigo          INT           NOT NULL
+    COMP_CODIGO          INT           IDENTITY(1,1) NOT NULL,
+    COMP_SERIE           NVARCHAR(4)   NULL,
+    COMP_NUMERO          NVARCHAR(6)   NULL,
+    COMP_FECHA           DATETIME      NULL,
+    CLIE_DESTINATARIO    INT           NULL,
+    COMP_DIRECCION       NVARCHAR(100) NULL,
+    TICO_CODIGO          INT           NULL,
+    ESTA_CODIGO          INT           NULL,
+    COMP_GRT             NVARCHAR(20)  NULL,
+    CLIE_REMITENTE       INT           NULL,
+    EMPR_CODIGO          INT           NULL,
+    DEST_CODIGO          INT           NULL,
+    COMP_MANIFIESTO      NVARCHAR(10)  NULL,
+    COMP_VALORVENTA      FLOAT         NULL,
+    COMP_IGV             FLOAT         NULL,
+    COMP_TOTAL           FLOAT         NULL,
+    COMP_IMPRESO         INT           NULL,
+    USU_CODIGO           INT           NULL
 );
 GO
 
 CREATE TABLE DetalleComprobante (
-    comp_codigo         INT           NOT NULL,
-    deco_cantidad       FLOAT         NOT NULL DEFAULT 0,
-    deco_descripcion    NVARCHAR(100) NOT NULL,
-    deco_preciounitario FLOAT         NOT NULL DEFAULT 0,
-    deco_flete          FLOAT         NOT NULL DEFAULT 0
+    COMP_CODIGO          INT           NOT NULL,
+    DECO_CANTIDAD        FLOAT         NULL,
+    DECO_DESCRIPCION     NVARCHAR(100) NULL,
+    DECO_PRECIOUNITARIO  FLOAT         NULL,
+    DECO_FLETE           FLOAT         NULL
 );
 GO
 
 CREATE TABLE Manifiesto (
-    mani_codigo         INT           IDENTITY(1,1) PRIMARY KEY,
-    mani_numero         VARCHAR(20)   NOT NULL,
-    mani_fecha          DATETIME      NOT NULL,
-    empr_codigo         INT           NOT NULL,
-    vehi_codigo         INT           NOT NULL,
-    carr_codigo         INT           NOT NULL,
-    chof_codigo         INT           NOT NULL,
-    mani_importe        FLOAT         NOT NULL DEFAULT 0,
-    mani_nroguias       INT           NOT NULL DEFAULT 0,
-    mani_peso           FLOAT         NOT NULL DEFAULT 0,
-    esta_codigo         INT           NOT NULL,
-    usu_codigo          INT           NOT NULL
+    MANI_CODIGO          INT           IDENTITY(1,1) NOT NULL,
+    MANI_NUMERO          VARCHAR(20)   NULL,
+    MANI_FECHA           DATETIME      NULL,
+    EMPR_CODIGO          INT           NULL,
+    VEHI_CODIGO          INT           NULL,
+    CARR_CODIGO          INT           NULL,
+    CHOF_CODIGO          INT           NULL,
+    MANI_IMPORTE         FLOAT         NULL,
+    MANI_NROGUIAS        INT           NULL,
+    MANI_PESO            FLOAT         NULL,
+    ESTA_CODIGO          INT           NULL,
+    USU_CODIGO           INT           NULL
 );
 GO
 
 CREATE TABLE DetalleManifiesto (
-    mani_codigo         INT           NOT NULL,
-    grem_codigo         INT           NOT NULL
+    MANI_CODIGO          INT           NOT NULL,
+    GREM_CODIGO          INT           NOT NULL
 );
 GO
 
+-- Recepcion and DetalleRecepcion not present in pre-2014 yearly DBs.
+-- Included here because clsRecepcion.vb exists in the VB.NET source.
 CREATE TABLE Recepcion (
-    rece_codigo         INT           IDENTITY(1,1) PRIMARY KEY,
-    rece_fechaemision   DATETIME      NOT NULL,
-    clie_remitente      INT           NOT NULL,
-    rece_tipodirpartida INT           NOT NULL,
-    rece_direccionpartida NVARCHAR(100) NOT NULL,
-    clie_destinatario   INT           NOT NULL,
-    rece_tipodirdestino INT           NOT NULL,
-    rece_direcciondestino NVARCHAR(100) NOT NULL,
-    dest_codigo         INT           NOT NULL,
-    esta_codigo         INT           NOT NULL,
-    rece_bultos         INT           NOT NULL DEFAULT 0,
-    rece_pesototal      FLOAT         NOT NULL DEFAULT 0,
-    rece_costototal     FLOAT         NOT NULL DEFAULT 0,
-    rece_guiaremision   NVARCHAR(20)  NULL,
-    rece_observacion    NVARCHAR(250) NULL,
-    usu_codigo          INT           NOT NULL
+    RECE_CODIGO           INT           IDENTITY(1,1) NOT NULL,
+    RECE_FECHAEMISION     DATETIME      NULL,
+    CLIE_REMITENTE        INT           NULL,
+    RECE_TIPODIRPARTIDA   INT           NULL,
+    RECE_DIRECCIONPARTIDA NVARCHAR(100) NULL,
+    CLIE_DESTINATARIO     INT           NULL,
+    RECE_TIPODIRDESTINO   INT           NULL,
+    RECE_DIRECCIONDESTINO NVARCHAR(100) NULL,
+    DEST_CODIGO           INT           NULL,
+    ESTA_CODIGO           INT           NULL,
+    RECE_BULTOS           INT           NULL,
+    RECE_PESOTOTAL        FLOAT         NULL,
+    RECE_COSTOTOTAL       FLOAT         NULL,
+    RECE_GUIAREMISION     NVARCHAR(20)  NULL,
+    RECE_OBSERVACION      NVARCHAR(250) NULL,
+    USU_CODIGO            INT           NULL
 );
 GO
 
 CREATE TABLE DetalleRecepcion (
-    rece_codigo         INT           NOT NULL,
-    dere_cantidad       FLOAT         NOT NULL DEFAULT 0,
-    dere_descripcion    NVARCHAR(100) NOT NULL,
-    dere_peso           FLOAT         NOT NULL DEFAULT 0,
-    dere_unidad         NVARCHAR(30)  NULL,
-    dere_costo          FLOAT         NOT NULL DEFAULT 0,
-    dere_tipodoc        VARCHAR(20)   NULL,
-    dere_nrodoc         VARCHAR(20)   NULL
+    RECE_CODIGO          INT           NOT NULL,
+    DERE_CANTIDAD        FLOAT         NULL,
+    DERE_DESCRIPCION     NVARCHAR(100) NULL,
+    DERE_PESO            FLOAT         NULL,
+    DERE_UNIDAD          NVARCHAR(30)  NULL,
+    DERE_COSTO           FLOAT         NULL,
+    DERE_TIPODOC         VARCHAR(20)   NULL,
+    DERE_NRODOC          VARCHAR(20)   NULL
 );
 GO
