@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 
+<Obsolete("Replaced by EVANS.Domain.GuiaRemision bounded context. Use CrearGuiaCommand / ActualizarGuiaCommand via MediatR.")>
 Public Class clsGuiaRemision
 
     Private intCodigo As Integer

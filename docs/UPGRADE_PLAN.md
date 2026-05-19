@@ -144,6 +144,8 @@ Entregables:
 
 ### Fase 1 — Bootstrap de la solución nueva (Semanas 4–5)
 
+**Status**: ✅ Complete — 2026-05-18
+
 **Objetivo**: tener la estructura objetivo vacía y compilando, sin código de negocio todavía.
 
 Entregables:
@@ -170,18 +172,20 @@ Entregables:
        })
        .Build();
    Application.EnableVisualStyles();
-   Application.Run(host.Services.GetRequiredService<frmPrincipalNew>());
+   Application.Run(host.Services.GetRequiredService<frmPrincipal>());
    ```
 3. **Implementar `IDbConnectionFactory`** con dos factories tipadas:
    - `IEvansMasterConnectionFactory` (DB `EVANS`)
    - `IYearlyTransactionalConnectionFactory` (DB `YYYY` — recibe año como parámetro)
    - Connection strings desde `appsettings.json` con `Microsoft.Extensions.Configuration.Json`
-4. **MDI shell vacía**: `frmPrincipalNew` con menú estructural (sin handlers todavía). Compila y arranca con DB de prueba.
+4. **MDI shell vacía**: `frmPrincipal` con menú estructural (sin handlers todavía). Compila y arranca con DB de prueba.
 5. **ADR**: documentar la decisión "rewrite-then-cutover via strangler fig por contexto".
 
 **Acceptance**: `EVANS.sln` compila, arranca, conecta a SQL Server local, muestra MDI shell vacía con menú. CI corre ambas soluciones.
 
 ### Fase 2 — Primer slice end-to-end: GuiaRemision (Semanas 6–11)
+
+**Status**: ✅ Complete — 2026-05-19 | 83 tests green (30 Domain + 17 Application + 12 Infra + 2 UI + 7 Reports + 5 Acceptance + 10 Legacy) | 0 CRITICALs | SDD archived
 
 **Objetivo**: implementar el contexto MÁS COMPLEJO primero como template para todos los demás. Si esto sale bien, los otros 5 contextos siguen el mismo patrón mecánicamente.
 
