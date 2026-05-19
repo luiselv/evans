@@ -1,4 +1,6 @@
 using EVANS.Domain.GuiaRemision;
+using EVANS.Reports.Comprobante;
+using EVANS.UI.WinForms.Comprobante;
 using EVANS.UI.WinForms.GuiaRemision;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,8 @@ public partial class frmPrincipal : Form
     {
         _services = services;
         InitializeComponent();
-        mnuGuias.Click += mnuGuias_Click;
+        mnuGuias.Click        += mnuGuias_Click;
+        mnuComprobantes.Click += mnuComprobantes_Click;
     }
 
     private void mnuGuias_Click(object? sender, EventArgs e)
@@ -21,5 +24,23 @@ public partial class frmPrincipal : Form
         var mediator = _services.GetRequiredService<IMediator>();
         using var form = new frmGuiaRemision(mediator, new Standalone(), DateTime.Today.Year);
         form.ShowDialog(this);
+    }
+
+    private void mnuComprobantes_Click(object? sender, EventArgs e)
+    {
+        if (FeatureFlags.ComprobanteV2Enabled)
+        {
+            var mediator = _services.GetRequiredService<IMediator>();
+            var factory  = _services.GetRequiredService<DocumentPrinterFactory>();
+
+            using var form = new frmComprobante(
+                mediator,
+                guiaRef: null,
+                printerResolver: factory.For);
+
+            form.MdiParent = this;
+            form.Show();
+        }
+        // else: legacy path — frmComprobante VB not yet wired; menu is a no-op for now
     }
 }

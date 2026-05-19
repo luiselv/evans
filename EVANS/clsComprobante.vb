@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 
+<Obsolete("Use EVANS.Application.Comprobante handlers via IMediator. This class will be removed when all consumers are migrated.")>
 Public Class clsComprobante
 
     Private intCodigo As Integer

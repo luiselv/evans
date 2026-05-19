@@ -245,7 +245,7 @@ Cada contexto sigue el template de Fase 2. Orden por dificultad descendente:
 
 | Contexto | Semanas | Notas |
 |---|---|---|
-| Comprobante (Boleta/Factura) | 3 | Incluye QuestPDF templates; tax compliance crítico |
+| Comprobante (Boleta/Factura) | 3 | **Status**: ✅ Complete — 2026-05-19 | 186 tests green | 0 CRITICALs | SDD archived |
 | Manifiesto | 2.5 | Incluye reemplazo del único `.rpt` (Manifiesto.rpt) con QuestPDF |
 | Recepcion | 2 | Acoplado con Guia — ya se preparó el port en Fase 2 |
 | Catalogo (Cliente, Chofer, Vehiculo, Carreta, Destino, Empresa, Estado, TipoID, Agencia) | 3.5 | CRUD repetitivo — usar `IRepository<T>` genérico para acelerar |
