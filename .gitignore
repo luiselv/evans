@@ -23,6 +23,15 @@ Settings.Local.settings
 Backup/
 *.bak
 *.tmp
+*.swp
+*.swo
+
+# Reference/workspace files
+boleta.jpg
+factura.jpg
+gremision.jpg
+manifiesto.pdf
+logo.png
 
 # Crystal Reports cache
 *.rpt.bak
