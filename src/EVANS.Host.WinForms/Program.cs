@@ -1,7 +1,9 @@
 using EVANS.Application.DependencyInjection;
 using EVANS.Domain.DependencyInjection;
 using EVANS.Host.WinForms.Shell;
+using EVANS.Infrastructure.External.DependencyInjection;
 using EVANS.Infrastructure.Sql.DependencyInjection;
+using EVANS.Reports.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -23,8 +25,11 @@ static class Program
             {
                 services.AddEvansDomain();
                 services.AddEvansApplication();
-                services.AddEvansInfrastructureSql();
-                services.AddSingleton<frmPrincipal>();
+                services.AddEvansInfrastructureSql(ctx.Configuration);
+                services.AddEvansGuiaRemision();
+                services.AddEvansInfrastructureExternal(ctx.Configuration);
+                services.AddEvansReports();
+                services.AddEvansWinFormsShell();
             })
             .Build();
 
