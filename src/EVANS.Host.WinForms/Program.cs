@@ -14,6 +14,12 @@ namespace EVANS.Host.WinForms;
 
 static class Program
 {
+    /// <summary>
+    /// The host service provider — exposed for forms that need service location
+    /// as a last resort (e.g. resolving DocumentPrinterFactory without injecting Reports into UI.WinForms).
+    /// </summary>
+    internal static IServiceProvider Services { get; private set; } = null!;
+
     [STAThread]
     static void Main()
     {
@@ -27,6 +33,7 @@ static class Program
                 services.AddEvansApplication();
                 services.AddEvansInfrastructureSql(ctx.Configuration);
                 services.AddEvansGuiaRemision();
+                services.AddEvansComprobante();
                 services.AddEvansInfrastructureExternal(ctx.Configuration);
                 services.AddEvansReports();
                 services.AddEvansWinFormsShell();
@@ -34,6 +41,7 @@ static class Program
             .Build();
 
         host.Start();
+        Services = host.Services;
 
         var mainForm = host.Services.GetRequiredService<frmPrincipal>();
         WinFormsApp.Run(mainForm);
