@@ -1,9 +1,11 @@
 using EVANS.Application.DependencyInjection;
+using EVANS.Application.Manifiesto.Ports;
 using EVANS.Domain.DependencyInjection;
 using EVANS.Host.WinForms.Shell;
 using EVANS.Infrastructure.External.DependencyInjection;
 using EVANS.Infrastructure.Sql.DependencyInjection;
 using EVANS.Reports.DependencyInjection;
+using EVANS.Reports.Manifiesto;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -34,8 +36,17 @@ static class Program
                 services.AddEvansInfrastructureSql(ctx.Configuration);
                 services.AddEvansGuiaRemision();
                 services.AddEvansComprobante();
+                services.AddEvansManifiesto();
                 services.AddEvansInfrastructureExternal(ctx.Configuration);
                 services.AddEvansReports();
+
+                // Wire IManifiestoDocumentPrinter factory — keeps UI.WinForms off EVANS.Reports reference.
+                services.AddSingleton<ManifestoPdfRenderer>();
+                services.AddSingleton<Func<IManifiestoDocumentPrinter>>(sp =>
+                {
+                    var renderer = sp.GetRequiredService<ManifestoPdfRenderer>();
+                    return DocumentPrinterManifiestoFactory.CreateFactory(renderer);
+                });
                 services.AddEvansWinFormsShell();
             })
             .Build();
