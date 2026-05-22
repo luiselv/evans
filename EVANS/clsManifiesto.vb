@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 
+<Obsolete("Replaced by EVANS.Domain.Manifiesto and EVANS.Application.Manifiesto handlers. Do not use in new code.")>
 Public Class clsManifiesto
 
     Private intCodigo As Integer
