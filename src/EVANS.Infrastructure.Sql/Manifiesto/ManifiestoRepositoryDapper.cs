@@ -202,17 +202,22 @@ public sealed class ManifiestoRepositoryDapper : IManifiestoRepository
 
         if (header is null) return null;
 
-        // Enrich with master-DB names via separate call (non-critical — falls back to empty strings)
+        // Collect distinct DEST_CODIGO values from lineas for a single master-DB batch lookup
+        var destCodigos = lineas.Select(l => l.DestinoCodigo).Distinct().ToList();
+
+        // Enrich with master-DB names via separate calls (non-critical — falls back to empty strings)
         var names = await ResolveMasterNamesAsync(
             header.EMPR_CODIGO, header.VEHI_CODIGO, header.CARR_CODIGO,
             header.CHOF_CODIGO, header.ESTA_CODIGO, ct);
+
+        var destinoNames = await ResolveDestinoNamesAsync(destCodigos, ct);
 
         var lineaDtos = lineas
             .Select(l => new ManifiestoLineaDto(
                 GuiaId: l.GuiaId,
                 NumeroGuia: l.NumeroGuia ?? string.Empty,
                 DestinoCodigo: l.DestinoCodigo,
-                DestinoNombre: string.Empty,  // Destination name not stored in yearly DB header
+                DestinoNombre: destinoNames.TryGetValue(l.DestinoCodigo, out var dn) ? dn : string.Empty,
                 Peso: Round2(l.Peso),
                 Flete: Round2(l.Flete)))
             .ToList();
@@ -358,6 +363,35 @@ public sealed class ManifiestoRepositoryDapper : IManifiestoRepository
         catch
         {
             return (string.Empty, string.Empty, null, string.Empty, string.Empty);
+        }
+    }
+
+    /// <summary>
+    /// Resolves DEST_NOMBRE for a batch of DEST_CODIGO values from the master DB.
+    /// Returns a dictionary keyed by DEST_CODIGO. Falls back to empty on any error.
+    /// </summary>
+    private async Task<Dictionary<int, string>> ResolveDestinoNamesAsync(
+        IReadOnlyList<int> destCodigos, CancellationToken ct)
+    {
+        if (destCodigos.Count == 0)
+            return new Dictionary<int, string>();
+
+        try
+        {
+            using var masterConn = _masterFactory.Create();
+            await masterConn.OpenAsync(ct);
+
+            var rows = await masterConn.QueryAsync<(int Codigo, string Nombre)>(
+                new CommandDefinition(
+                    "SELECT DEST_CODIGO AS Codigo, ISNULL(DEST_NOMBRE,'') AS Nombre FROM DESTINO WHERE DEST_CODIGO IN @codigos",
+                    new { codigos = destCodigos },
+                    cancellationToken: ct));
+
+            return rows.ToDictionary(r => r.Codigo, r => r.Nombre);
+        }
+        catch
+        {
+            return new Dictionary<int, string>();
         }
     }
 
