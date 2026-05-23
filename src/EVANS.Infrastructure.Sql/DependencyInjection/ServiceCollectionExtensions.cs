@@ -1,11 +1,13 @@
 using EVANS.Application.Comprobante.Ports;
 using EVANS.Application.GuiaRemision.Ports;
 using EVANS.Application.Manifiesto.Ports;
+using EVANS.Application.Recepcion.Ports;
 using EVANS.Application.Shared.Ports;
 using EVANS.Infrastructure.Sql.Comprobante;
 using EVANS.Infrastructure.Sql.Connections;
 using EVANS.Infrastructure.Sql.GuiaRemision;
 using EVANS.Infrastructure.Sql.Manifiesto;
+using EVANS.Infrastructure.Sql.Recepcion;
 using EVANS.Infrastructure.Sql.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,6 +66,17 @@ public static class ServiceCollectionExtensions
         services.AddTransient<INumeradorManifiestoService, NumeradorManifiestoServiceSql>();
         services.AddTransient<IGuiasManifiestoService, GuiasManifiestoServiceSql>();
         services.AddTransient<ICatalogosManifiestoRepository, CatalogosManifiestoRepositorySql>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers Recepcion infrastructure services.
+    /// Call after AddEvansInfrastructureSql.
+    /// </summary>
+    public static IServiceCollection AddEvansRecepcion(this IServiceCollection services)
+    {
+        services.AddTransient<IRecepcionRepository, RecepcionRepositoryDapper>();
+        services.AddTransient<ICatalogosRecepcionRepository, CatalogosRecepcionRepositorySql>();
         return services;
     }
 }
