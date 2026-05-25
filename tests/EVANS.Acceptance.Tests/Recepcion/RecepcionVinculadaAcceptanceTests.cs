@@ -103,7 +103,7 @@ public class RecepcionVinculadaAcceptanceTests
         // Step 3: Refresh — should show GuiaRemisionVinculada
         var dto = await mediator.Send(new ObtenerRecepcionPorCodigoQuery(55, 2024));
 
-        dto.Should().NotBeNull();
-        dto!.GuiaRemisionVinculada.Should().Be("T001-000001");
+        dto.IsSuccess.Should().BeTrue();
+        dto.Value!.GuiaRemisionVinculada.Should().Be("T001-000001");
     }
 }

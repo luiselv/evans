@@ -103,8 +103,8 @@ public partial class frmRecepcion : Form
             // Dispatch through MediatR — CrearGuiaCommandHandler handles cross-context write-back
             // via IRecepcionVinculadaService post-commit (ADR-1).
             await _mediator.Send(new CrearGuiaCommand(
-                RemitenteId: _recepcionActual.RemitenteId,
-                DestinatarioId: _recepcionActual.DestinatarioId,
+                RemitenteId: _recepcionActual.RemitenteCodigo,
+                DestinatarioId: _recepcionActual.DestinatarioCodigo,
                 DireccionPartida: string.Empty,
                 DireccionLlegada: string.Empty,
                 HasManifest: false,
@@ -165,9 +165,11 @@ public partial class frmRecepcion : Form
                     Year: _year,
                     Detalles: detalles);
 
-                var codigo = await _mediator.Send(cmd);
-                _recepcionActual = await _mediator.Send(
+                var codigoResult = await _mediator.Send(cmd);
+                var codigo = codigoResult.Value;
+                var detalleResult = await _mediator.Send(
                     new ObtenerRecepcionPorCodigoQuery(codigo, _year));
+                _recepcionActual = detalleResult.Value;
                 btnGenerarGuia.Enabled = true;
                 MessageBox.Show($"Recepcion grabada. Codigo: {codigo}", "Exito",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -226,15 +228,16 @@ public partial class frmRecepcion : Form
     private async Task BuscarAsync()
     {
         var rango = DateRange.Intervalo(dtpDesde.Value.Date, dtpHasta.Value.Date);
-        var resultados = await _mediator.Send(new BuscarRecepcionesQuery(rango, _year));
-        BindResultados(resultados);
+        var buscarResult = await _mediator.Send(new BuscarRecepcionesQuery(rango, _year));
+        BindResultados(buscarResult.Value);
     }
 
     private async Task RefrescarRecepcionActualAsync()
     {
         if (_recepcionActual is null) return;
-        _recepcionActual = await _mediator.Send(
+        var refrescarResult = await _mediator.Send(
             new ObtenerRecepcionPorCodigoQuery(_recepcionActual.Codigo, _year));
+        _recepcionActual = refrescarResult.Value;
         if (_recepcionActual?.GuiaRemisionVinculada is not null)
             lblGuiaVinculada.Text = $"Guia vinculada: {_recepcionActual.GuiaRemisionVinculada}";
     }
@@ -249,21 +252,21 @@ public partial class frmRecepcion : Form
         var destinos = await _catalogos.ListarDestinosAsync(CancellationToken.None);
         var estados = await _catalogos.ListarEstadosAsync(CancellationToken.None);
 
-        cmbRemitente.DataSource = clientes.Select(c => new { c.Id, c.Nombre }).ToList();
+        cmbRemitente.DataSource = clientes.Select(c => new { c.Codigo, c.Nombre }).ToList();
         cmbRemitente.DisplayMember = "Nombre";
-        cmbRemitente.ValueMember = "Id";
+        cmbRemitente.ValueMember = "Codigo";
 
-        cmbDestinatario.DataSource = clientes.Select(c => new { c.Id, c.Nombre }).ToList();
+        cmbDestinatario.DataSource = clientes.Select(c => new { c.Codigo, c.Nombre }).ToList();
         cmbDestinatario.DisplayMember = "Nombre";
-        cmbDestinatario.ValueMember = "Id";
+        cmbDestinatario.ValueMember = "Codigo";
 
-        cmbDestino.DataSource = destinos.Select(d => new { d.Id, d.Nombre }).ToList();
+        cmbDestino.DataSource = destinos.Select(d => new { d.Codigo, d.Nombre }).ToList();
         cmbDestino.DisplayMember = "Nombre";
-        cmbDestino.ValueMember = "Id";
+        cmbDestino.ValueMember = "Codigo";
 
-        cmbEstado.DataSource = estados.Select(e => new { e.Id, e.Nombre }).ToList();
+        cmbEstado.DataSource = estados.Select(e => new { e.Codigo, e.Nombre }).ToList();
         cmbEstado.DisplayMember = "Nombre";
-        cmbEstado.ValueMember = "Id";
+        cmbEstado.ValueMember = "Codigo";
     }
 
     private IReadOnlyList<DetalleRecepcionInput> ReadDetallesFromGrid()
@@ -302,14 +305,15 @@ public partial class frmRecepcion : Form
         if (e.RowIndex < 0) return;
         if (!int.TryParse(dgvResultados.Rows[e.RowIndex].Cells["colResCodig"].Value?.ToString(), out var codigo)) return;
 
-        _recepcionActual = await _mediator.Send(new ObtenerRecepcionPorCodigoQuery(codigo, _year));
+        var loadResult = await _mediator.Send(new ObtenerRecepcionPorCodigoQuery(codigo, _year));
+        _recepcionActual = loadResult.Value;
         if (_recepcionActual is null) return;
         PopulateFromDto(_recepcionActual);
     }
 
     private void PopulateFromDto(RecepcionDetalleDto dto)
     {
-        dtpFechaEmision.Value = dto.Fecha;
+        dtpFechaEmision.Value = dto.FechaEmision;
         txtDirPartida.Text = string.Empty;
         txtDirDestino.Text = string.Empty;
         txtObservacion.Text = dto.Observacion;
