@@ -86,7 +86,9 @@ public class RecepcionVinculadaAcceptanceTests
             Year: 2024,
             Detalles: new[] { new DetalleRecepcionInput(1m, "Caja", 10m, "unidad", 100m, "GR", "001") });
 
-        var codigo = await mediator.Send(crearCmd);
+        var result = await mediator.Send(crearCmd);
+        result.IsSuccess.Should().BeTrue();
+        var codigo = result.Value;
         codigo.Should().Be(55);
 
         // Step 2: Simulate VincularRecepcion (normally called by CrearGuiaCommandHandler)

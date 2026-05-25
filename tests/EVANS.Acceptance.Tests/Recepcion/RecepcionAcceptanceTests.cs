@@ -76,7 +76,7 @@ public class RecepcionAcceptanceTests
         repo.ObtenerPorCodigoAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(ci =>
             {
-                var codigo = ci.Arg<int>();
+                var codigo = ci.ArgAt<int>(0);
                 return Task.FromResult(store.Find(codigo));
             });
 
