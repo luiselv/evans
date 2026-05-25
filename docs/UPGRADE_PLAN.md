@@ -247,7 +247,7 @@ Cada contexto sigue el template de Fase 2. Orden por dificultad descendente:
 |---|---|---|
 | Comprobante (Boleta/Factura) | 3 | **Status**: ✅ Complete — 2026-05-19 | 186 tests green | 0 CRITICALs | SDD archived |
 | Manifiesto | 2.5 | **Status**: ✅ Complete — 2026-05-22 | 217 tests green | 0 CRITICALs | SDD archived |
-| Recepcion | 2 | Acoplado con Guia — ya se preparó el port en Fase 2 |
+| Recepcion | 2 | **Status**: ✅ Complete — 2026-05-24 | 279 tests green | 0 CRITICALs | SDD archived |
 | Catalogo (Cliente, Chofer, Vehiculo, Carreta, Destino, Empresa, Estado, TipoID, Agencia) | 3.5 | CRUD repetitivo — usar `IRepository<T>` genérico para acelerar |
 | Identidad (Usuario, Acceso, Parametros) | 1.5 | Incluye rewrite del login flow + reemplazo de `frmConsultaRUC` WebBrowser con `HttpClient` + SUNAT API JSON |
 | Reportes/Consultas (ConsEnviosMensuales, ConsGuiasPorCliente, ReporteVentas) | 1.5 | CQRS read side puro — más simple. Excel export con ClosedXML reemplaza Office Interop |
