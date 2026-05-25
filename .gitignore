@@ -2,6 +2,11 @@
 bin/
 obj/
 
+# AI tooling
+.claude/
+.claire/
+.codegraph/
+
 # Visual Studio
 *.suo
 *.user
