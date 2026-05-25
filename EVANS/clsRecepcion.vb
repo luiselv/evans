@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 
+<Obsolete("Use frmRecepcion.cs + MediatR handlers. RecepcionV2Enabled flag controls activation.", False)>
 Public Class clsRecepcion
     Private intCodigo As Integer
     Private datEmision As Date

@@ -7,6 +7,7 @@ partial class frmPrincipal
     private ToolStripMenuItem mnuGuias;
     private ToolStripMenuItem mnuManifiestos;
     private ToolStripMenuItem mnuComprobantes;
+    private ToolStripMenuItem mnuRecepciones;
     private ToolStripMenuItem mnuCatalogos;
     private ToolStripMenuItem mnuReportes;
 
@@ -23,19 +24,21 @@ partial class frmPrincipal
         mnuGuias = new ToolStripMenuItem();
         mnuManifiestos = new ToolStripMenuItem();
         mnuComprobantes = new ToolStripMenuItem();
+        mnuRecepciones = new ToolStripMenuItem();
         mnuCatalogos = new ToolStripMenuItem();
         mnuReportes = new ToolStripMenuItem();
 
         menuStrip.SuspendLayout();
         SuspendLayout();
 
-        menuStrip.Items.AddRange([mnuGuias, mnuManifiestos, mnuComprobantes, mnuCatalogos, mnuReportes]);
+        menuStrip.Items.AddRange([mnuGuias, mnuManifiestos, mnuComprobantes, mnuRecepciones, mnuCatalogos, mnuReportes]);
         menuStrip.Location = new Point(0, 0);
         menuStrip.Size = new Size(1024, 24);
 
         mnuGuias.Text = "Guías de Remisión";
         mnuManifiestos.Text = "Manifiestos";
         mnuComprobantes.Text = "Comprobantes";
+        mnuRecepciones.Text = "Recepciones";
         mnuCatalogos.Text = "Catálogos";
         mnuReportes.Text = "Reportes";
 

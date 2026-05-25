@@ -15,9 +15,10 @@ public static class FeatureFlags
     public static bool ComprobanteV2Enabled { get; set; } = false;
 
     /// <summary>
-    /// When true, the "Manifiestos" menu opens <see cref="EVANS.UI.WinForms.Manifiesto.frmManifiesto"/>
+    /// When true, the "Recepcion" menu opens <see cref="EVANS.UI.WinForms.Recepcion.frmRecepcion"/>
     /// (new C# WinForms form backed by Application handlers + Dapper).
     /// When false, falls through to the legacy VB path.
+    /// Rollback: set to false — no schema changes required.
     /// </summary>
-    public static bool ManifiestoV2Enabled { get; set; } = false;
+    public static bool RecepcionV2Enabled { get; set; } = false;
 }
