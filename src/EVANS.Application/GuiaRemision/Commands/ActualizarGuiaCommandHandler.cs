@@ -2,6 +2,7 @@ using EVANS.Application.Common;
 using EVANS.Application.GuiaRemision.Ports;
 using EVANS.Application.GuiaRemision.Validators;
 using EVANS.Domain.GuiaRemision;
+using EVANS.Domain.Shared;
 using FluentValidation;
 using MediatR;
 
