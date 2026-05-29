@@ -2,6 +2,7 @@ using Dapper;
 using EVANS.Application.GuiaRemision.DTOs;
 using EVANS.Application.GuiaRemision.Ports;
 using EVANS.Domain.GuiaRemision;
+using EVANS.Domain.Shared;
 using EVANS.Infrastructure.Sql.GuiaRemision;
 using Microsoft.Data.SqlClient;
 

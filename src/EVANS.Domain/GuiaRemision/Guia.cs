@@ -1,3 +1,5 @@
+using EVANS.Domain.Shared;
+
 namespace EVANS.Domain.GuiaRemision;
 
 public class Guia

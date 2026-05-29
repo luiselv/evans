@@ -1,9 +1,13 @@
 using EVANS.Application.Comprobante.Ports;
 using EVANS.Application.GuiaRemision.Ports;
+using EVANS.Application.Manifiesto.Ports;
+using EVANS.Application.Recepcion.Ports;
 using EVANS.Application.Shared.Ports;
 using EVANS.Infrastructure.Sql.Comprobante;
 using EVANS.Infrastructure.Sql.Connections;
 using EVANS.Infrastructure.Sql.GuiaRemision;
+using EVANS.Infrastructure.Sql.Manifiesto;
+using EVANS.Infrastructure.Sql.Recepcion;
 using EVANS.Infrastructure.Sql.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +51,32 @@ public static class ServiceCollectionExtensions
         services.AddTransient<INumeradorComprobanteService, NumeradorComprobanteServiceSql>();
         services.AddTransient<IGuiaVinculadaService, GuiaVinculadaServiceSql>();
         services.AddTransient<IParametrosService, ParametrosServiceSql>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers Manifiesto infrastructure services.
+    /// Call after AddEvansInfrastructureSql and after AddEvansComprobante.
+    /// IManifiestoDocumentPrinter is NOT registered here — it is wired in the host/Reports layer
+    /// via Func&lt;IManifiestoDocumentPrinter&gt; to keep UI and Infrastructure off the Reports reference.
+    /// </summary>
+    public static IServiceCollection AddEvansManifiesto(this IServiceCollection services)
+    {
+        services.AddTransient<IManifiestoRepository, ManifiestoRepositoryDapper>();
+        services.AddTransient<INumeradorManifiestoService, NumeradorManifiestoServiceSql>();
+        services.AddTransient<IGuiasManifiestoService, GuiasManifiestoServiceSql>();
+        services.AddTransient<ICatalogosManifiestoRepository, CatalogosManifiestoRepositorySql>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers Recepcion infrastructure services.
+    /// Call after AddEvansInfrastructureSql.
+    /// </summary>
+    public static IServiceCollection AddEvansRecepcion(this IServiceCollection services)
+    {
+        services.AddTransient<IRecepcionRepository, RecepcionRepositoryDapper>();
+        services.AddTransient<ICatalogosRecepcionRepository, CatalogosRecepcionRepositorySql>();
         return services;
     }
 }

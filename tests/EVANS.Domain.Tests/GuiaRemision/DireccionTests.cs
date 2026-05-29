@@ -1,4 +1,4 @@
-using EVANS.Domain.GuiaRemision;
+using EVANS.Domain.Shared;
 using FluentAssertions;
 
 namespace EVANS.Domain.Tests.GuiaRemision;

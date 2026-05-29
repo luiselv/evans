@@ -13,4 +13,12 @@ public static class FeatureFlags
     /// When false, falls through to the legacy VB path.
     /// </summary>
     public static bool ComprobanteV2Enabled { get; set; } = false;
+
+    /// <summary>
+    /// When true, the "Recepcion" menu opens <see cref="EVANS.UI.WinForms.Recepcion.frmRecepcion"/>
+    /// (new C# WinForms form backed by Application handlers + Dapper).
+    /// When false, falls through to the legacy VB path.
+    /// Rollback: set to false — no schema changes required.
+    /// </summary>
+    public static bool RecepcionV2Enabled { get; set; } = false;
 }
