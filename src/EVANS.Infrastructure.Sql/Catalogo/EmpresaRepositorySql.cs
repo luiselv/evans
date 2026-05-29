@@ -70,8 +70,9 @@ public sealed class EmpresaRepositorySql : IRepository<Empresa>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        return await conn.ExecuteScalarAsync<int>(
-            new CommandDefinition(sql, ToParameters(entity), cancellationToken: ct));
+        return await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteScalarAsync<int>(
+                new CommandDefinition(sql, ToParameters(entity), tx, cancellationToken: ct)), ct);
     }
 
     public async Task UpdateAsync(Empresa entity, CancellationToken ct)
@@ -89,7 +90,8 @@ public sealed class EmpresaRepositorySql : IRepository<Empresa>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        await conn.ExecuteAsync(new CommandDefinition(sql, ToParameters(entity), cancellationToken: ct));
+        await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteAsync(new CommandDefinition(sql, ToParameters(entity), tx, cancellationToken: ct)), ct);
     }
 
     public async Task DeactivateAsync(int codigo, CancellationToken ct)
@@ -102,10 +104,12 @@ public sealed class EmpresaRepositorySql : IRepository<Empresa>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        await conn.ExecuteAsync(new CommandDefinition(
-            sql,
-            new { codigo, estadoInactivo = CatalogoEstado.Inactivo },
-            cancellationToken: ct));
+        await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteAsync(new CommandDefinition(
+                sql,
+                new { codigo, estadoInactivo = CatalogoEstado.Inactivo },
+                tx,
+                cancellationToken: ct)), ct);
     }
 
     private static Empresa Map(EmpresaRow row) =>

@@ -57,8 +57,9 @@ public sealed class EstadoRepositorySql : IEstadoRepository
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        return await conn.ExecuteScalarAsync<int>(
-            new CommandDefinition(sql, new { descripcion = estado.Descripcion }, cancellationToken: ct));
+        return await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteScalarAsync<int>(
+                new CommandDefinition(sql, new { descripcion = estado.Descripcion }, tx, cancellationToken: ct)), ct);
     }
 
     public async Task UpdateAsync(Estado estado, CancellationToken ct)
@@ -71,10 +72,12 @@ public sealed class EstadoRepositorySql : IEstadoRepository
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        await conn.ExecuteAsync(new CommandDefinition(
-            sql,
-            new { codigo = estado.Codigo, descripcion = estado.Descripcion },
-            cancellationToken: ct));
+        await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteAsync(new CommandDefinition(
+                sql,
+                new { codigo = estado.Codigo, descripcion = estado.Descripcion },
+                tx,
+                cancellationToken: ct)), ct);
     }
 
     private sealed record EstadoRow(int Codigo, string Descripcion);

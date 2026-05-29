@@ -57,8 +57,9 @@ public sealed class TipoIdentificacionRepositorySql : ITipoIdentificacionReposit
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        return await conn.ExecuteScalarAsync<int>(
-            new CommandDefinition(sql, new { descripcion = tipoIdentificacion.Descripcion }, cancellationToken: ct));
+        return await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteScalarAsync<int>(
+                new CommandDefinition(sql, new { descripcion = tipoIdentificacion.Descripcion }, tx, cancellationToken: ct)), ct);
     }
 
     public async Task UpdateAsync(TipoIdentificacion tipoIdentificacion, CancellationToken ct)
@@ -71,10 +72,12 @@ public sealed class TipoIdentificacionRepositorySql : ITipoIdentificacionReposit
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
 
-        await conn.ExecuteAsync(new CommandDefinition(
-            sql,
-            new { codigo = tipoIdentificacion.Codigo, descripcion = tipoIdentificacion.Descripcion },
-            cancellationToken: ct));
+        await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteAsync(new CommandDefinition(
+                sql,
+                new { codigo = tipoIdentificacion.Codigo, descripcion = tipoIdentificacion.Descripcion },
+                tx,
+                cancellationToken: ct)), ct);
     }
 
     private sealed record TipoIdentificacionRow(int Codigo, string Descripcion);
