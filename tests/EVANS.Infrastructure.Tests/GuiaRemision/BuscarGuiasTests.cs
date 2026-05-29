@@ -1,5 +1,6 @@
 using EVANS.Application.GuiaRemision.DTOs;
 using EVANS.Domain.GuiaRemision;
+using EVANS.Domain.Shared;
 using EVANS.Infrastructure.Sql.GuiaRemision;
 
 namespace EVANS.Infrastructure.Tests.GuiaRemision;

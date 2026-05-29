@@ -1,4 +1,4 @@
-namespace EVANS.Domain.GuiaRemision;
+namespace EVANS.Domain.Shared;
 
 public record Direccion(string Calle, string Ciudad, string Provincia)
 {
