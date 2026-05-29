@@ -1,6 +1,11 @@
 using System.Reflection;
+using EVANS.Application.Catalogo.Commands;
+using EVANS.Application.Catalogo.DependencyInjection;
 using EVANS.Application.Catalogo.Ports;
+using EVANS.Application.DependencyInjection;
 using EVANS.Domain.Catalogo;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EVANS.Application.Tests.Catalogo;
 
@@ -53,4 +58,26 @@ public class CatalogoPortContractTests
         methods.Should().NotContain(["DeactivateAsync", "DeleteAsync"]);
     }
 
+    [Fact]
+    public void CatalogoApplicationExtension_IsAvailableForCompositionRoot()
+    {
+        typeof(CatalogoApplicationExtensions)
+            .GetMethod("AddEvansCatalogoApplication", BindingFlags.Public | BindingFlags.Static)
+            .Should()
+            .NotBeNull();
+    }
+
+    [Fact]
+    public void ApplicationRegistration_IsIdempotent_WhenCatalogoExtensionIsComposed()
+    {
+        var services = new ServiceCollection();
+
+        services.AddEvansApplication();
+        services.AddEvansCatalogoApplication();
+
+        services
+            .Count(service => service.ServiceType == typeof(IValidator<CreateClienteCommand>))
+            .Should()
+            .Be(1);
+    }
 }
