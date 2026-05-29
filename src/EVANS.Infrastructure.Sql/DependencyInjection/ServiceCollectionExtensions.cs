@@ -1,8 +1,11 @@
+using EVANS.Application.Catalogo.Ports;
 using EVANS.Application.Comprobante.Ports;
 using EVANS.Application.GuiaRemision.Ports;
 using EVANS.Application.Manifiesto.Ports;
 using EVANS.Application.Recepcion.Ports;
 using EVANS.Application.Shared.Ports;
+using EVANS.Domain.Catalogo;
+using EVANS.Infrastructure.Sql.Catalogo;
 using EVANS.Infrastructure.Sql.Comprobante;
 using EVANS.Infrastructure.Sql.Connections;
 using EVANS.Infrastructure.Sql.GuiaRemision;
@@ -77,6 +80,24 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<IRecepcionRepository, RecepcionRepositoryDapper>();
         services.AddTransient<ICatalogosRecepcionRepository, CatalogosRecepcionRepositorySql>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers Catalogo infrastructure services.
+    /// Call after AddEvansInfrastructureSql.
+    /// </summary>
+    public static IServiceCollection AddEvansCatalogo(this IServiceCollection services)
+    {
+        services.AddTransient<IClienteRepository, ClienteRepositorySql>();
+        services.AddTransient<IRepository<Empresa>, EmpresaRepositorySql>();
+        services.AddTransient<IRepository<Vehiculo>, VehiculoRepositorySql>();
+        services.AddTransient<IRepository<Carreta>, CarretaRepositorySql>();
+        services.AddTransient<IRepository<Chofer>, ChoferRepositorySql>();
+        services.AddTransient<IRepository<Destino>, DestinoRepositorySql>();
+        services.AddTransient<IEstadoRepository, EstadoRepositorySql>();
+        services.AddTransient<ITipoIdentificacionRepository, TipoIdentificacionRepositorySql>();
+        services.AddTransient<IAgenciaRepository, AgenciaRepositorySql>();
         return services;
     }
 }
