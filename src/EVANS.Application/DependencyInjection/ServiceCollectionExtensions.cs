@@ -1,4 +1,6 @@
 using EVANS.Application.GuiaRemision.Validators;
+using EVANS.Application.Identidad.Ports;
+using EVANS.Application.Identidad.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,7 @@ public static class ServiceCollectionExtensions
             return services;
 
         services.AddSingleton<EvansApplicationRegistrationMarker>();
+        services.AddSingleton<ICurrentSession, CurrentSession>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtensions).Assembly);
         return services;

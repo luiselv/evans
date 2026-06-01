@@ -1,5 +1,7 @@
 using EVANS.Application.DependencyInjection;
+using EVANS.Application.Identidad.Ports;
 using EVANS.Application.Manifiesto.Ports;
+using EVANS.Application.Shared.Ports;
 using EVANS.Domain.DependencyInjection;
 using EVANS.Host.WinForms.Shell;
 using EVANS.Infrastructure.External.DependencyInjection;
@@ -61,9 +63,14 @@ static class Program
         if (loginForm.ShowDialog() != DialogResult.OK)
             return;
 
+        var parametrosService = host.Services.GetRequiredService<IParametrosService>();
+        var parametros = parametrosService.ObtenerParametrosAsync().GetAwaiter().GetResult();
+
+        var currentSession = host.Services.GetRequiredService<ICurrentSession>();
+        currentSession.Start(loginForm.AuthenticatedUser!, parametros, DateTime.Today.Year);
+
         var mainForm = host.Services.GetRequiredService<frmPrincipal>();
-        if (loginForm.AuthenticatedUser is not null)
-            mainForm.Text = $"{mainForm.Text} | Usuario: {loginForm.AuthenticatedUser.NombreCompleto}";
+        mainForm.Text = $"{mainForm.Text} | Usuario: {currentSession.Current!.Usuario.NombreCompleto}";
 
         WinFormsApp.Run(mainForm);
     }
