@@ -6,6 +6,7 @@ using EVANS.Infrastructure.External.DependencyInjection;
 using EVANS.Infrastructure.Sql.DependencyInjection;
 using EVANS.Reports.DependencyInjection;
 using EVANS.Reports.Manifiesto;
+using EVANS.UI.WinForms.Identidad;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -56,7 +57,14 @@ static class Program
         host.Start();
         Services = host.Services;
 
+        using var loginForm = host.Services.GetRequiredService<frmLogin>();
+        if (loginForm.ShowDialog() != DialogResult.OK)
+            return;
+
         var mainForm = host.Services.GetRequiredService<frmPrincipal>();
+        if (loginForm.AuthenticatedUser is not null)
+            mainForm.Text = $"{mainForm.Text} | Usuario: {loginForm.AuthenticatedUser.NombreCompleto}";
+
         WinFormsApp.Run(mainForm);
     }
 }
