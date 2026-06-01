@@ -1,4 +1,5 @@
 using Dapper;
+using EVANS.Domain.Identidad;
 using EVANS.Infrastructure.Sql.Identidad;
 using EVANS.Infrastructure.Tests.Catalogo;
 using EVANS.Infrastructure.Tests.GuiaRemision;
@@ -59,5 +60,53 @@ public sealed class UsuarioRepositorySqlTests : IAsyncLifetime
         var usuario = await repo.AuthenticateAsync("inactive", "testpass", CancellationToken.None);
 
         usuario.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task AddAsync_ThenGetByIdAsync_PersistsUsuario()
+    {
+        var repo = new UsuarioRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+
+        var codigo = await repo.AddAsync(
+            CuentaUsuario.Crear("jdoe", "secret", "John Doe", true, 1),
+            CancellationToken.None);
+
+        var usuario = await repo.GetByIdAsync(codigo, CancellationToken.None);
+
+        usuario.Should().NotBeNull();
+        usuario!.NombreUsuario.Should().Be("jdoe");
+        usuario.NombreCompleto.Should().Be("John Doe");
+        usuario.EsAdministrador.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task SearchAsync_ByFullNamePrefix_ReturnsMatches()
+    {
+        var repo = new UsuarioRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        await repo.AddAsync(CuentaUsuario.Crear("jdoe", "secret", "John Doe", false, 1), CancellationToken.None);
+
+        var usuarios = await repo.SearchAsync("John", CancellationToken.None);
+
+        usuarios.Should().Contain(usuario => usuario.NombreUsuario == "jdoe");
+    }
+
+    [Fact]
+    public async Task UpdateAsync_UpdatesUsuarioColumns()
+    {
+        var repo = new UsuarioRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        var codigo = await repo.AddAsync(
+            CuentaUsuario.Crear("jdoe", "secret", "John Doe", false, 1),
+            CancellationToken.None);
+        var usuario = await repo.GetByIdAsync(codigo, CancellationToken.None);
+        usuario!.Actualizar("jdoe2", "secret2", "John Doe Jr", true, 1);
+
+        await repo.UpdateAsync(usuario, CancellationToken.None);
+
+        var updated = await repo.GetByIdAsync(codigo, CancellationToken.None);
+        updated.Should().NotBeNull();
+        updated!.NombreUsuario.Should().Be("jdoe2");
+        updated.Clave.Should().Be("secret2");
+        updated.NombreCompleto.Should().Be("John Doe Jr");
+        updated.EsAdministrador.Should().BeTrue();
     }
 }
