@@ -20,6 +20,21 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
     public Task DisposeAsync() => Task.CompletedTask;
 
     [Fact]
+    public async Task ListarDestinosActivos_ReturnsOnlyActiveDestinationsOrderedByName()
+    {
+        await SeedDestinosAsync();
+
+        var repository = new ReportesConsultaRepositorySql(
+            new FixtureYearlyConnectionFactory(_fixture),
+            new FixtureMasterConnectionFactory(_fixture));
+
+        var result = await repository.ListarDestinosActivosAsync(CancellationToken.None);
+
+        result.Select(d => d.Nombre).Should().ContainInOrder("Arequipa", "Lima");
+        result.Should().NotContain(d => d.Nombre == "Inactive");
+    }
+
+    [Fact]
     public async Task ConsultarEnviosMensuales_FiltersByDateDestinationAndActiveStatus()
     {
         await SeedClientesAsync();
@@ -81,6 +96,29 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
                 INSERT INTO CLIENTE (CLIE_CODIGO, CLIE_NOMBRE, IDEN_CODIGO, CLIE_NROIDENTIFICACION)
                 VALUES (2, 'Cliente Dos', 1, '20222222222');
             SET IDENTITY_INSERT CLIENTE OFF;");
+    }
+
+    private async Task SeedDestinosAsync()
+    {
+        using var conn = new SqlConnection(_fixture.MasterConnectionString);
+        await conn.OpenAsync();
+
+        await conn.ExecuteAsync(@"
+            SET IDENTITY_INSERT ESTADO ON;
+            IF NOT EXISTS (SELECT 1 FROM ESTADO WHERE ESTA_CODIGO = 2)
+                INSERT INTO ESTADO (ESTA_CODIGO, ESTA_DESCRIPCION) VALUES (2, 'Inactivo');
+            SET IDENTITY_INSERT ESTADO OFF;
+
+            IF EXISTS (SELECT 1 FROM DESTINO WHERE DEST_CODIGO IN (20, 21, 22))
+                DELETE FROM DESTINO WHERE DEST_CODIGO IN (20, 21, 22);
+
+            SET IDENTITY_INSERT DESTINO ON;
+            INSERT INTO DESTINO (DEST_CODIGO, DEST_NOMBRE, DEST_DISTANCIAVIRTUAL, ESTA_CODIGO)
+            VALUES
+                (20, 'Lima', 0, 1),
+                (21, 'Arequipa', 0, 1),
+                (22, 'Inactive', 0, 2);
+            SET IDENTITY_INSERT DESTINO OFF;");
     }
 
     private async Task SeedGuiasAsync()

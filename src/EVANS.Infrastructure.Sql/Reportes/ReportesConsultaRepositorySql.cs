@@ -18,6 +18,25 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
         _masterFactory = masterFactory;
     }
 
+    public async Task<IReadOnlyList<DestinoReporteDto>> ListarDestinosActivosAsync(CancellationToken ct)
+    {
+        using var masterConn = _masterFactory.Create();
+        await masterConn.OpenAsync(ct);
+
+        const string sql = @"
+            SELECT
+                DEST_CODIGO AS Codigo,
+                ISNULL(DEST_NOMBRE, '') AS Nombre
+            FROM DESTINO
+            WHERE ESTA_CODIGO = 1
+            ORDER BY DEST_NOMBRE;";
+
+        var rows = await masterConn.QueryAsync<DestinoReporteDto>(
+            new CommandDefinition(sql, cancellationToken: ct));
+
+        return rows.ToList();
+    }
+
     public async Task<IReadOnlyList<EnvioMensualDto>> ConsultarEnviosMensualesAsync(
         EnviosMensualesFiltro filtro,
         int year,
