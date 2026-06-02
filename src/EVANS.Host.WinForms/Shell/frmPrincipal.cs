@@ -26,6 +26,7 @@ public partial class frmPrincipal : Form
         mnuConsultaRuc.Click  += mnuConsultaRuc_Click;
         mnuEnviosMensuales.Click += mnuEnviosMensuales_Click;
         mnuGuiasPorCliente.Click += mnuGuiasPorCliente_Click;
+        mnuReporteVentas.Click += mnuReporteVentas_Click;
     }
 
     private void mnuGuias_Click(object? sender, EventArgs e)
@@ -87,6 +88,14 @@ public partial class frmPrincipal : Form
         var currentSession = _services.GetRequiredService<ICurrentSession>();
         var year = currentSession.Current?.Year ?? DateTime.Today.Year;
         using var form = ActivatorUtilities.CreateInstance<frmConsGuiasPorCliente>(_services, year);
+        form.ShowDialog(this);
+    }
+
+    private void mnuReporteVentas_Click(object? sender, EventArgs e)
+    {
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        using var form = ActivatorUtilities.CreateInstance<frmReporteVentas>(_services, year);
         form.ShowDialog(this);
     }
 }

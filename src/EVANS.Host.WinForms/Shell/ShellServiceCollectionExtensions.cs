@@ -13,6 +13,7 @@ public static class ShellServiceCollectionExtensions
         services.AddTransient<frmLogin>();
         services.AddTransient<frmConsEnviosMensuales>();
         services.AddTransient<frmConsGuiasPorCliente>();
+        services.AddTransient<frmReporteVentas>();
         services.AddSingleton<frmPrincipal>();
         return services;
     }
