@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISunatRucService>(sp =>
             new ApisNetPeSunatRucService(new HttpClient(), sp.GetRequiredService<ApisNetPeSunatRucOptions>()));
         services.AddSingleton<IEnviosMensualesExcelExporter, EnviosMensualesExcelExporter>();
+        services.AddSingleton<IReporteVentasExcelExporter, ReporteVentasExcelExporter>();
 
         return services;
     }
