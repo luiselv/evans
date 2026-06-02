@@ -10,4 +10,9 @@ public interface IReportesConsultaRepository
         EnviosMensualesFiltro filtro,
         int year,
         CancellationToken ct);
+
+    Task<IReadOnlyList<GuiaPorClienteDto>> ConsultarGuiasPorClienteAsync(
+        GuiasPorClienteFiltro filtro,
+        int year,
+        CancellationToken ct);
 }

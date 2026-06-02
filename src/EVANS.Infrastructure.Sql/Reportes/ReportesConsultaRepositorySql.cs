@@ -87,6 +87,70 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
             .ToList();
     }
 
+    public async Task<IReadOnlyList<GuiaPorClienteDto>> ConsultarGuiasPorClienteAsync(
+        GuiasPorClienteFiltro filtro,
+        int year,
+        CancellationToken ct)
+    {
+        using var yearlyConn = _yearlyFactory.Create(year);
+        await yearlyConn.OpenAsync(ct);
+
+        const string sql = @"
+            SELECT
+                G.GREM_CODIGO AS Codigo,
+                ISNULL(G.GREM_SERIE, '') + '-' + ISNULL(G.GREM_NUMERO, '') AS NroDoc,
+                ISNULL(G.CLIE_REMITENTE, 0) AS RemitenteCodigo,
+                ISNULL(G.CLIE_DESTINATARIO, 0) AS DestinatarioCodigo,
+                G.GREM_FECHAEMISION AS FechaEmision,
+                G.GREM_FECHATRASLADO AS FechaTraslado,
+                ISNULL(G.GREM_BULTOS, 0) AS Bultos,
+                CAST(ISNULL(G.GREM_COSTOTOTAL, 0) AS decimal(18, 2)) AS CostoTotal,
+                CAST(CASE WHEN ISNULL(G.GREM_ENVIADO, 0) = 1 THEN 1 ELSE 0 END AS bit) AS Enviado
+            FROM GuiaRemision G
+            WHERE (G.CLIE_REMITENTE = @clienteCodigo OR G.CLIE_DESTINATARIO = @clienteCodigo)
+              AND (
+                    (G.GREM_FECHAEMISION >= @fechaDesde AND G.GREM_FECHAEMISION <= @fechaHasta)
+                 OR (G.GREM_FECHATRASLADO >= @fechaDesde AND G.GREM_FECHATRASLADO <= @fechaHasta)
+              )
+              AND (@soloPendientes = 0 OR ISNULL(G.GREM_ENVIADO, 0) = 0)
+            ORDER BY G.GREM_FECHAEMISION, G.GREM_CODIGO;";
+
+        var rows = (await yearlyConn.QueryAsync<GuiaPorClienteRow>(
+            new CommandDefinition(
+                sql,
+                new
+                {
+                    clienteCodigo = filtro.ClienteCodigo,
+                    fechaDesde = filtro.FechaDesde,
+                    fechaHasta = filtro.FechaHasta,
+                    soloPendientes = filtro.SoloPendientes
+                },
+                cancellationToken: ct))).ToList();
+
+        if (rows.Count == 0)
+            return Array.Empty<GuiaPorClienteDto>();
+
+        var clienteCodigos = rows
+            .SelectMany(r => new[] { r.RemitenteCodigo, r.DestinatarioCodigo })
+            .Where(codigo => codigo > 0)
+            .Distinct()
+            .ToList();
+
+        var clienteNombres = await ResolveClienteNombresAsync(clienteCodigos, ct);
+
+        return rows.Select(r => new GuiaPorClienteDto(
+                r.Codigo,
+                r.NroDoc,
+                clienteNombres.TryGetValue(r.RemitenteCodigo, out var remitente) ? remitente : string.Empty,
+                clienteNombres.TryGetValue(r.DestinatarioCodigo, out var destinatario) ? destinatario : string.Empty,
+                r.FechaEmision,
+                r.FechaTraslado,
+                r.Bultos,
+                r.CostoTotal,
+                r.Enviado))
+            .ToList();
+    }
+
     private async Task<Dictionary<int, string>> ResolveClienteNombresAsync(
         IReadOnlyList<int> clienteCodigos,
         CancellationToken ct)
@@ -108,5 +172,18 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
         public int ClienteCodigo { get; init; }
         public int NroGuias { get; init; }
         public DateTime UltimoEnvio { get; init; }
+    }
+
+    private sealed class GuiaPorClienteRow
+    {
+        public int Codigo { get; init; }
+        public string NroDoc { get; init; } = string.Empty;
+        public int RemitenteCodigo { get; init; }
+        public int DestinatarioCodigo { get; init; }
+        public DateTime FechaEmision { get; init; }
+        public DateTime FechaTraslado { get; init; }
+        public int Bultos { get; init; }
+        public decimal CostoTotal { get; init; }
+        public bool Enviado { get; init; }
     }
 }

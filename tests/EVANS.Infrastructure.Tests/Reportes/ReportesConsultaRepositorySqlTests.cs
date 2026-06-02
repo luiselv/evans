@@ -82,6 +82,60 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
         result.Should().BeEmpty();
     }
 
+    [Fact]
+    public async Task ConsultarGuiasPorCliente_WhenPendingOnly_FiltersByClientDatesAndSentFlag()
+    {
+        await SeedClientesAsync();
+        await SeedGuiasAsync();
+
+        var repository = new ReportesConsultaRepositorySql(
+            new FixtureYearlyConnectionFactory(_fixture),
+            new FixtureMasterConnectionFactory(_fixture));
+
+        var filtro = new GuiasPorClienteFiltro(
+            Year: ManifiestoRepositoryFixture.TestYear,
+            ClienteCodigo: 2,
+            FechaDesde: new DateTime(2024, 6, 1),
+            FechaHasta: new DateTime(2024, 6, 30),
+            SoloPendientes: true);
+
+        var result = await repository.ConsultarGuiasPorClienteAsync(
+            filtro,
+            ManifiestoRepositoryFixture.TestYear,
+            CancellationToken.None);
+
+        result.Should().HaveCount(2);
+        result.Should().OnlyContain(guia => !guia.Enviado);
+        result[0].NroDoc.Should().Be("GR01-000013");
+        result[0].Remitente.Should().Be("Cliente Uno");
+        result[0].Destinatario.Should().Be("Cliente Dos");
+    }
+
+    [Fact]
+    public async Task ConsultarGuiasPorCliente_WhenIncludeSent_ReturnsSentGuidesToo()
+    {
+        await SeedClientesAsync();
+        await SeedGuiasAsync();
+
+        var repository = new ReportesConsultaRepositorySql(
+            new FixtureYearlyConnectionFactory(_fixture),
+            new FixtureMasterConnectionFactory(_fixture));
+
+        var filtro = new GuiasPorClienteFiltro(
+            Year: ManifiestoRepositoryFixture.TestYear,
+            ClienteCodigo: 2,
+            FechaDesde: new DateTime(2024, 6, 1),
+            FechaHasta: new DateTime(2024, 6, 30),
+            SoloPendientes: false);
+
+        var result = await repository.ConsultarGuiasPorClienteAsync(
+            filtro,
+            ManifiestoRepositoryFixture.TestYear,
+            CancellationToken.None);
+
+        result.Should().Contain(guia => guia.NroDoc == "GR01-000015" && guia.Enviado);
+    }
+
     private async Task SeedClientesAsync()
     {
         using var conn = new SqlConnection(_fixture.MasterConnectionString);
@@ -134,15 +188,16 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
                 GREM_FECHAEMISION, GREM_FECHATRASLADO,
                 CLIE_REMITENTE, CLIE_DESTINATARIO,
                 DEST_CODIGO, VEHI_CODIGO, CARR_CODIGO, CHOF_CODIGO, EMPR_CODIGO,
-                ESTA_CODIGO, GREM_COSTOTOTAL, GREM_PESOTOTAL,
+                ESTA_CODIGO, GREM_BULTOS, GREM_COSTOTOTAL, GREM_PESOTOTAL,
                 GREM_ENVIADO, GREM_MANIFIESTO, GREM_NROMANIFIESTO
             )
             VALUES
-                (10, 'GR01', '000010', '2024-06-10', '2024-06-11', 1, 1, 1, 1, 1, 1, 1, 1, 100.0, 50.0, 0, 0, ''),
-                (11, 'GR01', '000011', '2024-06-20', '2024-06-21', 1, 1, 1, 1, 1, 1, 1, 1, 110.0, 60.0, 0, 0, ''),
-                (12, 'GR01', '000012', '2024-07-01', '2024-07-02', 1, 1, 1, 1, 1, 1, 1, 1, 120.0, 70.0, 0, 0, ''),
-                (13, 'GR01', '000013', '2024-06-15', '2024-06-16', 1, 2, 2, 1, 1, 1, 1, 1, 130.0, 80.0, 0, 0, ''),
-                (14, 'GR01', '000014', '2024-06-18', '2024-06-19', 1, 2, 1, 1, 1, 1, 1, 2, 140.0, 90.0, 0, 0, '');
+                (10, 'GR01', '000010', '2024-06-10', '2024-06-11', 1, 1, 1, 1, 1, 1, 1, 1, 2, 100.0, 50.0, 0, 0, ''),
+                (11, 'GR01', '000011', '2024-06-20', '2024-06-21', 1, 1, 1, 1, 1, 1, 1, 1, 3, 110.0, 60.0, 0, 0, ''),
+                (12, 'GR01', '000012', '2024-07-01', '2024-07-02', 1, 1, 1, 1, 1, 1, 1, 1, 4, 120.0, 70.0, 0, 0, ''),
+                (13, 'GR01', '000013', '2024-06-15', '2024-06-16', 1, 2, 2, 1, 1, 1, 1, 1, 5, 130.0, 80.0, 0, 0, ''),
+                (14, 'GR01', '000014', '2024-06-18', '2024-06-19', 1, 2, 1, 1, 1, 1, 1, 2, 6, 140.0, 90.0, 0, 0, ''),
+                (15, 'GR01', '000015', '2024-06-22', '2024-06-23', 1, 2, 2, 1, 1, 1, 1, 1, 7, 150.0, 95.0, 1, 0, '');
 
             SET IDENTITY_INSERT GuiaRemision OFF;");
     }
