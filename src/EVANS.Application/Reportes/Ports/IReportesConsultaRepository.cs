@@ -17,4 +17,9 @@ public interface IReportesConsultaRepository
         GuiasPorClienteFiltro filtro,
         int year,
         CancellationToken ct);
+
+    Task<IReadOnlyList<VentaReporteDto>> ConsultarReporteVentasAsync(
+        ReporteVentasFiltro filtro,
+        int year,
+        CancellationToken ct);
 }

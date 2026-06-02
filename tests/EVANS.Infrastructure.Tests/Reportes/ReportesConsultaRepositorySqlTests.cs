@@ -153,6 +153,61 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
         result.Should().Contain(guia => guia.NroDoc == "GR01-000015" && guia.Enviado);
     }
 
+    [Fact]
+    public async Task ConsultarReporteVentas_FiltersByDateTypesAndClient()
+    {
+        await SeedClientesAsync();
+        await SeedComprobantesAsync();
+
+        var repository = new ReportesConsultaRepositorySql(
+            new FixtureYearlyConnectionFactory(_fixture),
+            new FixtureMasterConnectionFactory(_fixture));
+
+        var filtro = new ReporteVentasFiltro(
+            Year: ManifiestoRepositoryFixture.TestYear,
+            FechaDesde: new DateTime(2024, 6, 1),
+            FechaHasta: new DateTime(2024, 6, 30),
+            IncluirFacturas: true,
+            IncluirBoletas: false,
+            ClienteCodigo: 1);
+
+        var result = await repository.ConsultarReporteVentasAsync(
+            filtro,
+            ManifiestoRepositoryFixture.TestYear,
+            CancellationToken.None);
+
+        result.Should().ContainSingle();
+        result[0].TipoCodigo.Should().Be(1);
+        result[0].Serie.Should().Be("F001");
+        result[0].Numero.Should().Be("000001");
+        result[0].ClienteNombre.Should().Be("Cliente Uno");
+        result[0].ClienteNumeroIdentificacion.Should().Be("20111111111");
+        result[0].Total.Should().Be(118m);
+    }
+
+    [Fact]
+    public async Task ConsultarReporteVentas_WithoutSelectedTypes_ReturnsEmpty()
+    {
+        var repository = new ReportesConsultaRepositorySql(
+            new FixtureYearlyConnectionFactory(_fixture),
+            new FixtureMasterConnectionFactory(_fixture));
+
+        var filtro = new ReporteVentasFiltro(
+            Year: ManifiestoRepositoryFixture.TestYear,
+            FechaDesde: new DateTime(2024, 6, 1),
+            FechaHasta: new DateTime(2024, 6, 30),
+            IncluirFacturas: false,
+            IncluirBoletas: false,
+            ClienteCodigo: null);
+
+        var result = await repository.ConsultarReporteVentasAsync(
+            filtro,
+            ManifiestoRepositoryFixture.TestYear,
+            CancellationToken.None);
+
+        result.Should().BeEmpty();
+    }
+
     private async Task SeedClientesAsync()
     {
         using var conn = new SqlConnection(_fixture.MasterConnectionString);
@@ -217,6 +272,23 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
                 (15, 'GR01', '000015', '2024-06-22', '2024-06-23', 1, 2, 2, 1, 1, 1, 1, 1, 7, 150.0, 95.0, 1, 0, '');
 
             SET IDENTITY_INSERT GuiaRemision OFF;");
+    }
+
+    private async Task SeedComprobantesAsync()
+    {
+        using var conn = new SqlConnection(_fixture.YearlyConnectionString);
+        await conn.OpenAsync();
+
+        await conn.ExecuteAsync(@"
+            INSERT INTO Comprobante (
+                COMP_SERIE, COMP_NUMERO, COMP_FECHA, CLIE_DESTINATARIO,
+                TICO_CODIGO, ESTA_CODIGO, COMP_VALORVENTA, COMP_IGV, COMP_TOTAL
+            )
+            VALUES
+                ('F001', '000001', '2024-06-10', 1, 1, 1, 100.0, 18.0, 118.0),
+                ('B001', '000002', '2024-06-11', 1, 2, 1, 50.0, 0.0, 50.0),
+                ('F001', '000003', '2024-07-01', 1, 1, 1, 200.0, 36.0, 236.0),
+                ('F001', '000004', '2024-06-12', 2, 1, 1, 300.0, 54.0, 354.0);");
     }
 }
 

@@ -170,6 +170,76 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
             .ToList();
     }
 
+    public async Task<IReadOnlyList<VentaReporteDto>> ConsultarReporteVentasAsync(
+        ReporteVentasFiltro filtro,
+        int year,
+        CancellationToken ct)
+    {
+        var tipoCodigos = new List<int>();
+        if (filtro.IncluirFacturas)
+            tipoCodigos.Add(1);
+        if (filtro.IncluirBoletas)
+            tipoCodigos.Add(2);
+
+        if (tipoCodigos.Count == 0)
+            return Array.Empty<VentaReporteDto>();
+
+        using var yearlyConn = _yearlyFactory.Create(year);
+        await yearlyConn.OpenAsync(ct);
+
+        const string sql = @"
+            SELECT
+                CO.COMP_FECHA AS Fecha,
+                ISNULL(CO.TICO_CODIGO, 0) AS TipoCodigo,
+                ISNULL(CO.COMP_SERIE, '') AS Serie,
+                ISNULL(CO.COMP_NUMERO, '') AS Numero,
+                ISNULL(CO.CLIE_DESTINATARIO, 0) AS ClienteCodigo,
+                CAST(ISNULL(CO.COMP_VALORVENTA, 0) AS decimal(18, 2)) AS ValorVenta,
+                CAST(ISNULL(CO.COMP_IGV, 0) AS decimal(18, 2)) AS Igv,
+                CAST(ISNULL(CO.COMP_TOTAL, 0) AS decimal(18, 2)) AS Total
+            FROM Comprobante CO
+            WHERE CO.TICO_CODIGO IN @tipoCodigos
+              AND CO.COMP_FECHA >= @fechaDesde
+              AND CO.COMP_FECHA <= @fechaHasta
+              AND (@clienteCodigo IS NULL OR CO.CLIE_DESTINATARIO = @clienteCodigo)
+            ORDER BY CO.COMP_FECHA ASC, CO.COMP_NUMERO ASC;";
+
+        var rows = (await yearlyConn.QueryAsync<VentaReporteRow>(
+            new CommandDefinition(
+                sql,
+                new
+                {
+                    tipoCodigos,
+                    fechaDesde = filtro.FechaDesde,
+                    fechaHasta = filtro.FechaHasta,
+                    clienteCodigo = filtro.ClienteCodigo
+                },
+                cancellationToken: ct))).ToList();
+
+        if (rows.Count == 0)
+            return Array.Empty<VentaReporteDto>();
+
+        var clientes = await ResolveClientesAsync(
+            rows.Select(r => r.ClienteCodigo).Where(codigo => codigo > 0).Distinct().ToList(),
+            ct);
+
+        return rows.Select(r =>
+            {
+                clientes.TryGetValue(r.ClienteCodigo, out var cliente);
+                return new VentaReporteDto(
+                    r.Fecha,
+                    r.TipoCodigo,
+                    r.Serie,
+                    r.Numero,
+                    cliente?.NumeroIdentificacion ?? string.Empty,
+                    cliente?.Nombre ?? string.Empty,
+                    r.ValorVenta,
+                    r.Igv,
+                    r.Total);
+            })
+            .ToList();
+    }
+
     private async Task<Dictionary<int, string>> ResolveClienteNombresAsync(
         IReadOnlyList<int> clienteCodigos,
         CancellationToken ct)
@@ -184,6 +254,30 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
                 cancellationToken: ct));
 
         return rows.ToDictionary(r => r.Codigo, r => r.Nombre);
+    }
+
+    private async Task<Dictionary<int, ClienteReporteDto>> ResolveClientesAsync(
+        IReadOnlyList<int> clienteCodigos,
+        CancellationToken ct)
+    {
+        if (clienteCodigos.Count == 0)
+            return new Dictionary<int, ClienteReporteDto>();
+
+        using var masterConn = _masterFactory.Create();
+        await masterConn.OpenAsync(ct);
+
+        var rows = await masterConn.QueryAsync<ClienteReporteDto>(
+            new CommandDefinition(
+                @"SELECT
+                    CLIE_CODIGO AS Codigo,
+                    ISNULL(CLIE_NOMBRE, '') AS Nombre,
+                    ISNULL(CLIE_NROIDENTIFICACION, '') AS NumeroIdentificacion
+                  FROM CLIENTE
+                  WHERE CLIE_CODIGO IN @codigos",
+                new { codigos = clienteCodigos },
+                cancellationToken: ct));
+
+        return rows.ToDictionary(r => r.Codigo);
     }
 
     private sealed class EnvioMensualRow
@@ -204,5 +298,17 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
         public int Bultos { get; init; }
         public decimal CostoTotal { get; init; }
         public bool Enviado { get; init; }
+    }
+
+    private sealed class VentaReporteRow
+    {
+        public DateTime Fecha { get; init; }
+        public int TipoCodigo { get; init; }
+        public string Serie { get; init; } = string.Empty;
+        public string Numero { get; init; } = string.Empty;
+        public int ClienteCodigo { get; init; }
+        public decimal ValorVenta { get; init; }
+        public decimal Igv { get; init; }
+        public decimal Total { get; init; }
     }
 }
