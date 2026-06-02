@@ -71,14 +71,25 @@ public class ManifestoPdfRendererTests
 
         var bytes = Renderer.Render(dto);
         var text = ExtractText(bytes);
+        var groups = ManifiestoDestinationGrouper.GroupByDestino(dto.Lineas);
 
-        // Both destination names must appear in the PDF
+        bytes.Should().NotBeNullOrEmpty();
         text.Should().Contain("Lima");
         text.Should().Contain("Trujillo");
-
-        // Subtotals: Lima sum=180, Trujillo=150
         text.Should().Contain("180");
         text.Should().Contain("150");
+
+        groups.Should().HaveCount(2);
+
+        var lima = groups.Single(g => g.DestinoNombre == "Lima");
+        lima.Lineas.Should().HaveCount(2);
+        lima.TotalPeso.Should().Be(90m);
+        lima.TotalFlete.Should().Be(180m);
+
+        var trujillo = groups.Single(g => g.DestinoNombre == "Trujillo");
+        trujillo.Lineas.Should().HaveCount(1);
+        trujillo.TotalPeso.Should().Be(60m);
+        trujillo.TotalFlete.Should().Be(150m);
     }
 
     // ------------------------------------------------------------------
