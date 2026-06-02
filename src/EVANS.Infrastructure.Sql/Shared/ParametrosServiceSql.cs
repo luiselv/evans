@@ -1,4 +1,5 @@
 using Dapper;
+using EVANS.Application.Shared.DTOs;
 using EVANS.Application.Shared.Ports;
 using EVANS.Infrastructure.Sql.Connections;
 using Microsoft.Extensions.Logging;
@@ -27,30 +28,112 @@ public sealed class ParametrosServiceSql : IParametrosService
 
     public async Task<decimal> ObtenerIgvRateAsync(CancellationToken ct = default)
     {
+        var parametros = await ObtenerParametrosAsync(ct);
+        return parametros.IgvRate;
+    }
+
+    public async Task<ParametrosDto> ObtenerParametrosAsync(CancellationToken ct = default)
+    {
         try
         {
             using var conn = _masterFactory.Create();
             await conn.OpenAsync(ct);
 
-            var rate = await conn.ExecuteScalarAsync<double?>(
-                new CommandDefinition("SELECT TOP 1 PARA_IGV FROM PARAMETROS", cancellationToken: ct));
+            var row = await conn.QuerySingleOrDefaultAsync<ParametrosRow>(
+                new CommandDefinition(@"
+                    SELECT TOP 1
+                        PARA_IGV AS IgvRate,
+                        ISNULL(PARA_FACTSERIE, '') AS FacturaSerie,
+                        ISNULL(PARA_FACTNRO1, '') AS FacturaNro1,
+                        ISNULL(PARA_FACTNRO2, '') AS FacturaNro2,
+                        ISNULL(PARA_BOLSERIE, '') AS BoletaSerie,
+                        ISNULL(PARA_BOLNRO1, '') AS BoletaNro1,
+                        ISNULL(PARA_BOLNRO2, '') AS BoletaNro2,
+                        ISNULL(PARA_GREMSERIE, '') AS GuiaRemisionSerie,
+                        ISNULL(PARA_GREMNRO1, '') AS GuiaRemisionNro1,
+                        ISNULL(PARA_GREMNRO2, '') AS GuiaRemisionNro2,
+                        ISNULL(PARA_MANIFIESTO, '') AS Manifiesto,
+                        ISNULL(PARA_REMITENTE, '') AS Remitente,
+                        ISNULL(PARA_EMAILREMITENTE, '') AS EmailRemitente,
+                        ISNULL(PARA_PASSREMITENTE, '') AS PassRemitente,
+                        ISNULL(PARA_SMTP, '') AS Smtp,
+                        ISNULL(PARA_PUERTO, 0) AS Puerto
+                    FROM PARAMETROS", cancellationToken: ct));
 
-            if (rate is null or 0.0)
+            if (row is null)
             {
-                _logger?.LogWarning(
-                    "PARA_IGV returned NULL or 0 from PARAMETROS; " +
-                    "falling back to statutory rate {Rate}.", PeruStatutoryIgvRate);
-                return PeruStatutoryIgvRate;
+                _logger?.LogWarning("PARAMETROS returned no rows; using safe defaults.");
+                return DefaultParametros();
             }
 
-            return (decimal)rate;
+            return ToDto(row);
         }
         catch (Exception ex)
         {
             _logger?.LogWarning(ex,
-                "Failed to read PARA_IGV from PARAMETROS; " +
-                "falling back to statutory rate {Rate}.", PeruStatutoryIgvRate);
-            return PeruStatutoryIgvRate;
+                "Failed to read PARAMETROS; using safe defaults.");
+            return DefaultParametros();
         }
     }
+
+    private static ParametrosDto ToDto(ParametrosRow row)
+    {
+        var igvRate = row.IgvRate is null or 0.0
+            ? PeruStatutoryIgvRate
+            : (decimal)row.IgvRate.Value;
+
+        return new ParametrosDto(
+            igvRate,
+            row.FacturaSerie,
+            row.FacturaNro1,
+            row.FacturaNro2,
+            row.BoletaSerie,
+            row.BoletaNro1,
+            row.BoletaNro2,
+            row.GuiaRemisionSerie,
+            row.GuiaRemisionNro1,
+            row.GuiaRemisionNro2,
+            row.Manifiesto,
+            row.Remitente,
+            row.EmailRemitente,
+            row.PassRemitente,
+            row.Smtp,
+            row.Puerto);
+    }
+
+    private static ParametrosDto DefaultParametros() => new(
+        IgvRate: PeruStatutoryIgvRate,
+        FacturaSerie: string.Empty,
+        FacturaNro1: string.Empty,
+        FacturaNro2: string.Empty,
+        BoletaSerie: string.Empty,
+        BoletaNro1: string.Empty,
+        BoletaNro2: string.Empty,
+        GuiaRemisionSerie: string.Empty,
+        GuiaRemisionNro1: string.Empty,
+        GuiaRemisionNro2: string.Empty,
+        Manifiesto: string.Empty,
+        Remitente: string.Empty,
+        EmailRemitente: string.Empty,
+        PassRemitente: string.Empty,
+        Smtp: string.Empty,
+        Puerto: 0);
+
+    private sealed record ParametrosRow(
+        double? IgvRate,
+        string FacturaSerie,
+        string FacturaNro1,
+        string FacturaNro2,
+        string BoletaSerie,
+        string BoletaNro1,
+        string BoletaNro2,
+        string GuiaRemisionSerie,
+        string GuiaRemisionNro1,
+        string GuiaRemisionNro2,
+        string Manifiesto,
+        string Remitente,
+        string EmailRemitente,
+        string PassRemitente,
+        string Smtp,
+        int Puerto);
 }

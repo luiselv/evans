@@ -1,3 +1,5 @@
+using EVANS.Application.Identidad.Ports;
+using EVANS.Infrastructure.External.Sunat;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +11,19 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        _ = configuration;
+        var section = configuration.GetSection("SunatRuc");
+        var options = new ApisNetPeSunatRucOptions
+        {
+            BaseUrl = section["BaseUrl"] ?? "https://api.apis.net.pe",
+            EndpointPath = section["EndpointPath"] ?? "/v2/sunat/ruc",
+            Token = section["Token"],
+            Referer = section["Referer"] ?? "https://apis.net.pe/api-consulta-ruc"
+        };
+
+        services.AddSingleton(options);
+        services.AddSingleton<ISunatRucService>(sp =>
+            new ApisNetPeSunatRucService(new HttpClient(), sp.GetRequiredService<ApisNetPeSunatRucOptions>()));
+
         return services;
     }
 }

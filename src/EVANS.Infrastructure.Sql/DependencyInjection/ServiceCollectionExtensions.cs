@@ -1,6 +1,7 @@
 using EVANS.Application.Catalogo.Ports;
 using EVANS.Application.Comprobante.Ports;
 using EVANS.Application.GuiaRemision.Ports;
+using EVANS.Application.Identidad.Ports;
 using EVANS.Application.Manifiesto.Ports;
 using EVANS.Application.Recepcion.Ports;
 using EVANS.Application.Shared.Ports;
@@ -9,6 +10,7 @@ using EVANS.Infrastructure.Sql.Catalogo;
 using EVANS.Infrastructure.Sql.Comprobante;
 using EVANS.Infrastructure.Sql.Connections;
 using EVANS.Infrastructure.Sql.GuiaRemision;
+using EVANS.Infrastructure.Sql.Identidad;
 using EVANS.Infrastructure.Sql.Manifiesto;
 using EVANS.Infrastructure.Sql.Recepcion;
 using EVANS.Infrastructure.Sql.Shared;
@@ -98,6 +100,16 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IEstadoRepository, EstadoRepositorySql>();
         services.AddTransient<ITipoIdentificacionRepository, TipoIdentificacionRepositorySql>();
         services.AddTransient<IAgenciaRepository, AgenciaRepositorySql>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers Identidad infrastructure services.
+    /// Call after AddEvansInfrastructureSql.
+    /// </summary>
+    public static IServiceCollection AddEvansIdentidad(this IServiceCollection services)
+    {
+        services.AddTransient<IUsuarioRepository, UsuarioRepositorySql>();
         return services;
     }
 }
