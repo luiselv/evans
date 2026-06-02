@@ -12,6 +12,7 @@ public static class ShellServiceCollectionExtensions
     {
         services.AddTransient<frmLogin>();
         services.AddTransient<frmConsEnviosMensuales>();
+        services.AddTransient<frmConsGuiasPorCliente>();
         services.AddSingleton<frmPrincipal>();
         return services;
     }
