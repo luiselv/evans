@@ -18,6 +18,25 @@ public sealed class ReportesConsultaRepositorySql : IReportesConsultaRepository
         _masterFactory = masterFactory;
     }
 
+    public async Task<IReadOnlyList<ClienteReporteDto>> ListarClientesAsync(CancellationToken ct)
+    {
+        using var masterConn = _masterFactory.Create();
+        await masterConn.OpenAsync(ct);
+
+        const string sql = @"
+            SELECT
+                CLIE_CODIGO AS Codigo,
+                ISNULL(CLIE_NOMBRE, '') AS Nombre,
+                ISNULL(CLIE_NROIDENTIFICACION, '') AS NumeroIdentificacion
+            FROM CLIENTE
+            ORDER BY CLIE_NOMBRE;";
+
+        var rows = await masterConn.QueryAsync<ClienteReporteDto>(
+            new CommandDefinition(sql, cancellationToken: ct));
+
+        return rows.ToList();
+    }
+
     public async Task<IReadOnlyList<DestinoReporteDto>> ListarDestinosActivosAsync(CancellationToken ct)
     {
         using var masterConn = _masterFactory.Create();

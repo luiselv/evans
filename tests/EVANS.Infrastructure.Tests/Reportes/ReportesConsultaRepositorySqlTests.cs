@@ -20,6 +20,23 @@ public sealed class ReportesConsultaRepositorySqlTests : IAsyncLifetime
     public Task DisposeAsync() => Task.CompletedTask;
 
     [Fact]
+    public async Task ListarClientes_ReturnsClientsOrderedByName()
+    {
+        await SeedClientesAsync();
+
+        var repository = new ReportesConsultaRepositorySql(
+            new FixtureYearlyConnectionFactory(_fixture),
+            new FixtureMasterConnectionFactory(_fixture));
+
+        var result = await repository.ListarClientesAsync(CancellationToken.None);
+
+        result.Select(cliente => cliente.Nombre).Should().ContainInOrder("Cliente Dos", "Cliente Uno");
+        result.Should().Contain(cliente =>
+            cliente.Codigo == 1 &&
+            cliente.NumeroIdentificacion == "20111111111");
+    }
+
+    [Fact]
     public async Task ListarDestinosActivos_ReturnsOnlyActiveDestinationsOrderedByName()
     {
         await SeedDestinosAsync();
