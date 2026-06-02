@@ -11,6 +11,7 @@ partial class frmPrincipal
     private ToolStripMenuItem mnuCatalogos;
     private ToolStripMenuItem mnuConsultaRuc;
     private ToolStripMenuItem mnuReportes;
+    private ToolStripMenuItem mnuEnviosMensuales;
 
     protected override void Dispose(bool disposing)
     {
@@ -29,6 +30,7 @@ partial class frmPrincipal
         mnuCatalogos = new ToolStripMenuItem();
         mnuConsultaRuc = new ToolStripMenuItem();
         mnuReportes = new ToolStripMenuItem();
+        mnuEnviosMensuales = new ToolStripMenuItem();
 
         menuStrip.SuspendLayout();
         SuspendLayout();
@@ -46,6 +48,8 @@ partial class frmPrincipal
 
         mnuConsultaRuc.Text = "Consulta RUC";
         mnuReportes.Text = "Reportes";
+        mnuReportes.DropDownItems.AddRange([mnuEnviosMensuales]);
+        mnuEnviosMensuales.Text = "Envíos Mensuales";
 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
