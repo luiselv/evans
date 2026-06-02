@@ -1,3 +1,4 @@
+using EVANS.Application.Identidad.Ports;
 using EVANS.Application.Recepcion.Ports;
 using EVANS.Domain.GuiaRemision;
 using EVANS.Reports.Comprobante;
@@ -5,6 +6,7 @@ using EVANS.UI.WinForms.Comprobante;
 using EVANS.UI.WinForms.GuiaRemision;
 using EVANS.UI.WinForms.Identidad;
 using EVANS.UI.WinForms.Recepcion;
+using EVANS.UI.WinForms.Reportes;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +24,9 @@ public partial class frmPrincipal : Form
         mnuComprobantes.Click += mnuComprobantes_Click;
         mnuRecepciones.Click  += mnuRecepciones_Click;
         mnuConsultaRuc.Click  += mnuConsultaRuc_Click;
+        mnuEnviosMensuales.Click += mnuEnviosMensuales_Click;
+        mnuGuiasPorCliente.Click += mnuGuiasPorCliente_Click;
+        mnuReporteVentas.Click += mnuReporteVentas_Click;
     }
 
     private void mnuGuias_Click(object? sender, EventArgs e)
@@ -67,6 +72,30 @@ public partial class frmPrincipal : Form
     {
         var mediator = _services.GetRequiredService<IMediator>();
         using var form = new frmConsultaRuc(mediator);
+        form.ShowDialog(this);
+    }
+
+    private void mnuEnviosMensuales_Click(object? sender, EventArgs e)
+    {
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        using var form = ActivatorUtilities.CreateInstance<frmConsEnviosMensuales>(_services, year);
+        form.ShowDialog(this);
+    }
+
+    private void mnuGuiasPorCliente_Click(object? sender, EventArgs e)
+    {
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        using var form = ActivatorUtilities.CreateInstance<frmConsGuiasPorCliente>(_services, year);
+        form.ShowDialog(this);
+    }
+
+    private void mnuReporteVentas_Click(object? sender, EventArgs e)
+    {
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        using var form = ActivatorUtilities.CreateInstance<frmReporteVentas>(_services, year);
         form.ShowDialog(this);
     }
 }

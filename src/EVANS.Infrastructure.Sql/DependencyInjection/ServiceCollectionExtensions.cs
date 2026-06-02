@@ -4,6 +4,7 @@ using EVANS.Application.GuiaRemision.Ports;
 using EVANS.Application.Identidad.Ports;
 using EVANS.Application.Manifiesto.Ports;
 using EVANS.Application.Recepcion.Ports;
+using EVANS.Application.Reportes.Ports;
 using EVANS.Application.Shared.Ports;
 using EVANS.Domain.Catalogo;
 using EVANS.Infrastructure.Sql.Catalogo;
@@ -13,6 +14,7 @@ using EVANS.Infrastructure.Sql.GuiaRemision;
 using EVANS.Infrastructure.Sql.Identidad;
 using EVANS.Infrastructure.Sql.Manifiesto;
 using EVANS.Infrastructure.Sql.Recepcion;
+using EVANS.Infrastructure.Sql.Reportes;
 using EVANS.Infrastructure.Sql.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -110,6 +112,16 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddEvansIdentidad(this IServiceCollection services)
     {
         services.AddTransient<IUsuarioRepository, UsuarioRepositorySql>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers Reportes/Consultas infrastructure services.
+    /// Call after AddEvansInfrastructureSql.
+    /// </summary>
+    public static IServiceCollection AddEvansReportesConsultas(this IServiceCollection services)
+    {
+        services.AddTransient<IReportesConsultaRepository, ReportesConsultaRepositorySql>();
         return services;
     }
 }

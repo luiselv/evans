@@ -1,4 +1,6 @@
 using EVANS.Application.Identidad.Ports;
+using EVANS.Application.Reportes.Ports;
+using EVANS.Infrastructure.External.Excel;
 using EVANS.Infrastructure.External.Sunat;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(options);
         services.AddSingleton<ISunatRucService>(sp =>
             new ApisNetPeSunatRucService(new HttpClient(), sp.GetRequiredService<ApisNetPeSunatRucOptions>()));
+        services.AddSingleton<IEnviosMensualesExcelExporter, EnviosMensualesExcelExporter>();
+        services.AddSingleton<IReporteVentasExcelExporter, ReporteVentasExcelExporter>();
 
         return services;
     }
