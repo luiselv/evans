@@ -41,6 +41,7 @@ static class Program
                 services.AddEvansComprobante();
                 services.AddEvansManifiesto();
                 services.AddEvansRecepcion();
+                services.AddEvansCatalogo();
                 services.AddEvansIdentidad();
                 services.AddEvansReportesConsultas();
                 services.AddEvansInfrastructureExternal(ctx.Configuration);
