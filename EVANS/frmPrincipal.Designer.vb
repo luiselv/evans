@@ -41,10 +41,6 @@ Partial Class frmPrincipal
         Me.GuíaDeRemisiónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ComprobantesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ManifiestoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ConsultasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.GuíasPorClienteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.EnvíosMensualesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ReporteDeVentasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.HerramientasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.EnviarEmailToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConsultaDeRUCToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -78,7 +74,7 @@ Partial Class frmPrincipal
         'mnuPrincipal
         '
         Me.mnuPrincipal.AutoSize = False
-        Me.mnuPrincipal.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RegistrosToolStripMenuItem, Me.DocumentosToolStripMenuItem, Me.ConsultasToolStripMenuItem, Me.HerramientasToolStripMenuItem, Me.ConfiguraciónToolStripMenuItem1, Me.VentanaToolStripMenuItem})
+        Me.mnuPrincipal.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RegistrosToolStripMenuItem, Me.DocumentosToolStripMenuItem, Me.HerramientasToolStripMenuItem, Me.ConfiguraciónToolStripMenuItem1, Me.VentanaToolStripMenuItem})
         Me.mnuPrincipal.Location = New System.Drawing.Point(0, 0)
         Me.mnuPrincipal.MdiWindowListItem = Me.VentanaToolStripMenuItem
         Me.mnuPrincipal.Name = "mnuPrincipal"
@@ -189,31 +185,6 @@ Partial Class frmPrincipal
         Me.ManifiestoToolStripMenuItem.Name = "ManifiestoToolStripMenuItem"
         Me.ManifiestoToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
         Me.ManifiestoToolStripMenuItem.Text = "Manifiesto"
-        '
-        'ConsultasToolStripMenuItem
-        '
-        Me.ConsultasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GuíasPorClienteToolStripMenuItem, Me.EnvíosMensualesToolStripMenuItem, Me.ReporteDeVentasToolStripMenuItem})
-        Me.ConsultasToolStripMenuItem.Name = "ConsultasToolStripMenuItem"
-        Me.ConsultasToolStripMenuItem.Size = New System.Drawing.Size(66, 20)
-        Me.ConsultasToolStripMenuItem.Text = "Consultas"
-        '
-        'GuíasPorClienteToolStripMenuItem
-        '
-        Me.GuíasPorClienteToolStripMenuItem.Name = "GuíasPorClienteToolStripMenuItem"
-        Me.GuíasPorClienteToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
-        Me.GuíasPorClienteToolStripMenuItem.Text = "Guías por cliente"
-        '
-        'EnvíosMensualesToolStripMenuItem
-        '
-        Me.EnvíosMensualesToolStripMenuItem.Name = "EnvíosMensualesToolStripMenuItem"
-        Me.EnvíosMensualesToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
-        Me.EnvíosMensualesToolStripMenuItem.Text = "Envíos mensuales"
-        '
-        'ReporteDeVentasToolStripMenuItem
-        '
-        Me.ReporteDeVentasToolStripMenuItem.Name = "ReporteDeVentasToolStripMenuItem"
-        Me.ReporteDeVentasToolStripMenuItem.Size = New System.Drawing.Size(175, 22)
-        Me.ReporteDeVentasToolStripMenuItem.Text = "Reporte de ventas"
         '
         'HerramientasToolStripMenuItem
         '
@@ -452,7 +423,6 @@ Partial Class frmPrincipal
     Friend WithEvents EmpresasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DocumentosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ConsultasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HerramientasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VentanaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents GuíaDeRemisiónToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -465,7 +435,6 @@ Partial Class frmPrincipal
     Friend WithEvents TractoresToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CarretasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UsuariosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents GuíasPorClienteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EnviarEmailToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConfiguraciónToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EnvíoDeEmailToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -487,8 +456,6 @@ Partial Class frmPrincipal
     Friend WithEvents tsbEmail As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
     Friend WithEvents CerrarTodasLasVentanasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents EnvíosMensualesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ReporteDeVentasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RecepciónToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsbRecepcion As System.Windows.Forms.ToolStripButton
 

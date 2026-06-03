@@ -142,16 +142,6 @@
 
     End Sub
 
-    Private Sub GuíasPorClienteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GuíasPorClienteToolStripMenuItem.Click
-
-        If frmConsGuiasPorCliente.Visible Then
-            frmConsGuiasPorCliente.Activate()
-        Else
-            frmConsGuiasPorCliente.MdiParent = Me
-            frmConsGuiasPorCliente.Show()
-        End If
-
-    End Sub
 
     Private Sub EnviarEmailToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnviarEmailToolStripMenuItem.Click
 
@@ -255,23 +245,7 @@
 
     End Sub
 
-    Private Sub EnvíosMensualesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnvíosMensualesToolStripMenuItem.Click
-        If frmConsEnviosMensuales.Visible Then
-            frmConsEnviosMensuales.Activate()
-        Else
-            frmConsEnviosMensuales.MdiParent = Me
-            frmConsEnviosMensuales.Show()
-        End If
-    End Sub
 
-    Private Sub ReporteDeVentasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReporteDeVentasToolStripMenuItem.Click
-        If frmReporteVentas.Visible Then
-            frmReporteVentas.Activate()
-        Else
-            frmReporteVentas.MdiParent = Me
-            frmReporteVentas.Show()
-        End If
-    End Sub
 
     Private Sub RecepciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RecepciónToolStripMenuItem.Click
         If frmRecepcion.Visible Then
