@@ -142,16 +142,6 @@
 
     End Sub
 
-    Private Sub GuíasPorClienteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GuíasPorClienteToolStripMenuItem.Click
-
-        If frmConsGuiasPorCliente.Visible Then
-            frmConsGuiasPorCliente.Activate()
-        Else
-            frmConsGuiasPorCliente.MdiParent = Me
-            frmConsGuiasPorCliente.Show()
-        End If
-
-    End Sub
 
     Private Sub EnviarEmailToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnviarEmailToolStripMenuItem.Click
 
@@ -186,15 +176,6 @@
             MessageBox.Show("Sólo un usuario administrador puede ingresar a esta configuración.", "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
 
-    End Sub
-
-    Private Sub ConsultaDeRUCToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConsultaDeRUCToolStripMenuItem.Click
-        If frmConsultaRUC.Visible Then
-            frmConsultaRUC.Activate()
-        Else
-            frmConsultaRUC.MdiParent = Me
-            frmConsultaRUC.Show()
-        End If
     End Sub
 
     Private Sub MostrarBarraDeHerramientasToolStripMenuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MostrarBarraDeHerramientasToolStripMenuItem.Click
@@ -243,10 +224,6 @@
         EnviarEmailToolStripMenuItem.PerformClick()
     End Sub
 
-    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
-        ConsultaDeRUCToolStripMenuItem.PerformClick()
-    End Sub
-
     Private Sub CerrarTodasLasVentanasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CerrarTodasLasVentanasToolStripMenuItem.Click
 
         For Each frm As Form In Me.MdiChildren
@@ -255,23 +232,7 @@
 
     End Sub
 
-    Private Sub EnvíosMensualesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnvíosMensualesToolStripMenuItem.Click
-        If frmConsEnviosMensuales.Visible Then
-            frmConsEnviosMensuales.Activate()
-        Else
-            frmConsEnviosMensuales.MdiParent = Me
-            frmConsEnviosMensuales.Show()
-        End If
-    End Sub
 
-    Private Sub ReporteDeVentasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ReporteDeVentasToolStripMenuItem.Click
-        If frmReporteVentas.Visible Then
-            frmReporteVentas.Activate()
-        Else
-            frmReporteVentas.MdiParent = Me
-            frmReporteVentas.Show()
-        End If
-    End Sub
 
     Private Sub RecepciónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RecepciónToolStripMenuItem.Click
         If frmRecepcion.Visible Then
