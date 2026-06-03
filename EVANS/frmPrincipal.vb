@@ -178,15 +178,6 @@
 
     End Sub
 
-    Private Sub ConsultaDeRUCToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConsultaDeRUCToolStripMenuItem.Click
-        If frmConsultaRUC.Visible Then
-            frmConsultaRUC.Activate()
-        Else
-            frmConsultaRUC.MdiParent = Me
-            frmConsultaRUC.Show()
-        End If
-    End Sub
-
     Private Sub MostrarBarraDeHerramientasToolStripMenuItem_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MostrarBarraDeHerramientasToolStripMenuItem.Click
 
         ToolStrip1.Visible = Not ToolStrip1.Visible
@@ -231,10 +222,6 @@
 
     Private Sub tsbEmail_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEmail.Click
         EnviarEmailToolStripMenuItem.PerformClick()
-    End Sub
-
-    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
-        ConsultaDeRUCToolStripMenuItem.PerformClick()
     End Sub
 
     Private Sub CerrarTodasLasVentanasToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CerrarTodasLasVentanasToolStripMenuItem.Click

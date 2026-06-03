@@ -43,7 +43,6 @@ Partial Class frmPrincipal
         Me.ManifiestoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.HerramientasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.EnviarEmailToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ConsultaDeRUCToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConfiguraciónToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.EnvíoDeEmailToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ParámetrosDelSistemaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -66,7 +65,6 @@ Partial Class frmPrincipal
         Me.tsbManifiesto = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.tsbEmail = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.mnuPrincipal.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -188,7 +186,7 @@ Partial Class frmPrincipal
         '
         'HerramientasToolStripMenuItem
         '
-        Me.HerramientasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EnviarEmailToolStripMenuItem, Me.ConsultaDeRUCToolStripMenuItem})
+        Me.HerramientasToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EnviarEmailToolStripMenuItem})
         Me.HerramientasToolStripMenuItem.Name = "HerramientasToolStripMenuItem"
         Me.HerramientasToolStripMenuItem.Size = New System.Drawing.Size(83, 20)
         Me.HerramientasToolStripMenuItem.Text = "Herramientas"
@@ -198,12 +196,6 @@ Partial Class frmPrincipal
         Me.EnviarEmailToolStripMenuItem.Name = "EnviarEmailToolStripMenuItem"
         Me.EnviarEmailToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
         Me.EnviarEmailToolStripMenuItem.Text = "Enviar email"
-        '
-        'ConsultaDeRUCToolStripMenuItem
-        '
-        Me.ConsultaDeRUCToolStripMenuItem.Name = "ConsultaDeRUCToolStripMenuItem"
-        Me.ConsultaDeRUCToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
-        Me.ConsultaDeRUCToolStripMenuItem.Text = "Consultar SUNAT"
         '
         'ConfiguraciónToolStripMenuItem1
         '
@@ -254,7 +246,7 @@ Partial Class frmPrincipal
         'ToolStrip1
         '
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnClientes, Me.tsbChoferes, Me.tsbDestinos, Me.tsbTractores, Me.tsbCarretas, Me.tsbEmpresas, Me.tsbUsuarios, Me.ToolStripSeparator1, Me.tsbRecepcion, Me.tsbGuia, Me.tsbComprobante, Me.tsbManifiesto, Me.ToolStripSeparator2, Me.tsbEmail, Me.ToolStripButton1})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnClientes, Me.tsbChoferes, Me.tsbDestinos, Me.tsbTractores, Me.tsbCarretas, Me.tsbEmpresas, Me.tsbUsuarios, Me.ToolStripSeparator1, Me.tsbRecepcion, Me.tsbGuia, Me.tsbComprobante, Me.tsbManifiesto, Me.ToolStripSeparator2, Me.tsbEmail})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 24)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(852, 39)
@@ -380,15 +372,6 @@ Partial Class frmPrincipal
         Me.tsbEmail.Size = New System.Drawing.Size(36, 36)
         Me.tsbEmail.ToolTipText = "Enviar email"
         '
-        'ToolStripButton1
-        '
-        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
-        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(36, 36)
-        Me.ToolStripButton1.ToolTipText = "Consultar SUNAT"
-        '
         'frmPrincipal
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -439,7 +422,6 @@ Partial Class frmPrincipal
     Friend WithEvents ConfiguraciónToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents EnvíoDeEmailToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ParámetrosDelSistemaToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ConsultaDeRUCToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents MostrarBarraDeHerramientasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsbChoferes As System.Windows.Forms.ToolStripButton
@@ -454,7 +436,6 @@ Partial Class frmPrincipal
     Friend WithEvents tsbManifiesto As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents tsbEmail As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
     Friend WithEvents CerrarTodasLasVentanasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RecepciónToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsbRecepcion As System.Windows.Forms.ToolStripButton
