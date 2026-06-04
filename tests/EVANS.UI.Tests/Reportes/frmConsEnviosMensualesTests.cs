@@ -9,6 +9,19 @@ namespace EVANS.UI.Tests.Reportes;
 public sealed class FrmConsEnviosMensualesTests
 {
     [WinFormsFact]
+    public void Constructor_MatchesLegacyWindowMetadata()
+    {
+        var mediator = Substitute.For<IMediator>();
+        var repository = Substitute.For<IReportesConsultaRepository>();
+        var exporter = Substitute.For<IEnviosMensualesExcelExporter>();
+
+        using var form = new frmConsEnviosMensuales(mediator, repository, exporter, 2024);
+
+        form.ClientSize.Should().Be(new Size(628, 601));
+        form.Text.Should().Be("Envios Mensuales");
+    }
+
+    [WinFormsFact]
     public async Task CargarDestinosAsync_DisplaysActiveDestinations()
     {
         var mediator = Substitute.For<IMediator>();

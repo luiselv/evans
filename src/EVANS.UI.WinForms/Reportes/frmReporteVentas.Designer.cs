@@ -206,7 +206,7 @@ public partial class frmReporteVentas
 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(976, 552);
+        ClientSize = new Size(804, 599);
         Controls.Add(dgvDetalles);
         Controls.Add(lblError);
         Controls.Add(btnExportar);

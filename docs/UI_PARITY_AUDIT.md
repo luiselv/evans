@@ -28,16 +28,16 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 | Guía Remisión | `frmGuiaRemision` | `frmGuiaRemision` | `841,606` | `784,497` | `Guía de Remisión` | `Guía de Remisión` | Needs parity remediation: size/control/button mismatch |
 | Comprobante | `frmComprobante` | `frmComprobante` | `841,604` | `784,457` | `Comprobantes de Pago` | `Comprobante` | Needs parity remediation: size/title/control/button mismatch |
 | Manifiesto | `frmManifiesto` | `frmManifiesto` | `823,604` | `800,473` | `Manifiestos de Carga` | `Manifiestos` | Needs parity remediation: size/title/control/button mismatch |
-| Envíos Mensuales | `frmConsEnviosMensuales` | `frmConsEnviosMensuales` | `628,601` | `832,480` | `Envios Mensuales` | `Consulta de Envíos Mensuales` | Needs parity remediation: size/title mismatch |
-| Guías por Cliente | `frmConsGuiasPorCliente` | `frmConsGuiasPorCliente` | `821,602` | `976,552` | `Consulta de Guias por Cliente` | `Consulta de Guías por Cliente` | Needs parity remediation: size/title mismatch |
-| Reporte Ventas | `frmReporteVentas` | `frmReporteVentas` | `804,599` | `976,552` | `Reporte de Ventas` | `Reporte de Ventas` | Needs parity remediation: size mismatch |
+| Envíos Mensuales | `frmConsEnviosMensuales` | `frmConsEnviosMensuales` | `628,601` | `628,601` | `Envios Mensuales` | `Envios Mensuales` | Metadata parity covered by UI test; visual QA still pending |
+| Guías por Cliente | `frmConsGuiasPorCliente` | `frmConsGuiasPorCliente` | `821,602` | `821,602` | `Consulta de Guias por Cliente` | `Consulta de Guias por Cliente` | Metadata parity covered by UI test; visual QA still pending |
+| Reporte Ventas | `frmReporteVentas` | `frmReporteVentas` | `804,599` | `804,599` | `Reporte de Ventas` | `Reporte de Ventas` | Metadata parity covered by UI test; visual QA still pending |
 | Estado | `frmMantEstado` | `frmMantEstado` | `635,490` | `635,490` | `Registro de Estados` | `Registro de Estados` | Best current parity baseline; still needs visual QA before retiring legacy |
 
 ## Immediate remediation order
 
 1. Finish `frmMantEstado` visual QA because it is the first screen built with parity as a hard constraint.
 2. Add parity tests/checks to already migrated screens before more legacy deletion.
-3. Prioritize forms whose legacy equivalents were already deleted: Reportes/Consultas and Consulta RUC.
+3. Prioritize forms whose legacy equivalents were already deleted: Reportes/Consultas now have metadata parity tests; Consulta RUC still needs an explicit parity/remediation decision.
 4. Revisit larger transactional forms (`Guía`, `Comprobante`, `Recepción`, `Manifiesto`) with a dedicated parity pass; they are too different for a mechanical small fix.
 
 ## Required checklist before retiring any legacy form

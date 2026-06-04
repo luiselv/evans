@@ -160,7 +160,7 @@ public partial class frmConsEnviosMensuales
 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(832, 480);
+        ClientSize = new Size(628, 601);
         Controls.Add(dgvDetalles);
         Controls.Add(lblError);
         Controls.Add(dgvDestinos);
@@ -172,7 +172,7 @@ public partial class frmConsEnviosMensuales
         Controls.Add(dtpFechaDesde);
         Controls.Add(lblFechaDesde);
         Name = "frmConsEnviosMensuales";
-        Text = "Consulta de Envíos Mensuales";
+        Text = "Envios Mensuales";
 
         ((System.ComponentModel.ISupportInitialize)dgvDestinos).EndInit();
         ((System.ComponentModel.ISupportInitialize)dgvDetalles).EndInit();
