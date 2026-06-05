@@ -65,17 +65,6 @@
 
     End Sub
 
-    Private Sub EstadosToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EstadosToolStripMenuItem.Click
-
-        If frmMantEstado.Visible Then
-            frmMantEstado.Activate()
-        Else
-            frmMantEstado.MdiParent = Me
-            frmMantEstado.Show()
-        End If
-
-    End Sub
-
     Private Sub GuíaDeRemisiónToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GuíaDeRemisiónToolStripMenuItem.Click
 
         If frmGuiaRemision.Visible Then

@@ -31,14 +31,13 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 | Envíos Mensuales | `frmConsEnviosMensuales` | `frmConsEnviosMensuales` | `628,601` | `628,601` | `Envios Mensuales` | `Envios Mensuales` | Metadata parity covered by UI test; visual QA still pending |
 | Guías por Cliente | `frmConsGuiasPorCliente` | `frmConsGuiasPorCliente` | `821,602` | `821,602` | `Consulta de Guias por Cliente` | `Consulta de Guias por Cliente` | Metadata parity covered by UI test; visual QA still pending |
 | Reporte Ventas | `frmReporteVentas` | `frmReporteVentas` | `804,599` | `804,599` | `Reporte de Ventas` | `Reporte de Ventas` | Metadata parity covered by UI test; visual QA still pending |
-| Estado | `frmMantEstado` | `frmMantEstado` | `635,490` | `635,490` | `Registro de Estados` | `Registro de Estados` | Metadata and core control contract covered by UI test; still needs visual QA before retiring legacy |
+| Estado | `frmMantEstado` | `frmMantEstado` | `635,490` | `635,490` | `Registro de Estados` | `Registro de Estados` | Legacy form retired after metadata/icon/control parity coverage; `clsEstado.vb` remains because other legacy screens still consume it |
 
 ## Immediate remediation order
 
-1. Finish `frmMantEstado` visual QA because it is the first screen built with parity as a hard constraint.
-2. Add parity tests/checks to already migrated screens before more legacy deletion.
-3. Prioritize forms whose legacy equivalents were already deleted: Reportes/Consultas now have metadata parity tests; Consulta RUC is documented as an intentional non-parity exception.
-4. Revisit larger transactional forms (`Guía`, `Comprobante`, `Recepción`, `Manifiesto`) with a dedicated parity pass; they are too different for a mechanical small fix.
+1. Add parity tests/checks to already migrated screens before more legacy deletion.
+2. Prioritize forms whose legacy equivalents were already deleted: Reportes/Consultas now have metadata parity tests; Consulta RUC is documented as an intentional non-parity exception.
+3. Revisit larger transactional forms (`Guía`, `Comprobante`, `Recepción`, `Manifiesto`) with a dedicated parity pass; they are too different for a mechanical small fix.
 
 ## Required checklist before retiring any legacy form
 
