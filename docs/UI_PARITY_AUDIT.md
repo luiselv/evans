@@ -23,7 +23,7 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 | Area | Legacy form | New form | Legacy size | New size | Legacy title | New title | Result |
 |------|-------------|----------|-------------|----------|--------------|-----------|--------|
 | Login | `frmAcceso` | `frmLogin` | `344,201` | `344,191` | `EVANS Cargo S.A.C.` | `EVANS Cargo S.A.C.` | Needs parity remediation: size/control/button mismatch |
-| Consulta RUC | `frmConsultaRUC` | `frmConsultaRuc` | `783,499` | `464,291` | `Consulta de RUC` | `Consulta RUC` | Needs parity decision: legacy was WebBrowser-based, new UI is a redesigned query view |
+| Consulta RUC | `frmConsultaRUC` | `frmConsultaRuc` | `783,499` | `464,291` | `Consulta de RUC` | `Consulta RUC` | Intentional exception: direct query/result UI replaces legacy embedded WebBrowser; behavior covered by UI tests |
 | Recepción | `frmRecepcion` | `frmRecepcion` | `841,606` | `800,640` | `Recepción` | `Recepcion de Carga` | Needs parity remediation: size/title/control/button mismatch |
 | Guía Remisión | `frmGuiaRemision` | `frmGuiaRemision` | `841,606` | `784,497` | `Guía de Remisión` | `Guía de Remisión` | Needs parity remediation: size/control/button mismatch |
 | Comprobante | `frmComprobante` | `frmComprobante` | `841,604` | `784,457` | `Comprobantes de Pago` | `Comprobante` | Needs parity remediation: size/title/control/button mismatch |
@@ -37,7 +37,7 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 
 1. Finish `frmMantEstado` visual QA because it is the first screen built with parity as a hard constraint.
 2. Add parity tests/checks to already migrated screens before more legacy deletion.
-3. Prioritize forms whose legacy equivalents were already deleted: Reportes/Consultas now have metadata parity tests; Consulta RUC still needs an explicit parity/remediation decision.
+3. Prioritize forms whose legacy equivalents were already deleted: Reportes/Consultas now have metadata parity tests; Consulta RUC is documented as an intentional non-parity exception.
 4. Revisit larger transactional forms (`Guía`, `Comprobante`, `Recepción`, `Manifiesto`) with a dedicated parity pass; they are too different for a mechanical small fix.
 
 ## Required checklist before retiring any legacy form
@@ -51,4 +51,4 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 
 ## Notes
 
-`frmConsultaRUC` is a special case. The legacy screen embedded the SUNAT web page in a `WebBrowser`, while the new screen exposes a direct query result UI. That may be a valid product improvement, but it is not strict UI parity. It must be explicitly accepted as an intentional mismatch before treating the legacy removal as parity-complete.
+`frmConsultaRUC` is a special case and is accepted as an intentional mismatch. The legacy screen embedded the SUNAT web page in a `WebBrowser`, while the new screen exposes a direct query/result UI with MediatR-backed behavior tests. Do not reintroduce an embedded browser just to match the legacy shell; preserve the direct lookup behavior unless the product requirement changes.
