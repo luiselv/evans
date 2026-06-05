@@ -31,7 +31,7 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 | Envíos Mensuales | `frmConsEnviosMensuales` | `frmConsEnviosMensuales` | `628,601` | `628,601` | `Envios Mensuales` | `Envios Mensuales` | Metadata parity covered by UI test; visual QA still pending |
 | Guías por Cliente | `frmConsGuiasPorCliente` | `frmConsGuiasPorCliente` | `821,602` | `821,602` | `Consulta de Guias por Cliente` | `Consulta de Guias por Cliente` | Metadata parity covered by UI test; visual QA still pending |
 | Reporte Ventas | `frmReporteVentas` | `frmReporteVentas` | `804,599` | `804,599` | `Reporte de Ventas` | `Reporte de Ventas` | Metadata parity covered by UI test; visual QA still pending |
-| Estado | `frmMantEstado` | `frmMantEstado` | `635,490` | `635,490` | `Registro de Estados` | `Registro de Estados` | Best current parity baseline; still needs visual QA before retiring legacy |
+| Estado | `frmMantEstado` | `frmMantEstado` | `635,490` | `635,490` | `Registro de Estados` | `Registro de Estados` | Metadata and core control contract covered by UI test; still needs visual QA before retiring legacy |
 
 ## Immediate remediation order
 

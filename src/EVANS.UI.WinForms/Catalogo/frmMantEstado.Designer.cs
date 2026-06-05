@@ -293,9 +293,10 @@ partial class frmMantEstado
         lblRequired.TabIndex = 53;
         lblRequired.Text = "*";
 
-        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleDimensions = new SizeF(6F, 13F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(635, 490);
+        Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
         Controls.Add(btnNuevo);
         Controls.Add(btnGrabar);
         Controls.Add(btnEditar);
