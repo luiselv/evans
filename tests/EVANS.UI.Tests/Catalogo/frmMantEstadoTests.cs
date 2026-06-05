@@ -70,6 +70,14 @@ public sealed class FrmMantEstadoTests
         tabControl.Location.Should().Be(new Point(12, 12));
         tabControl.Size.Should().Be(new Size(537, 458));
 
+        var tabListado = form.Controls.Find("TabPage1", searchAllChildren: true).Single();
+        tabListado.Location.Should().Be(new Point(4, 23));
+        tabListado.Size.Should().Be(new Size(529, 431));
+
+        var tabDetalles = form.Controls.Find("TabPage2", searchAllChildren: true).Single();
+        tabDetalles.Location.Should().Be(new Point(4, 23));
+        tabDetalles.Size.Should().Be(new Size(529, 431));
+
         var txtBuscar = form.Controls.Find("txtBuscar", searchAllChildren: true).Single();
         txtBuscar.Location.Should().Be(new Point(171, 16));
         txtBuscar.Size.Should().Be(new Size(260, 20));
@@ -96,6 +104,14 @@ public sealed class FrmMantEstadoTests
         txtCodigo.Location.Should().Be(new Point(201, 47));
         txtCodigo.Size.Should().Be(new Size(145, 20));
         txtCodigo.ReadOnly.Should().BeTrue();
+
+        var lblCodigo = form.Controls.Find("Label4", searchAllChildren: true).Single();
+        lblCodigo.Location.Should().Be(new Point(143, 50));
+        lblCodigo.Size.Should().Be(new Size(46, 13));
+
+        var lblDescripcion = form.Controls.Find("Label1", searchAllChildren: true).Single();
+        lblDescripcion.Location.Should().Be(new Point(120, 87));
+        lblDescripcion.Size.Should().Be(new Size(69, 13));
     }
 
     [WinFormsFact]

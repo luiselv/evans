@@ -52,3 +52,5 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 ## Notes
 
 `frmConsultaRUC` is a special case and is accepted as an intentional mismatch. The legacy screen embedded the SUNAT web page in a `WebBrowser`, while the new screen exposes a direct query/result UI with MediatR-backed behavior tests. Do not reintroduce an embedded browser just to match the legacy shell; preserve the direct lookup behavior unless the product requirement changes.
+
+`frmMantEstado` keeps `Label4` and `Label1` with fixed legacy sizes instead of `AutoSize=true` because .NET 8 recalculates those labels to a wider/taller box than the VB legacy designer. This is a visual-parity choice: size/position match wins over preserving the legacy `AutoSize` flag.

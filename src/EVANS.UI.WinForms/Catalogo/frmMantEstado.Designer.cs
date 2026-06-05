@@ -149,10 +149,10 @@ partial class frmMantEstado
         tabPageListado.Controls.Add(lblListadoInfo);
         tabPageListado.Controls.Add(optTodos);
         tabPageListado.Controls.Add(optBuscar);
-        tabPageListado.Location = new Point(4, 24);
+        tabPageListado.Location = new Point(4, 23);
         tabPageListado.Name = "TabPage1";
         tabPageListado.Padding = new Padding(3);
-        tabPageListado.Size = new Size(529, 430);
+        tabPageListado.Size = new Size(529, 431);
         tabPageListado.TabIndex = 0;
         tabPageListado.Text = "Listado";
 
@@ -175,7 +175,7 @@ partial class frmMantEstado
         txtBuscar.Location = new Point(171, 16);
         txtBuscar.MaxLength = 10;
         txtBuscar.Name = "txtBuscar";
-        txtBuscar.Size = new Size(260, 23);
+        txtBuscar.Size = new Size(260, 20);
         txtBuscar.TabIndex = 21;
 
         lvListado.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -239,30 +239,30 @@ partial class frmMantEstado
         tabPageDetalles.Controls.Add(lblmsg);
         tabPageDetalles.Controls.Add(lblDescripcion);
         tabPageDetalles.Controls.Add(lblRequired);
-        tabPageDetalles.Location = new Point(4, 24);
+        tabPageDetalles.Location = new Point(4, 23);
         tabPageDetalles.Name = "TabPage2";
         tabPageDetalles.Padding = new Padding(3);
-        tabPageDetalles.Size = new Size(529, 430);
+        tabPageDetalles.Size = new Size(529, 431);
         tabPageDetalles.TabIndex = 1;
         tabPageDetalles.Text = "Detalles";
 
         txtDescripcion.Location = new Point(201, 84);
         txtDescripcion.MaxLength = 10;
         txtDescripcion.Name = "txtDescripcion";
-        txtDescripcion.Size = new Size(145, 23);
+        txtDescripcion.Size = new Size(145, 20);
         txtDescripcion.TabIndex = 43;
 
         txtCodigo.Location = new Point(201, 47);
         txtCodigo.MaxLength = 0;
         txtCodigo.Name = "txtCodigo";
         txtCodigo.ReadOnly = true;
-        txtCodigo.Size = new Size(145, 23);
+        txtCodigo.Size = new Size(145, 20);
         txtCodigo.TabIndex = 42;
 
-        lblCodigo.AutoSize = true;
+        lblCodigo.AutoSize = false;
         lblCodigo.Location = new Point(143, 50);
         lblCodigo.Name = "Label4";
-        lblCodigo.Size = new Size(52, 15);
+        lblCodigo.Size = new Size(46, 13);
         lblCodigo.TabIndex = 57;
         lblCodigo.Text = "Código :";
 
@@ -279,14 +279,14 @@ partial class frmMantEstado
         lblmsg.Text = "Los campos marcados con asterisco (*) son obligatorios";
         lblmsg.TextAlign = ContentAlignment.TopCenter;
 
-        lblDescripcion.AutoSize = true;
+        lblDescripcion.AutoSize = false;
         lblDescripcion.BackColor = SystemColors.Control;
         lblDescripcion.Cursor = Cursors.Default;
         lblDescripcion.ForeColor = SystemColors.ControlText;
         lblDescripcion.Location = new Point(120, 87);
         lblDescripcion.Name = "Label1";
         lblDescripcion.RightToLeft = RightToLeft.No;
-        lblDescripcion.Size = new Size(76, 15);
+        lblDescripcion.Size = new Size(69, 13);
         lblDescripcion.TabIndex = 51;
         lblDescripcion.Text = "Descripción :";
 
