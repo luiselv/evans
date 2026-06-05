@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\EVANS.UI.WinForms\EVANS.UI.WinForms.csproj" />
     <ProjectReference Include="..\..\src\EVANS.Application\EVANS.Application.csproj" />
+    <ProjectReference Include="..\..\src\EVANS.Host.WinForms\EVANS.Host.WinForms.csproj" />
   </ItemGroup>
 
   <ItemGroup>
