@@ -35,6 +35,7 @@ partial class frmMantEstado
 
     private void InitializeComponent()
     {
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMantEstado));
         btnNuevo = new Button();
         btnGrabar = new Button();
         btnEditar = new Button();
@@ -66,6 +67,7 @@ partial class frmMantEstado
         btnNuevo.BackColor = SystemColors.Control;
         btnNuevo.Cursor = Cursors.Default;
         btnNuevo.ForeColor = SystemColors.ControlText;
+        btnNuevo.Image = (Image)resources.GetObject("btnNuevo.Image");
         btnNuevo.Location = new Point(561, 82);
         btnNuevo.Name = "btnNuevo";
         btnNuevo.RightToLeft = RightToLeft.No;
@@ -79,6 +81,7 @@ partial class frmMantEstado
         btnGrabar.BackColor = SystemColors.Control;
         btnGrabar.Cursor = Cursors.Default;
         btnGrabar.ForeColor = SystemColors.ControlText;
+        btnGrabar.Image = (Image)resources.GetObject("btnGrabar.Image");
         btnGrabar.Location = new Point(561, 136);
         btnGrabar.Name = "btnGrabar";
         btnGrabar.RightToLeft = RightToLeft.No;
@@ -92,6 +95,7 @@ partial class frmMantEstado
         btnEditar.BackColor = SystemColors.Control;
         btnEditar.Cursor = Cursors.Default;
         btnEditar.ForeColor = SystemColors.ControlText;
+        btnEditar.Image = (Image)resources.GetObject("btnEditar.Image");
         btnEditar.Location = new Point(561, 190);
         btnEditar.Name = "btnEditar";
         btnEditar.RightToLeft = RightToLeft.No;
@@ -105,6 +109,7 @@ partial class frmMantEstado
         btnCancelar.BackColor = SystemColors.Control;
         btnCancelar.Cursor = Cursors.Default;
         btnCancelar.ForeColor = SystemColors.ControlText;
+        btnCancelar.Image = (Image)resources.GetObject("btnCancelar.Image");
         btnCancelar.Location = new Point(561, 244);
         btnCancelar.Name = "btnCancelar";
         btnCancelar.RightToLeft = RightToLeft.No;
@@ -118,6 +123,7 @@ partial class frmMantEstado
         btnSalir.BackColor = SystemColors.Control;
         btnSalir.Cursor = Cursors.Default;
         btnSalir.ForeColor = SystemColors.ControlText;
+        btnSalir.Image = (Image)resources.GetObject("btnSalir.Image");
         btnSalir.Location = new Point(561, 298);
         btnSalir.Name = "btnSalir";
         btnSalir.RightToLeft = RightToLeft.No;
@@ -154,6 +160,8 @@ partial class frmMantEstado
         btnBuscar.BackColor = SystemColors.Control;
         btnBuscar.Cursor = Cursors.Default;
         btnBuscar.ForeColor = SystemColors.ControlText;
+        btnBuscar.Image = (Image)resources.GetObject("btnBuscar.Image");
+        btnBuscar.ImageAlign = ContentAlignment.MiddleLeft;
         btnBuscar.Location = new Point(437, 13);
         btnBuscar.Name = "btnBuscar";
         btnBuscar.RightToLeft = RightToLeft.No;
@@ -303,6 +311,7 @@ partial class frmMantEstado
         Controls.Add(btnCancelar);
         Controls.Add(btnSalir);
         Controls.Add(tabControl1);
+        Icon = (Icon)resources.GetObject("$this.Icon");
         Name = "frmMantEstado";
         Text = "Registro de Estados";
         tabControl1.ResumeLayout(false);

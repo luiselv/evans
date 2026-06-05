@@ -35,26 +35,36 @@ public sealed class FrmMantEstadoTests
         btnNuevo.Location.Should().Be(new Point(561, 82));
         btnNuevo.Size.Should().Be(new Size(62, 48));
         btnNuevo.Text.Should().Be("Nuevo");
+        btnNuevo.Should().BeOfType<Button>().Subject.Image.Should().NotBeNull();
+        btnNuevo.Should().BeOfType<Button>().Subject.TextAlign.Should().Be(ContentAlignment.BottomCenter);
 
         var btnGrabar = form.Controls.Find("btnGrabar", searchAllChildren: true).Single();
         btnGrabar.Location.Should().Be(new Point(561, 136));
         btnGrabar.Size.Should().Be(new Size(62, 48));
         btnGrabar.Text.Should().Be("Grabar");
+        btnGrabar.Should().BeOfType<Button>().Subject.Image.Should().NotBeNull();
+        btnGrabar.Should().BeOfType<Button>().Subject.TextAlign.Should().Be(ContentAlignment.BottomCenter);
 
         var btnEditar = form.Controls.Find("btnEditar", searchAllChildren: true).Single();
         btnEditar.Location.Should().Be(new Point(561, 190));
         btnEditar.Size.Should().Be(new Size(62, 48));
         btnEditar.Text.Should().Be("Editar");
+        btnEditar.Should().BeOfType<Button>().Subject.Image.Should().NotBeNull();
+        btnEditar.Should().BeOfType<Button>().Subject.TextAlign.Should().Be(ContentAlignment.BottomCenter);
 
         var btnCancelar = form.Controls.Find("btnCancelar", searchAllChildren: true).Single();
         btnCancelar.Location.Should().Be(new Point(561, 244));
         btnCancelar.Size.Should().Be(new Size(62, 48));
         btnCancelar.Text.Should().Be("Cancelar");
+        btnCancelar.Should().BeOfType<Button>().Subject.Image.Should().NotBeNull();
+        btnCancelar.Should().BeOfType<Button>().Subject.TextAlign.Should().Be(ContentAlignment.BottomCenter);
 
         var btnSalir = form.Controls.Find("btnSalir", searchAllChildren: true).Single();
         btnSalir.Location.Should().Be(new Point(561, 298));
         btnSalir.Size.Should().Be(new Size(62, 48));
         btnSalir.Text.Should().Be("Salir");
+        btnSalir.Should().BeOfType<Button>().Subject.Image.Should().NotBeNull();
+        btnSalir.Should().BeOfType<Button>().Subject.TextAlign.Should().Be(ContentAlignment.BottomCenter);
 
         var tabControl = form.Controls.Find("TabControl1", searchAllChildren: true).Single();
         tabControl.Location.Should().Be(new Point(12, 12));
@@ -63,6 +73,11 @@ public sealed class FrmMantEstadoTests
         var txtBuscar = form.Controls.Find("txtBuscar", searchAllChildren: true).Single();
         txtBuscar.Location.Should().Be(new Point(171, 16));
         txtBuscar.Size.Should().Be(new Size(260, 20));
+
+        var btnBuscar = form.Controls.Find("btnBuscar", searchAllChildren: true).Single().Should().BeOfType<Button>().Subject;
+        btnBuscar.Image.Should().NotBeNull();
+        btnBuscar.ImageAlign.Should().Be(ContentAlignment.MiddleLeft);
+        btnBuscar.TextAlign.Should().Be(ContentAlignment.MiddleRight);
 
         var lvListado = form.Controls.Find("lvListado", searchAllChildren: true).Single().Should().BeOfType<ListView>().Subject;
         lvListado.Location.Should().Be(new Point(20, 47));
