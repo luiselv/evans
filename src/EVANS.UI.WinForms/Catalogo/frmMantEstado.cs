@@ -7,9 +7,14 @@ namespace EVANS.UI.WinForms.Catalogo;
 
 public partial class frmMantEstado : Form
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator? _mediator;
     private IReadOnlyList<EstadoDto> _estados = [];
     private bool _isCreateMode = true;
+
+    public frmMantEstado()
+    {
+        InitializeComponent();
+    }
 
     public frmMantEstado(IMediator mediator)
     {
@@ -49,7 +54,7 @@ public partial class frmMantEstado : Form
 
     internal async Task LoadEstadosAsync()
     {
-        _estados = await _mediator.Send(new ListEstadosQuery());
+        _estados = await Mediator.Send(new ListEstadosQuery());
         BindEstados(_estados);
     }
 
@@ -66,7 +71,7 @@ public partial class frmMantEstado : Form
         }
 
         if (_estados.Count == 0)
-            _estados = await _mediator.Send(new ListEstadosQuery());
+            _estados = await Mediator.Send(new ListEstadosQuery());
 
         var search = txtBuscar.Text.Trim();
         BindEstados(_estados.Where(estado => estado.Descripcion.StartsWith(search, StringComparison.CurrentCultureIgnoreCase)));
@@ -87,13 +92,13 @@ public partial class frmMantEstado : Form
         var descripcion = txtDescripcion.Text.ToUpperInvariant();
         if (_isCreateMode)
         {
-            var result = await _mediator.Send(new CreateEstadoCommand(descripcion));
+            var result = await Mediator.Send(new CreateEstadoCommand(descripcion));
             if (!result.IsSuccess)
                 return ShowFailure(result.Error, showMessages);
         }
         else
         {
-            var result = await _mediator.Send(new UpdateEstadoCommand(int.Parse(txtCodigo.Text), descripcion));
+            var result = await Mediator.Send(new UpdateEstadoCommand(int.Parse(txtCodigo.Text), descripcion));
             if (!result.IsSuccess)
                 return ShowFailure(result.Error, showMessages);
             _isCreateMode = true;
@@ -148,7 +153,7 @@ public partial class frmMantEstado : Form
 
         txtBuscar.Clear();
         if (_estados.Count == 0)
-            _estados = await _mediator.Send(new ListEstadosQuery());
+            _estados = await Mediator.Send(new ListEstadosQuery());
 
         BindEstados(_estados);
         txtBuscar.Enabled = false;
@@ -176,7 +181,7 @@ public partial class frmMantEstado : Form
 
     private async Task OpenEstadoAsync(int codigo)
     {
-        var estado = await _mediator.Send(new GetEstadoByIdQuery(codigo));
+        var estado = await Mediator.Send(new GetEstadoByIdQuery(codigo));
         if (estado is null)
             return;
 
@@ -243,7 +248,7 @@ public partial class frmMantEstado : Form
         btnCancelar.Enabled = false;
         optBuscar.Checked = true;
 
-        _estados = await _mediator.Send(new ListEstadosQuery());
+        _estados = await Mediator.Send(new ListEstadosQuery());
         lvListado.Items.Clear();
     }
 
@@ -273,4 +278,7 @@ public partial class frmMantEstado : Form
     }
 
     private void SetStatus(string message) => lblmsg.Text = message;
+
+    private IMediator Mediator => _mediator
+        ?? throw new InvalidOperationException("Use the IMediator constructor at runtime. The parameterless constructor is for the WinForms designer only.");
 }

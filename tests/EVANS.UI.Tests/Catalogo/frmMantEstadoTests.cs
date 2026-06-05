@@ -10,6 +10,16 @@ namespace EVANS.UI.Tests.Catalogo;
 public sealed class FrmMantEstadoTests
 {
     [WinFormsFact]
+    public void DesignerConstructor_InitializesLayoutWithoutRuntimeServices()
+    {
+        using var form = new frmMantEstado();
+
+        form.Text.Should().Be("Registro de Estados");
+        form.ClientSize.Should().Be(new Size(635, 490));
+        form.Controls.Find("TabControl1", searchAllChildren: true).Should().ContainSingle();
+    }
+
+    [WinFormsFact]
     public void Constructor_MatchesLegacyLayoutContract()
     {
         var mediator = Substitute.For<IMediator>();
