@@ -171,7 +171,7 @@ partial class frmMantEstado
         txtBuscar.TabIndex = 21;
 
         lvListado.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        lvListado.Columns.AddRange([columnHeaderCodigo, columnHeaderDescripcion]);
+        lvListado.Columns.AddRange(new[] { columnHeaderCodigo, columnHeaderDescripcion });
         lvListado.Font = new Font("Verdana", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
         lvListado.FullRowSelect = true;
         lvListado.HeaderStyle = ColumnHeaderStyle.Nonclickable;
