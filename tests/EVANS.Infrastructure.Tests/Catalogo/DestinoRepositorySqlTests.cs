@@ -25,6 +25,19 @@ public sealed class DestinoRepositorySqlTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task ListAllAsync_ReturnsInactiveDestinosOrderedByCodigo()
+    {
+        var repo = new DestinoRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        await CatalogoSeed.EnsureInactiveEstadoAsync(_fixture.MasterConnectionString);
+        await repo.DeactivateAsync(1, CancellationToken.None);
+
+        var destinos = await repo.ListAllAsync(CancellationToken.None);
+
+        destinos.Should().Contain(d => d.Codigo == 1 && d.EstadoCodigo == 2);
+        destinos.Select(d => d.Codigo).Should().BeInAscendingOrder();
+    }
+
+    [Fact]
     public async Task DeactivateAsync_SetsEstadoCodigoInactive()
     {
         var repo = new DestinoRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));

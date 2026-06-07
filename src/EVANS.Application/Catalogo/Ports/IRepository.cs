@@ -16,6 +16,14 @@ public interface IRepository<T> where T : class
 }
 
 /// <summary>
+/// Destino maintenance screens must match the legacy form, which lists every row regardless of ESTA_CODIGO.
+/// </summary>
+public interface IDestinoMaintenanceRepository
+{
+    Task<IReadOnlyList<Destino>> ListAllAsync(CancellationToken ct);
+}
+
+/// <summary>
 /// Cliente has no ESTA_CODIGO in the legacy schema, so it has no deactivate operation.
 /// </summary>
 public interface IClienteRepository

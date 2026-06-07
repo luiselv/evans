@@ -148,6 +148,7 @@ public sealed class CreateDestinoCommandValidator : AbstractValidator<CreateDest
     {
         RuleFor(c => c.Descripcion).NotEmpty();
         RuleFor(c => c.DistanciaVirtual).GreaterThanOrEqualTo(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 
@@ -158,6 +159,7 @@ public sealed class UpdateDestinoCommandValidator : AbstractValidator<UpdateDest
         RuleFor(c => c.Codigo).GreaterThan(0);
         RuleFor(c => c.Descripcion).NotEmpty();
         RuleFor(c => c.DistanciaVirtual).GreaterThanOrEqualTo(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 

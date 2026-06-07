@@ -82,4 +82,26 @@ public class CatalogoQueryHandlerTests
         result.Should().ContainSingle().Which.Should().Be(
             new AgenciaDto(4, "Av Lima", 10, CatalogoEstado.Activo));
     }
+
+    [Fact]
+    public async Task ListDestinosMaintenanceQuery_ReturnsAllStatuses()
+    {
+        var repo = Substitute.For<IDestinoMaintenanceRepository>();
+        repo.ListAllAsync(Arg.Any<CancellationToken>())
+            .Returns(
+            [
+                Destino.Materializar(1, "Lima", 0, CatalogoEstado.Activo),
+                Destino.Materializar(2, "Callao", 15, CatalogoEstado.Inactivo)
+            ]);
+
+        var result = await new ListDestinosMaintenanceQueryHandler(repo)
+            .Handle(new ListDestinosMaintenanceQuery(), CancellationToken.None);
+
+        result.Should().BeEquivalentTo(
+        [
+            new DestinoDto(1, "Lima", 0, CatalogoEstado.Activo),
+            new DestinoDto(2, "Callao", 15, CatalogoEstado.Inactivo)
+        ]);
+        await repo.Received(1).ListAllAsync(Arg.Any<CancellationToken>());
+    }
 }

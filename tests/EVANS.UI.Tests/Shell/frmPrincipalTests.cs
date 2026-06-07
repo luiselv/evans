@@ -26,6 +26,25 @@ public sealed class FrmPrincipalTests
             .Which.Should().BeOfType<frmMantEstado>();
     }
 
+    [WinFormsFact]
+    public void CatalogosDestinosMenu_OpensDestinoFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var destinosMenu = FindMenuItem(form, "Destinos");
+        destinosMenu.Should().NotBeNull();
+
+        destinosMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmMantDestino>();
+    }
+
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
     {
         var menuStrip = form.Controls.OfType<MenuStrip>().Single();

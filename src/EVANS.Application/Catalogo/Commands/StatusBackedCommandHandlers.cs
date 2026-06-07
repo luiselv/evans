@@ -218,7 +218,7 @@ public sealed class CreateDestinoCommandHandler(IRepository<Destino> repository)
 
         try
         {
-            var entity = Destino.Crear(request.Descripcion, request.DistanciaVirtual);
+            var entity = Destino.Crear(request.Descripcion, request.DistanciaVirtual, request.EstadoCodigo);
             return Result<int>.Ok(await repository.AddAsync(entity, cancellationToken));
         }
         catch (DomainException ex)
@@ -247,7 +247,7 @@ public sealed class UpdateDestinoCommandHandler(IRepository<Destino> repository)
                 request.Codigo,
                 request.Descripcion,
                 request.DistanciaVirtual,
-                existing.EstadoCodigo);
+                request.EstadoCodigo);
             await repository.UpdateAsync(entity, cancellationToken);
             return Result<bool>.Ok(true);
         }

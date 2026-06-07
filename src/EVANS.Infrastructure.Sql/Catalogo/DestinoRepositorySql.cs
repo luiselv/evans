@@ -5,7 +5,7 @@ using EVANS.Infrastructure.Sql.Connections;
 
 namespace EVANS.Infrastructure.Sql.Catalogo;
 
-public sealed class DestinoRepositorySql : IRepository<Destino>
+public sealed class DestinoRepositorySql : IRepository<Destino>, IDestinoMaintenanceRepository
 {
     private readonly IEvansMasterConnectionFactory _masterFactory;
     public DestinoRepositorySql(IEvansMasterConnectionFactory masterFactory) => _masterFactory = masterFactory;
@@ -23,6 +23,14 @@ public sealed class DestinoRepositorySql : IRepository<Destino>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
         var rows = await conn.QueryAsync<DestinoRow>(new CommandDefinition(SelectSql + " WHERE ESTA_CODIGO = @estadoActivo ORDER BY DEST_NOMBRE", new { estadoActivo = CatalogoEstado.Activo }, cancellationToken: ct));
+        return rows.Select(Map).ToList().AsReadOnly();
+    }
+
+    public async Task<IReadOnlyList<Destino>> ListAllAsync(CancellationToken ct)
+    {
+        await using var conn = _masterFactory.Create();
+        await conn.OpenAsync(ct);
+        var rows = await conn.QueryAsync<DestinoRow>(new CommandDefinition(SelectSql + " ORDER BY DEST_CODIGO ASC", cancellationToken: ct));
         return rows.Select(Map).ToList().AsReadOnly();
     }
 

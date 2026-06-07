@@ -1,5 +1,6 @@
 using EVANS.Application.Catalogo.DTOs;
 using EVANS.Application.Common;
+using EVANS.Domain.Catalogo;
 using MediatR;
 
 namespace EVANS.Application.Catalogo.Commands;
@@ -89,9 +90,16 @@ public sealed record UpdateChoferCommand(
 
 public sealed record DeactivateChoferCommand(int Codigo) : IRequest<Result<bool>>;
 
-public sealed record CreateDestinoCommand(string Descripcion, double DistanciaVirtual) : IRequest<Result<int>>;
+public sealed record CreateDestinoCommand(
+    string Descripcion,
+    double DistanciaVirtual,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<int>>;
 
-public sealed record UpdateDestinoCommand(int Codigo, string Descripcion, double DistanciaVirtual) : IRequest<Result<bool>>;
+public sealed record UpdateDestinoCommand(
+    int Codigo,
+    string Descripcion,
+    double DistanciaVirtual,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<bool>>;
 
 public sealed record DeactivateDestinoCommand(int Codigo) : IRequest<Result<bool>>;
 
