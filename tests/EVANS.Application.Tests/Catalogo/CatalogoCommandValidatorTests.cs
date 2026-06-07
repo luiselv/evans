@@ -47,6 +47,17 @@ public class CatalogoCommandValidatorTests
     }
 
     [Fact]
+    public void CreateEmpresaValidator_InvalidEstadoCodigo_HasValidationError()
+    {
+        var validator = new CreateEmpresaCommandValidator();
+        var command = new CreateEmpresaCommand("TRANSPORT SA", null, null, "20123456789", false, 0);
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldHaveValidationErrorFor(c => c.EstadoCodigo);
+    }
+
+    [Fact]
     public void CreateClienteValidator_NullNroIdentificacion_ReturnsValidationError()
     {
         var validator = new CreateClienteCommandValidator();

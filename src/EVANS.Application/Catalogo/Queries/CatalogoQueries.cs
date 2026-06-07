@@ -10,6 +10,7 @@ public sealed record ListClientesQuery : IRequest<IReadOnlyList<ClienteDto>>;
 
 public sealed record GetEmpresaByIdQuery(int Codigo) : IRequest<EmpresaDto?>;
 public sealed record ListEmpresasQuery : IRequest<IReadOnlyList<EmpresaDto>>;
+public sealed record ListEmpresasMaintenanceQuery : IRequest<IReadOnlyList<EmpresaDto>>;
 
 public sealed record GetVehiculoByIdQuery(int Codigo) : IRequest<VehiculoDto?>;
 public sealed record ListVehiculosQuery : IRequest<IReadOnlyList<VehiculoDto>>;
@@ -59,6 +60,13 @@ public sealed class ListEmpresasQueryHandler(IRepository<Empresa> repository)
 {
     public async Task<IReadOnlyList<EmpresaDto>> Handle(ListEmpresasQuery request, CancellationToken cancellationToken) =>
         (await repository.ListActiveAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
+}
+
+public sealed class ListEmpresasMaintenanceQueryHandler(IEmpresaMaintenanceRepository repository)
+    : IRequestHandler<ListEmpresasMaintenanceQuery, IReadOnlyList<EmpresaDto>>
+{
+    public async Task<IReadOnlyList<EmpresaDto>> Handle(ListEmpresasMaintenanceQuery request, CancellationToken cancellationToken) =>
+        (await repository.ListAllAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
 }
 
 public sealed class GetVehiculoByIdQueryHandler(IRepository<Vehiculo> repository)

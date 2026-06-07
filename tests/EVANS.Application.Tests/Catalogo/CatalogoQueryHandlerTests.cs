@@ -25,6 +25,30 @@ public class CatalogoQueryHandlerTests
     }
 
     [Fact]
+    public async Task ListEmpresasMaintenanceQuery_ReturnsAllStatuses()
+    {
+        Ruc.TryCreate("20123456789", out var activeRuc).Should().BeTrue();
+        Ruc.TryCreate("20987654321", out var inactiveRuc).Should().BeTrue();
+        var repo = Substitute.For<IEmpresaMaintenanceRepository>();
+        repo.ListAllAsync(Arg.Any<CancellationToken>())
+            .Returns(
+            [
+                Empresa.Materializar(1, "EVANS CARGO", "Av Lima", "123", activeRuc, true, CatalogoEstado.Activo),
+                Empresa.Materializar(2, "OLD CARRIER", "Av Norte", "555", inactiveRuc, false, CatalogoEstado.Inactivo)
+            ]);
+
+        var result = await new ListEmpresasMaintenanceQueryHandler(repo)
+            .Handle(new ListEmpresasMaintenanceQuery(), CancellationToken.None);
+
+        result.Should().BeEquivalentTo(
+        [
+            new EmpresaDto(1, "EVANS CARGO", "Av Lima", "123", "20123456789", true, CatalogoEstado.Activo),
+            new EmpresaDto(2, "OLD CARRIER", "Av Norte", "555", "20987654321", false, CatalogoEstado.Inactivo)
+        ]);
+        await repo.Received(1).ListAllAsync(Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public async Task GetClienteByIdQuery_ReturnsClienteWithDirecciones()
     {
         var repo = Substitute.For<IClienteRepository>();

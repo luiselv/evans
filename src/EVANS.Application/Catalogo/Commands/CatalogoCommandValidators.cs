@@ -47,6 +47,7 @@ public sealed class CreateEmpresaCommandValidator : AbstractValidator<CreateEmpr
         RuleFor(c => c.RazonSocial).NotEmpty();
         RuleFor(c => c.Ruc).Must(value => Ruc.TryCreate(value, out _))
             .WithMessage("RUC must be 11 numeric characters.");
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 
@@ -58,6 +59,7 @@ public sealed class UpdateEmpresaCommandValidator : AbstractValidator<UpdateEmpr
         RuleFor(c => c.RazonSocial).NotEmpty();
         RuleFor(c => c.Ruc).Must(value => Ruc.TryCreate(value, out _))
             .WithMessage("RUC must be 11 numeric characters.");
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 

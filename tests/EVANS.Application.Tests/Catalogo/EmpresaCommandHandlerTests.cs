@@ -18,7 +18,7 @@ public sealed class EmpresaCommandHandlerTests
         var handler = new CreateEmpresaCommandHandler(repo);
 
         var result = await handler.Handle(
-            new CreateEmpresaCommand("TRANSPORT SA", "Av Lima", "555", "20123456789", true),
+            new CreateEmpresaCommand("TRANSPORT SA", "Av Lima", "555", "20123456789", true, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
@@ -27,7 +27,7 @@ public sealed class EmpresaCommandHandlerTests
             Arg.Is<Empresa>(empresa =>
                 empresa.RazonSocial == "TRANSPORT SA" &&
                 empresa.Ruc.Value == "20123456789" &&
-                empresa.EstadoCodigo == CatalogoEstado.Activo),
+                empresa.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 
@@ -56,7 +56,7 @@ public sealed class EmpresaCommandHandlerTests
         var handler = new UpdateEmpresaCommandHandler(repo);
 
         var result = await handler.Handle(
-            new UpdateEmpresaCommand(7, "TRANSPORT SA", "Av Lima", "555", "20987654321", true),
+            new UpdateEmpresaCommand(7, "TRANSPORT SA", "Av Lima", "555", "20987654321", true, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
@@ -65,7 +65,8 @@ public sealed class EmpresaCommandHandlerTests
                 empresa.Codigo == 7 &&
                 empresa.RazonSocial == "TRANSPORT SA" &&
                 empresa.Ruc.Value == "20987654321" &&
-                empresa.EsPropia),
+                empresa.EsPropia &&
+                empresa.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 

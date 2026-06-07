@@ -29,7 +29,8 @@ public sealed record CreateEmpresaCommand(
     string? Direccion,
     string? Telefono,
     string Ruc,
-    bool EsPropia) : IRequest<Result<int>>;
+    bool EsPropia,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<int>>;
 
 public sealed record UpdateEmpresaCommand(
     int Codigo,
@@ -37,7 +38,8 @@ public sealed record UpdateEmpresaCommand(
     string? Direccion,
     string? Telefono,
     string Ruc,
-    bool EsPropia) : IRequest<Result<bool>>;
+    bool EsPropia,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<bool>>;
 
 public sealed record DeactivateEmpresaCommand(int Codigo) : IRequest<Result<bool>>;
 
