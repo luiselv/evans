@@ -6,7 +6,7 @@ using EVANS.Infrastructure.Sql.Connections;
 
 namespace EVANS.Infrastructure.Sql.Catalogo;
 
-public sealed class EmpresaRepositorySql : IRepository<Empresa>
+public sealed class EmpresaRepositorySql : IRepository<Empresa>, IEmpresaMaintenanceRepository
 {
     private readonly IEvansMasterConnectionFactory _masterFactory;
 
@@ -56,6 +56,29 @@ public sealed class EmpresaRepositorySql : IRepository<Empresa>
 
         var rows = await conn.QueryAsync<EmpresaRow>(
             new CommandDefinition(sql, new { estadoActivo = CatalogoEstado.Activo }, cancellationToken: ct));
+
+        return rows.Select(Map).ToList().AsReadOnly();
+    }
+
+    public async Task<IReadOnlyList<Empresa>> ListAllAsync(CancellationToken ct)
+    {
+        const string sql = @"
+            SELECT
+                EMPR_CODIGO AS Codigo,
+                ISNULL(EMPR_NOMBRE, '') AS RazonSocial,
+                EMPR_DIRECCION AS Direccion,
+                EMPR_TELEFONO AS Telefono,
+                ISNULL(EMPR_RUC, '') AS Ruc,
+                ISNULL(EMPR_PROPIEDAD, 0) AS EsPropia,
+                ISNULL(ESTA_CODIGO, 0) AS EstadoCodigo
+            FROM EMPRESA
+            ORDER BY EMPR_CODIGO ASC";
+
+        await using var conn = _masterFactory.Create();
+        await conn.OpenAsync(ct);
+
+        var rows = await conn.QueryAsync<EmpresaRow>(
+            new CommandDefinition(sql, cancellationToken: ct));
 
         return rows.Select(Map).ToList().AsReadOnly();
     }

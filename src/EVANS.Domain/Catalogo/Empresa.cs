@@ -23,19 +23,32 @@ public sealed class Empresa
     public bool EsPropia { get; private set; }
     public int EstadoCodigo { get; private set; }
 
-    public static Empresa Crear(string razonSocial, string? direccion, string? telefono, Ruc ruc, bool esPropia) =>
-        new(0, razonSocial, direccion, telefono, ruc, esPropia, CatalogoEstado.Activo);
+    public static Empresa Crear(
+        string razonSocial,
+        string? direccion,
+        string? telefono,
+        Ruc ruc,
+        bool esPropia,
+        int estadoCodigo = CatalogoEstado.Activo) =>
+        new(0, razonSocial, direccion, telefono, ruc, esPropia, estadoCodigo);
 
     public static Empresa Materializar(int codigo, string razonSocial, string? direccion, string? telefono, Ruc ruc, bool esPropia, int estadoCodigo) =>
         new(codigo, razonSocial, direccion, telefono, ruc, esPropia, estadoCodigo);
 
-    public void Actualizar(string razonSocial, string? direccion, string? telefono, Ruc ruc, bool esPropia)
+    public void Actualizar(
+        string razonSocial,
+        string? direccion,
+        string? telefono,
+        Ruc ruc,
+        bool esPropia,
+        int estadoCodigo = CatalogoEstado.Activo)
     {
         RazonSocial = RequireText(razonSocial, "CAT-EMP-001", "Empresa razon social is required.");
         Direccion = direccion;
         Telefono = telefono;
         Ruc = ruc;
         EsPropia = esPropia;
+        EstadoCodigo = estadoCodigo;
     }
 
     public void Deactivate() => EstadoCodigo = CatalogoEstado.Inactivo;

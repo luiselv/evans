@@ -24,7 +24,8 @@ public sealed class CreateEmpresaCommandHandler(IRepository<Empresa> repository)
                 request.Direccion,
                 request.Telefono,
                 Ruc.Parse(request.Ruc),
-                request.EsPropia);
+                request.EsPropia,
+                request.EstadoCodigo);
 
             var codigo = await repository.AddAsync(empresa, cancellationToken);
             return Result<int>.Ok(codigo);
@@ -62,7 +63,8 @@ public sealed class UpdateEmpresaCommandHandler(IRepository<Empresa> repository)
                 request.Direccion,
                 request.Telefono,
                 Ruc.Parse(request.Ruc),
-                request.EsPropia);
+                request.EsPropia,
+                request.EstadoCodigo);
 
             await repository.UpdateAsync(empresa, cancellationToken);
             return Result<bool>.Ok(true);
