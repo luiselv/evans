@@ -9,6 +9,19 @@ namespace EVANS.UI.Tests.Reportes;
 public sealed class FrmReporteVentasTests
 {
     [WinFormsFact]
+    public void Constructor_MatchesLegacyWindowMetadata()
+    {
+        var mediator = Substitute.For<IMediator>();
+        var repository = Substitute.For<IReportesConsultaRepository>();
+        var exporter = Substitute.For<IReporteVentasExcelExporter>();
+
+        using var form = new frmReporteVentas(mediator, repository, exporter, 2024);
+
+        form.ClientSize.Should().Be(new Size(804, 599));
+        form.Text.Should().Be("Reporte de Ventas");
+    }
+
+    [WinFormsFact]
     public async Task BuscarAsync_WithClientFilter_SendsQueryAndEnablesExport()
     {
         var mediator = Substitute.For<IMediator>();

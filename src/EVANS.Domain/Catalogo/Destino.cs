@@ -21,6 +21,9 @@ public sealed class Destino
     public static Destino Crear(string descripcion, double distanciaVirtual) =>
         new(0, descripcion, distanciaVirtual, CatalogoEstado.Activo);
 
+    public static Destino Crear(string descripcion, double distanciaVirtual, int estadoCodigo) =>
+        new(0, descripcion, distanciaVirtual, estadoCodigo);
+
     public static Destino Materializar(int codigo, string descripcion, double distanciaVirtual, int estadoCodigo) =>
         new(codigo, descripcion, distanciaVirtual, estadoCodigo);
 

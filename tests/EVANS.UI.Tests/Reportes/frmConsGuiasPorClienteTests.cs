@@ -9,6 +9,18 @@ namespace EVANS.UI.Tests.Reportes;
 public sealed class FrmConsGuiasPorClienteTests
 {
     [WinFormsFact]
+    public void Constructor_MatchesLegacyWindowMetadata()
+    {
+        var mediator = Substitute.For<IMediator>();
+        var repository = Substitute.For<IReportesConsultaRepository>();
+
+        using var form = new frmConsGuiasPorCliente(mediator, repository, 2024);
+
+        form.ClientSize.Should().Be(new Size(821, 602));
+        form.Text.Should().Be("Consulta de Guias por Cliente");
+    }
+
+    [WinFormsFact]
     public async Task CargarClientesAsync_DisplaysClientsAndIdentification()
     {
         var mediator = Substitute.For<IMediator>();

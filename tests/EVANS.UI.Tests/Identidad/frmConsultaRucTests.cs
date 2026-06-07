@@ -9,6 +9,20 @@ namespace EVANS.UI.Tests.Identidad;
 public sealed class FrmConsultaRucTests
 {
     [WinFormsFact]
+    public void Constructor_UsesIntentionalDirectQueryDesignInsteadOfLegacyWebBrowser()
+    {
+        var mediator = Substitute.For<IMediator>();
+
+        using var form = new frmConsultaRuc(mediator);
+
+        form.Text.Should().Be("Consulta RUC");
+        form.ClientSize.Should().Be(new Size(464, 291));
+        form.Controls.OfType<WebBrowser>().Should().BeEmpty();
+        form.Controls.OfType<TextBox>().Should().ContainSingle();
+        form.Controls.OfType<Button>().Should().HaveCount(2);
+    }
+
+    [WinFormsFact]
     public async Task ConsultarAsync_ValidRuc_DisplaysRazonSocial()
     {
         var mediator = Substitute.For<IMediator>();

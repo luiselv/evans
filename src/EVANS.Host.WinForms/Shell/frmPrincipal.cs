@@ -2,6 +2,7 @@ using EVANS.Application.Identidad.Ports;
 using EVANS.Application.Recepcion.Ports;
 using EVANS.Domain.GuiaRemision;
 using EVANS.Reports.Comprobante;
+using EVANS.UI.WinForms.Catalogo;
 using EVANS.UI.WinForms.Comprobante;
 using EVANS.UI.WinForms.GuiaRemision;
 using EVANS.UI.WinForms.Identidad;
@@ -24,6 +25,8 @@ public partial class frmPrincipal : Form
         mnuComprobantes.Click += mnuComprobantes_Click;
         mnuRecepciones.Click  += mnuRecepciones_Click;
         mnuConsultaRuc.Click  += mnuConsultaRuc_Click;
+        mnuDestinos.Click += mnuDestinos_Click;
+        mnuEstados.Click += mnuEstados_Click;
         mnuEnviosMensuales.Click += mnuEnviosMensuales_Click;
         mnuGuiasPorCliente.Click += mnuGuiasPorCliente_Click;
         mnuReporteVentas.Click += mnuReporteVentas_Click;
@@ -73,6 +76,20 @@ public partial class frmPrincipal : Form
         var mediator = _services.GetRequiredService<IMediator>();
         using var form = new frmConsultaRuc(mediator);
         form.ShowDialog(this);
+    }
+
+    private void mnuEstados_Click(object? sender, EventArgs e)
+    {
+        var form = ActivatorUtilities.CreateInstance<frmMantEstado>(_services);
+        form.MdiParent = this;
+        form.Show();
+    }
+
+    private void mnuDestinos_Click(object? sender, EventArgs e)
+    {
+        var form = ActivatorUtilities.CreateInstance<frmMantDestino>(_services);
+        form.MdiParent = this;
+        form.Show();
     }
 
     private void mnuEnviosMensuales_Click(object? sender, EventArgs e)

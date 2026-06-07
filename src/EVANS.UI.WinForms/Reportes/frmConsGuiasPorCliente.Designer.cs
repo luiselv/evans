@@ -187,7 +187,7 @@ public partial class frmConsGuiasPorCliente
 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(976, 552);
+        ClientSize = new Size(821, 602);
         Controls.Add(dgvListado);
         Controls.Add(lblError);
         Controls.Add(btnBuscar);
@@ -201,7 +201,7 @@ public partial class frmConsGuiasPorCliente
         Controls.Add(cbCliente);
         Controls.Add(lblCliente);
         Name = "frmConsGuiasPorCliente";
-        Text = "Consulta de Guías por Cliente";
+        Text = "Consulta de Guias por Cliente";
 
         ((System.ComponentModel.ISupportInitialize)dgvListado).EndInit();
         ResumeLayout(false);

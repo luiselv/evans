@@ -99,6 +99,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IRepository<Carreta>, CarretaRepositorySql>();
         services.AddTransient<IRepository<Chofer>, ChoferRepositorySql>();
         services.AddTransient<IRepository<Destino>, DestinoRepositorySql>();
+        services.AddTransient<IDestinoMaintenanceRepository, DestinoRepositorySql>();
         services.AddTransient<IEstadoRepository, EstadoRepositorySql>();
         services.AddTransient<ITipoIdentificacionRepository, TipoIdentificacionRepositorySql>();
         services.AddTransient<IAgenciaRepository, AgenciaRepositorySql>();

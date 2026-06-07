@@ -95,13 +95,34 @@ public sealed class StatusBackedCommandHandlerTests
         repo.AddAsync(Arg.Any<Destino>(), Arg.Any<CancellationToken>()).Returns(13);
 
         var result = await new CreateDestinoCommandHandler(repo).Handle(
-            new CreateDestinoCommand("Lima", 10),
+            new CreateDestinoCommand("Lima", 10, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(13);
         await repo.Received(1).AddAsync(
-            Arg.Is<Destino>(d => d.Descripcion == "Lima" && d.EstadoCodigo == CatalogoEstado.Activo),
+            Arg.Is<Destino>(d => d.Descripcion == "Lima" && d.EstadoCodigo == CatalogoEstado.Inactivo),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateDestinoCommandHandler_ExistingEntity_UpdatesSelectedStatus()
+    {
+        var repo = Substitute.For<IRepository<Destino>>();
+        repo.GetByIdAsync(13, Arg.Any<CancellationToken>())
+            .Returns(Destino.Materializar(13, "Lima", 10, CatalogoEstado.Activo));
+
+        var result = await new UpdateDestinoCommandHandler(repo).Handle(
+            new UpdateDestinoCommand(13, "Callao", 15, CatalogoEstado.Inactivo),
+            CancellationToken.None);
+
+        result.IsSuccess.Should().BeTrue();
+        await repo.Received(1).UpdateAsync(
+            Arg.Is<Destino>(d =>
+                d.Codigo == 13
+                && d.Descripcion == "Callao"
+                && d.DistanciaVirtual == 15
+                && d.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 }

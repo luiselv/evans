@@ -22,6 +22,7 @@ public sealed record ListChoferesQuery : IRequest<IReadOnlyList<ChoferDto>>;
 
 public sealed record GetDestinoByIdQuery(int Codigo) : IRequest<DestinoDto?>;
 public sealed record ListDestinosQuery : IRequest<IReadOnlyList<DestinoDto>>;
+public sealed record ListDestinosMaintenanceQuery : IRequest<IReadOnlyList<DestinoDto>>;
 
 public sealed record GetEstadoByIdQuery(int Codigo) : IRequest<EstadoDto?>;
 public sealed record ListEstadosQuery : IRequest<IReadOnlyList<EstadoDto>>;
@@ -114,6 +115,13 @@ public sealed class ListDestinosQueryHandler(IRepository<Destino> repository)
 {
     public async Task<IReadOnlyList<DestinoDto>> Handle(ListDestinosQuery request, CancellationToken cancellationToken) =>
         (await repository.ListActiveAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
+}
+
+public sealed class ListDestinosMaintenanceQueryHandler(IDestinoMaintenanceRepository repository)
+    : IRequestHandler<ListDestinosMaintenanceQuery, IReadOnlyList<DestinoDto>>
+{
+    public async Task<IReadOnlyList<DestinoDto>> Handle(ListDestinosMaintenanceQuery request, CancellationToken cancellationToken) =>
+        (await repository.ListAllAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
 }
 
 public sealed class GetEstadoByIdQueryHandler(IEstadoRepository repository)

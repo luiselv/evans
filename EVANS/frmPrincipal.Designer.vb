@@ -35,7 +35,6 @@ Partial Class frmPrincipal
         Me.EmpresasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator
         Me.TiposDeIdentificaciónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.EstadosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UsuariosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.DocumentosToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.GuíaDeRemisiónToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -82,7 +81,7 @@ Partial Class frmPrincipal
         '
         'RegistrosToolStripMenuItem
         '
-        Me.RegistrosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RecepciónToolStripMenuItem, Me.ClientesToolStripMenuItem, Me.ChoferesToolStripMenuItem, Me.DestinosToolStripMenuItem, Me.VehiculosToolStripMenuItem, Me.EmpresasToolStripMenuItem, Me.ToolStripMenuItem1, Me.TiposDeIdentificaciónToolStripMenuItem, Me.EstadosToolStripMenuItem, Me.UsuariosToolStripMenuItem})
+        Me.RegistrosToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RecepciónToolStripMenuItem, Me.ClientesToolStripMenuItem, Me.ChoferesToolStripMenuItem, Me.DestinosToolStripMenuItem, Me.VehiculosToolStripMenuItem, Me.EmpresasToolStripMenuItem, Me.ToolStripMenuItem1, Me.TiposDeIdentificaciónToolStripMenuItem, Me.UsuariosToolStripMenuItem})
         Me.RegistrosToolStripMenuItem.Name = "RegistrosToolStripMenuItem"
         Me.RegistrosToolStripMenuItem.Size = New System.Drawing.Size(64, 20)
         Me.RegistrosToolStripMenuItem.Text = "Registros"
@@ -146,13 +145,6 @@ Partial Class frmPrincipal
         Me.TiposDeIdentificaciónToolStripMenuItem.Name = "TiposDeIdentificaciónToolStripMenuItem"
         Me.TiposDeIdentificaciónToolStripMenuItem.Size = New System.Drawing.Size(192, 22)
         Me.TiposDeIdentificaciónToolStripMenuItem.Text = "Tipos de Identificación"
-        '
-        'EstadosToolStripMenuItem
-        '
-        Me.EstadosToolStripMenuItem.Name = "EstadosToolStripMenuItem"
-        Me.EstadosToolStripMenuItem.Size = New System.Drawing.Size(192, 22)
-        Me.EstadosToolStripMenuItem.Text = "Estados"
-        '
         'UsuariosToolStripMenuItem
         '
         Me.UsuariosToolStripMenuItem.Name = "UsuariosToolStripMenuItem"
@@ -413,7 +405,6 @@ Partial Class frmPrincipal
     Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
     Friend WithEvents btnClientes As System.Windows.Forms.ToolStripButton
     Friend WithEvents TiposDeIdentificaciónToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents EstadosToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ManifiestoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TractoresToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CarretasToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
