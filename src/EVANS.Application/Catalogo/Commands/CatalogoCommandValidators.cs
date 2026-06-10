@@ -125,6 +125,7 @@ public sealed class CreateChoferCommandValidator : AbstractValidator<CreateChofe
         RuleFor(c => c.NombreCompleto).NotEmpty();
         RuleFor(c => c.Licencia).NotEmpty();
         RuleFor(c => c.EmpresaCodigo).GreaterThan(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 
@@ -136,6 +137,7 @@ public sealed class UpdateChoferCommandValidator : AbstractValidator<UpdateChofe
         RuleFor(c => c.NombreCompleto).NotEmpty();
         RuleFor(c => c.Licencia).NotEmpty();
         RuleFor(c => c.EmpresaCodigo).GreaterThan(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 

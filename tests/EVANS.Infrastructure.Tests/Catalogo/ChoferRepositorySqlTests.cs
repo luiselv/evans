@@ -1,5 +1,6 @@
 using EVANS.Infrastructure.Sql.Catalogo;
 using EVANS.Infrastructure.Tests.GuiaRemision;
+using EVANS.Domain.Catalogo;
 
 namespace EVANS.Infrastructure.Tests.Catalogo;
 
@@ -22,6 +23,24 @@ public sealed class ChoferRepositorySqlTests : IAsyncLifetime
 
         choferes.Should().Contain(c => c.Codigo == 1 && c.NombreCompleto == "Juan Perez");
         choferes.Should().OnlyContain(c => c.EstadoCodigo == 1);
+    }
+
+    [Fact]
+    public async Task ListAllAsync_ReturnsActiveAndInactiveChoferesOrderedByCodigo()
+    {
+        var repo = new ChoferRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        await CatalogoSeed.EnsureInactiveEstadoAsync(_fixture.MasterConnectionString);
+
+        var createdCodigo = await repo.AddAsync(
+            Chofer.Crear("Chofer Activo Dos", "Q12345678", null, null, 1),
+            CancellationToken.None);
+        await repo.DeactivateAsync(1, CancellationToken.None);
+
+        var choferes = await repo.ListAllAsync(CancellationToken.None);
+
+        choferes.Should().Contain(c => c.Codigo == 1 && c.EstadoCodigo == CatalogoEstado.Inactivo);
+        choferes.Should().Contain(c => c.Codigo == createdCodigo && c.EstadoCodigo == CatalogoEstado.Activo);
+        choferes.Select(c => c.Codigo).Should().BeInAscendingOrder();
     }
 
     [Fact]

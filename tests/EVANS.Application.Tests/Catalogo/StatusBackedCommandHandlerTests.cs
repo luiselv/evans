@@ -78,13 +78,34 @@ public sealed class StatusBackedCommandHandlerTests
         repo.AddAsync(Arg.Any<Chofer>(), Arg.Any<CancellationToken>()).Returns(12);
 
         var result = await new CreateChoferCommandHandler(repo).Handle(
-            new CreateChoferCommand("Juan Perez", "A123", "555", "Av Lima", 1),
+            new CreateChoferCommand("Juan Perez", "A123", "555", "Av Lima", 1, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(12);
         await repo.Received(1).AddAsync(
-            Arg.Is<Chofer>(c => c.NombreCompleto == "Juan Perez" && c.EstadoCodigo == CatalogoEstado.Activo),
+            Arg.Is<Chofer>(c => c.NombreCompleto == "Juan Perez" && c.EstadoCodigo == CatalogoEstado.Inactivo),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateChoferCommandHandler_ExistingEntity_UpdatesSelectedStatus()
+    {
+        var repo = Substitute.For<IRepository<Chofer>>();
+        repo.GetByIdAsync(12, Arg.Any<CancellationToken>())
+            .Returns(Chofer.Materializar(12, "Juan Perez", "A123", "555", "Av Lima", 1, CatalogoEstado.Activo));
+
+        var result = await new UpdateChoferCommandHandler(repo).Handle(
+            new UpdateChoferCommand(12, "Juan Perez", "B456", "777", "Av Norte", 2, CatalogoEstado.Inactivo),
+            CancellationToken.None);
+
+        result.IsSuccess.Should().BeTrue();
+        await repo.Received(1).UpdateAsync(
+            Arg.Is<Chofer>(c =>
+                c.Codigo == 12
+                && c.Licencia == "B456"
+                && c.EmpresaCodigo == 2
+                && c.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 

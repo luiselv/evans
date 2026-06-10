@@ -108,6 +108,28 @@ public class CatalogoQueryHandlerTests
     }
 
     [Fact]
+    public async Task ListChoferesMaintenanceQuery_ReturnsAllStatuses()
+    {
+        var repo = Substitute.For<IChoferMaintenanceRepository>();
+        repo.ListAllAsync(Arg.Any<CancellationToken>())
+            .Returns(
+            [
+                Chofer.Materializar(1, "Juan Perez", "Q12345678", "555", "Av Lima", 1, CatalogoEstado.Activo),
+                Chofer.Materializar(2, "Pedro Diaz", "Q87654321", null, null, 1, CatalogoEstado.Inactivo)
+            ]);
+
+        var result = await new ListChoferesMaintenanceQueryHandler(repo)
+            .Handle(new ListChoferesMaintenanceQuery(), CancellationToken.None);
+
+        result.Should().BeEquivalentTo(
+        [
+            new ChoferDto(1, "Juan Perez", "Q12345678", "555", "Av Lima", 1, CatalogoEstado.Activo),
+            new ChoferDto(2, "Pedro Diaz", "Q87654321", null, null, 1, CatalogoEstado.Inactivo)
+        ]);
+        await repo.Received(1).ListAllAsync(Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public async Task ListDestinosMaintenanceQuery_ReturnsAllStatuses()
     {
         var repo = Substitute.For<IDestinoMaintenanceRepository>();

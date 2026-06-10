@@ -15,6 +15,14 @@ public class ChoferTests
     }
 
     [Fact]
+    public void Crear_WithEstadoCodigo_UsesSelectedState()
+    {
+        var chofer = Chofer.Crear("JUAN PEREZ", "Q12345678", "999", "Av Lima", 10, CatalogoEstado.Inactivo);
+
+        chofer.EstadoCodigo.Should().Be(CatalogoEstado.Inactivo);
+    }
+
+    [Fact]
     public void Crear_WithoutLicencia_ThrowsDomainException()
     {
         Action act = () => Chofer.Crear("JUAN PEREZ", " ", null, null, 10);

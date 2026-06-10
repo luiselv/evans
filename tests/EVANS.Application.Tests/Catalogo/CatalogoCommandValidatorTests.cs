@@ -117,6 +117,17 @@ public class CatalogoCommandValidatorTests
     }
 
     [Fact]
+    public void CreateChoferValidator_InvalidEstadoCodigo_HasValidationError()
+    {
+        var validator = new CreateChoferCommandValidator();
+        var command = new CreateChoferCommand("JUAN PEREZ", "A123", null, null, 1, 0);
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldHaveValidationErrorFor(c => c.EstadoCodigo);
+    }
+
+    [Fact]
     public void DeactivateEmpresaValidator_CodigoZero_HasValidationError()
     {
         var validator = new DeactivateEmpresaCommandValidator();

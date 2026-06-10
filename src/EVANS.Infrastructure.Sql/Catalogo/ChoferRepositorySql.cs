@@ -5,7 +5,7 @@ using EVANS.Infrastructure.Sql.Connections;
 
 namespace EVANS.Infrastructure.Sql.Catalogo;
 
-public sealed class ChoferRepositorySql : IRepository<Chofer>
+public sealed class ChoferRepositorySql : IRepository<Chofer>, IChoferMaintenanceRepository
 {
     private readonly IEvansMasterConnectionFactory _masterFactory;
     public ChoferRepositorySql(IEvansMasterConnectionFactory masterFactory) => _masterFactory = masterFactory;
@@ -23,6 +23,14 @@ public sealed class ChoferRepositorySql : IRepository<Chofer>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
         var rows = await conn.QueryAsync<ChoferRow>(new CommandDefinition(SelectSql + " WHERE ESTA_CODIGO = @estadoActivo ORDER BY CHOF_NOMBRE", new { estadoActivo = CatalogoEstado.Activo }, cancellationToken: ct));
+        return rows.Select(Map).ToList().AsReadOnly();
+    }
+
+    public async Task<IReadOnlyList<Chofer>> ListAllAsync(CancellationToken ct)
+    {
+        await using var conn = _masterFactory.Create();
+        await conn.OpenAsync(ct);
+        var rows = await conn.QueryAsync<ChoferRow>(new CommandDefinition(SelectSql + " ORDER BY CHOF_CODIGO ASC", cancellationToken: ct));
         return rows.Select(Map).ToList().AsReadOnly();
     }
 

@@ -80,7 +80,8 @@ public sealed record CreateChoferCommand(
     string Licencia,
     string? Telefono,
     string? Direccion,
-    int EmpresaCodigo) : IRequest<Result<int>>;
+    int EmpresaCodigo,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<int>>;
 
 public sealed record UpdateChoferCommand(
     int Codigo,
@@ -88,7 +89,8 @@ public sealed record UpdateChoferCommand(
     string Licencia,
     string? Telefono,
     string? Direccion,
-    int EmpresaCodigo) : IRequest<Result<bool>>;
+    int EmpresaCodigo,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<bool>>;
 
 public sealed record DeactivateChoferCommand(int Codigo) : IRequest<Result<bool>>;
 

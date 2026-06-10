@@ -154,7 +154,8 @@ public sealed class CreateChoferCommandHandler(IRepository<Chofer> repository)
                 request.Licencia,
                 request.Telefono,
                 request.Direccion,
-                request.EmpresaCodigo);
+                request.EmpresaCodigo,
+                request.EstadoCodigo);
             return Result<int>.Ok(await repository.AddAsync(entity, cancellationToken));
         }
         catch (DomainException ex)
@@ -186,7 +187,7 @@ public sealed class UpdateChoferCommandHandler(IRepository<Chofer> repository)
                 request.Telefono,
                 request.Direccion,
                 request.EmpresaCodigo,
-                existing.EstadoCodigo);
+                request.EstadoCodigo);
             await repository.UpdateAsync(entity, cancellationToken);
             return Result<bool>.Ok(true);
         }
