@@ -64,6 +64,25 @@ public sealed class FrmPrincipalTests
             .Which.Should().BeOfType<frmMantEmpresa>();
     }
 
+    [WinFormsFact]
+    public void CatalogosChoferesMenu_OpensChoferFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var choferesMenu = FindMenuItem(form, "Choferes");
+        choferesMenu.Should().NotBeNull();
+
+        choferesMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmMantChofer>();
+    }
+
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
     {
         var menuStrip = form.Controls.OfType<MenuStrip>().Single();

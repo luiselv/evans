@@ -34,6 +34,7 @@ This is not a full visual QA pass. A form can pass metadata and still fail visua
 | Estado | `frmMantEstado` | `frmMantEstado` | `635,490` | `635,490` | `Registro de Estados` | `Registro de Estados` | Legacy form retired after metadata/icon/control parity coverage; `clsEstado.vb` remains because other legacy screens still consume it |
 | Destino | `frmMantDestino` | `frmMantDestino` | `635,490` | `635,490` | `Registro de Destinos` | `Registro de Destinos` | Metadata/icon/control parity and behavior tests added; visual QA and legacy retirement still pending |
 | Empresa | `frmMantEmpresa` | `frmMantEmpresa` | `635,490` | `635,490` | `Registro de Empresas` | `Registro de Empresas` | Metadata/icon/control parity and behavior tests added; legacy preserved until the new implementation is 100% complete and confirmed |
+| Chofer | `frmMantChofer` | `frmMantChofer` | `635,490` | `635,490` | `Registro de Choferes` | `Registro de Choferes` | Metadata/icon/control parity, behavior tests, and local render QA added; legacy preserved until the new implementation is 100% complete and confirmed |
 
 ## Immediate remediation order
 

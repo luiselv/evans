@@ -21,8 +21,14 @@ public sealed class Chofer
     public int EmpresaCodigo { get; private set; }
     public int EstadoCodigo { get; private set; }
 
-    public static Chofer Crear(string nombreCompleto, string licencia, string? telefono, string? direccion, int empresaCodigo) =>
-        new(0, nombreCompleto, licencia, telefono, direccion, empresaCodigo, CatalogoEstado.Activo);
+    public static Chofer Crear(
+        string nombreCompleto,
+        string licencia,
+        string? telefono,
+        string? direccion,
+        int empresaCodigo,
+        int estadoCodigo = CatalogoEstado.Activo) =>
+        new(0, nombreCompleto, licencia, telefono, direccion, empresaCodigo, estadoCodigo);
 
     public static Chofer Materializar(int codigo, string nombreCompleto, string licencia, string? telefono, string? direccion, int empresaCodigo, int estadoCodigo) =>
         new(codigo, nombreCompleto, licencia, telefono, direccion, empresaCodigo, estadoCodigo);
