@@ -127,12 +127,23 @@ public sealed class UpdateEstadoCommandHandler(IEstadoRepository repository)
 public sealed class CreateTipoIdentificacionCommandHandler(ITipoIdentificacionRepository repository)
     : IRequestHandler<CreateTipoIdentificacionCommand, Result<int>>
 {
-    public Task<Result<int>> Handle(CreateTipoIdentificacionCommand request, CancellationToken cancellationToken)
+    private readonly CreateTipoIdentificacionCommandValidator _validator = new();
+
+    public async Task<Result<int>> Handle(CreateTipoIdentificacionCommand request, CancellationToken cancellationToken)
     {
-        _ = repository;
-        _ = request;
-        _ = cancellationToken;
-        return Task.FromResult(Result<int>.Fail("TipoIdentificacion creation is not supported by the legacy catalog."));
+        var validation = _validator.Validate(request);
+        if (!validation.IsValid) return Result<int>.Fail(validation.Errors[0].ErrorMessage);
+
+        try
+        {
+            return Result<int>.Ok(await repository.AddAsync(
+                TipoIdentificacion.Crear(request.Descripcion),
+                cancellationToken));
+        }
+        catch (DomainException ex)
+        {
+            return Result<int>.Fail(ex.Message);
+        }
     }
 }
 

@@ -106,6 +106,17 @@ public class CatalogoCommandValidatorTests
     }
 
     [Fact]
+    public void UpdateTipoIdentificacionValidator_LegacyCodigoBeyondDniRuc_IsValid()
+    {
+        var validator = new UpdateTipoIdentificacionCommandValidator();
+        var command = new UpdateTipoIdentificacionCommand(3, "PASAPORTE");
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldNotHaveValidationErrorFor(c => c.Codigo);
+    }
+
+    [Fact]
     public void CreateVehiculoValidator_WithoutPlaca_HasValidationError()
     {
         var validator = new CreateVehiculoCommandValidator();

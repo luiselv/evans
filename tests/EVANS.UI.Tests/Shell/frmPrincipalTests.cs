@@ -83,6 +83,25 @@ public sealed class FrmPrincipalTests
             .Which.Should().BeOfType<frmMantChofer>();
     }
 
+    [WinFormsFact]
+    public void CatalogosTiposIdentificacionMenu_OpensTipoIDFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var tiposMenu = FindMenuItem(form, "Tipos de Identificación");
+        tiposMenu.Should().NotBeNull();
+
+        tiposMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmMantTipoID>();
+    }
+
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
     {
         var menuStrip = form.Controls.OfType<MenuStrip>().Single();
