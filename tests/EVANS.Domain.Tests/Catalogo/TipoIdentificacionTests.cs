@@ -16,10 +16,21 @@ public class TipoIdentificacionTests
     }
 
     [Fact]
-    public void Materializar_UnknownCodigo_ThrowsDomainException()
+    public void Crear_NewTipoIdentificacion_UsesTransientCodigoAndZeroLength()
     {
-        Action act = () => TipoIdentificacion.Materializar(99, "OTRO");
+        var tipo = TipoIdentificacion.Crear("OTRO");
 
-        act.Should().Throw<DomainException>().Where(e => e.Code == "CAT-TID-002");
+        tipo.Codigo.Should().Be(0);
+        tipo.Descripcion.Should().Be("OTRO");
+        tipo.LongitudRequerida.Should().Be(0);
+    }
+
+    [Fact]
+    public void Materializar_UnknownLegacyCodigo_UsesZeroLength()
+    {
+        var tipo = TipoIdentificacion.Materializar(99, "OTRO");
+
+        tipo.Codigo.Should().Be(99);
+        tipo.LongitudRequerida.Should().Be(0);
     }
 }

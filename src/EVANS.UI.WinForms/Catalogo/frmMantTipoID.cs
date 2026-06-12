@@ -1,0 +1,285 @@
+using EVANS.Application.Catalogo.Commands;
+using EVANS.Application.Catalogo.DTOs;
+using EVANS.Application.Catalogo.Queries;
+using MediatR;
+
+namespace EVANS.UI.WinForms.Catalogo;
+
+public partial class frmMantTipoID : Form
+{
+    private readonly IMediator? _mediator;
+    private IReadOnlyList<TipoIdentificacionDto> _tiposIdentificacion = [];
+    private bool _isCreateMode = true;
+
+    public frmMantTipoID()
+    {
+        InitializeComponent();
+    }
+
+    public frmMantTipoID(IMediator mediator)
+    {
+        _mediator = mediator;
+        InitializeComponent();
+        WireEvents();
+        ApplyInitialState();
+    }
+
+    internal int SelectedTabIndex => tabControl1.SelectedIndex;
+    internal bool DetailsTabEnabled => tabPageDetalles.Enabled;
+    internal bool ListingTabEnabled => tabPageListado.Enabled;
+    internal bool BuscarEnabled => btnBuscar.Enabled;
+    internal bool BuscarTextEnabled => txtBuscar.Enabled;
+    internal bool NuevoEnabled => btnNuevo.Enabled;
+    internal bool GrabarEnabled => btnGrabar.Enabled;
+    internal bool EditarEnabled => btnEditar.Enabled;
+    internal bool CancelarEnabled => btnCancelar.Enabled;
+    internal string GrabarText => btnGrabar.Text;
+    internal string CodigoText => txtCodigo.Text;
+    internal string DescripcionText => txtDescripcion.Text;
+    internal string StatusMessage => lblmsg.Text;
+    internal int ListCount => lvListado.Items.Count;
+    internal string? FirstListDescription => lvListado.Items.Count == 0 ? null : lvListado.Items[0].SubItems[1].Text;
+
+    internal void SetTestSearchText(string value) => txtBuscar.Text = value;
+    internal void SetTestDescripcion(string value) => txtDescripcion.Text = value;
+    internal void BeginNewForTest() => btnNuevo_Click();
+    internal void BeginEditForTest() => btnEditar_Click();
+    internal async Task OpenFirstForTestAsync()
+    {
+        if (lvListado.Items.Count == 0)
+            return;
+
+        await OpenTipoIdentificacionAsync(int.Parse(lvListado.Items[0].SubItems[0].Text));
+    }
+
+    internal async Task LoadTiposIdentificacionAsync()
+    {
+        _tiposIdentificacion = await Mediator.Send(new ListTiposIdentificacionQuery());
+        BindTiposIdentificacion(_tiposIdentificacion);
+    }
+
+    internal async Task<bool> BuscarAsync(bool showMessages = false)
+    {
+        if (string.IsNullOrWhiteSpace(txtBuscar.Text))
+        {
+            lvListado.Items.Clear();
+            SetStatus("Ingrese nombre a buscar");
+            if (showMessages)
+                MessageBox.Show("Ingrese nombre a buscar", "Datos insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            txtBuscar.Focus();
+            return false;
+        }
+
+        if (_tiposIdentificacion.Count == 0)
+            _tiposIdentificacion = await Mediator.Send(new ListTiposIdentificacionQuery());
+
+        var search = txtBuscar.Text.Trim();
+        BindTiposIdentificacion(_tiposIdentificacion.Where(tipo => tipo.Descripcion.StartsWith(search, StringComparison.CurrentCultureIgnoreCase)));
+        SetStatus("Los campos marcados con asterisco (*) son obligatorios");
+        return true;
+    }
+
+    internal async Task<bool> SaveAsync(bool showMessages = false)
+    {
+        if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
+        {
+            SetStatus("Datos incompletos");
+            if (showMessages)
+                MessageBox.Show("Datos incompletos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
+
+        var descripcion = txtDescripcion.Text.ToUpperInvariant();
+        if (_isCreateMode)
+        {
+            var result = await Mediator.Send(new CreateTipoIdentificacionCommand(descripcion));
+            if (!result.IsSuccess)
+                return ShowFailure(result.Error, showMessages);
+        }
+        else
+        {
+            var result = await Mediator.Send(new UpdateTipoIdentificacionCommand(int.Parse(txtCodigo.Text), descripcion));
+            if (!result.IsSuccess)
+                return ShowFailure(result.Error, showMessages);
+            _isCreateMode = true;
+        }
+
+        await ReturnToListingAsync();
+        return true;
+    }
+
+    private void WireEvents()
+    {
+        Load += async (_, _) => await LoadTiposIdentificacionAsync();
+        optTodos.CheckedChanged += async (_, _) => await optTodos_CheckedChanged();
+        optBuscar.CheckedChanged += (_, _) => optBuscar_CheckedChanged();
+        lvListado.DoubleClick += async (_, _) => await lvListado_DoubleClick();
+        btnNuevo.Click += (_, _) => btnNuevo_Click();
+        btnGrabar.Click += async (_, _) => await SaveAsync(showMessages: true);
+        btnEditar.Click += (_, _) => btnEditar_Click();
+        btnCancelar.Click += async (_, _) => await ReturnToListingAsync();
+        btnSalir.Click += (_, _) => Close();
+        btnBuscar.Click += async (_, _) => await BuscarAsync(showMessages: true);
+        txtBuscar.KeyPress += async (_, e) =>
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                await BuscarAsync(showMessages: true);
+            }
+        };
+    }
+
+    private void ApplyInitialState()
+    {
+        Top = 0;
+        Left = 0;
+
+        tabPageDetalles.Enabled = false;
+        txtBuscar.Enabled = false;
+
+        btnGrabar.Enabled = false;
+        btnCancelar.Enabled = false;
+        btnEditar.Enabled = false;
+        btnBuscar.Enabled = false;
+
+        optBuscar.Checked = true;
+    }
+
+    private async Task optTodos_CheckedChanged()
+    {
+        if (!optTodos.Checked)
+            return;
+
+        txtBuscar.Clear();
+        if (_tiposIdentificacion.Count == 0)
+            _tiposIdentificacion = await Mediator.Send(new ListTiposIdentificacionQuery());
+
+        BindTiposIdentificacion(_tiposIdentificacion);
+        txtBuscar.Enabled = false;
+        btnBuscar.Enabled = false;
+    }
+
+    private void optBuscar_CheckedChanged()
+    {
+        if (!optBuscar.Checked)
+            return;
+
+        lvListado.Items.Clear();
+        txtBuscar.Enabled = true;
+        txtBuscar.Focus();
+        btnBuscar.Enabled = true;
+    }
+
+    private async Task lvListado_DoubleClick()
+    {
+        if (lvListado.SelectedItems.Count == 0)
+            return;
+
+        await OpenTipoIdentificacionAsync(int.Parse(lvListado.SelectedItems[0].SubItems[0].Text));
+    }
+
+    private async Task OpenTipoIdentificacionAsync(int codigo)
+    {
+        var tipo = await Mediator.Send(new GetTipoIdentificacionByIdQuery(codigo));
+        if (tipo is null)
+            return;
+
+        tabPageDetalles.Enabled = true;
+        tabPageListado.Enabled = false;
+        tabControl1.SelectTab(tabPageDetalles);
+
+        txtCodigo.Text = tipo.Codigo.ToString();
+        txtDescripcion.Text = tipo.Descripcion;
+        SetDetailInputsEnabled(false);
+
+        btnNuevo.Enabled = true;
+        btnGrabar.Enabled = false;
+        btnEditar.Enabled = true;
+        btnCancelar.Enabled = true;
+        btnGrabar.Text = "Grabar";
+    }
+
+    private void btnNuevo_Click()
+    {
+        _isCreateMode = true;
+        tabPageDetalles.Enabled = true;
+        tabPageListado.Enabled = false;
+        tabControl1.SelectTab(tabPageDetalles);
+
+        txtCodigo.Clear();
+        txtDescripcion.Clear();
+        SetDetailInputsEnabled(true);
+        txtCodigo.ReadOnly = true;
+        txtDescripcion.Focus();
+
+        btnNuevo.Enabled = false;
+        btnGrabar.Enabled = true;
+        btnCancelar.Enabled = true;
+        btnEditar.Enabled = false;
+        btnGrabar.Text = "Grabar";
+    }
+
+    private void btnEditar_Click()
+    {
+        SetDetailInputsEnabled(true);
+        txtCodigo.ReadOnly = true;
+        txtDescripcion.Focus();
+
+        btnNuevo.Enabled = false;
+        btnGrabar.Enabled = true;
+        btnEditar.Enabled = false;
+        btnCancelar.Enabled = true;
+        btnGrabar.Text = "Actualizar";
+        _isCreateMode = false;
+    }
+
+    private async Task ReturnToListingAsync()
+    {
+        tabPageListado.Enabled = true;
+        tabPageDetalles.Enabled = false;
+        tabControl1.SelectTab(tabPageListado);
+
+        _isCreateMode = true;
+        btnGrabar.Text = "Grabar";
+        btnNuevo.Enabled = true;
+        btnGrabar.Enabled = false;
+        btnEditar.Enabled = false;
+        btnCancelar.Enabled = false;
+        optBuscar.Checked = true;
+
+        _tiposIdentificacion = await Mediator.Send(new ListTiposIdentificacionQuery());
+        lvListado.Items.Clear();
+    }
+
+    private void SetDetailInputsEnabled(bool enabled)
+    {
+        txtDescripcion.Enabled = enabled;
+        txtCodigo.Enabled = enabled;
+    }
+
+    private void BindTiposIdentificacion(IEnumerable<TipoIdentificacionDto> tipos)
+    {
+        lvListado.Items.Clear();
+        foreach (var tipo in tipos)
+        {
+            var item = lvListado.Items.Add(tipo.Codigo.ToString());
+            item.SubItems.Add(tipo.Descripcion);
+        }
+    }
+
+    private bool ShowFailure(string? error, bool showMessages)
+    {
+        var message = error ?? "No se pudo guardar el tipo de identificación.";
+        SetStatus(message);
+        if (showMessages)
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return false;
+    }
+
+    private void SetStatus(string message) => lblmsg.Text = message;
+
+    private IMediator Mediator => _mediator
+        ?? throw new InvalidOperationException("Use the IMediator constructor at runtime. The parameterless constructor is for the WinForms designer only.");
+}
+

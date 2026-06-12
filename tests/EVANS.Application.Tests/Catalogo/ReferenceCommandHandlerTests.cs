@@ -72,18 +72,34 @@ public sealed class ReferenceCommandHandlerTests
     }
 
     [Fact]
+    public async Task CreateTipoIdentificacionCommandHandler_ValidCommand_AddsTipo()
+    {
+        var repo = Substitute.For<ITipoIdentificacionRepository>();
+        repo.AddAsync(Arg.Any<TipoIdentificacion>(), Arg.Any<CancellationToken>()).Returns(3);
+
+        var result = await new CreateTipoIdentificacionCommandHandler(repo)
+            .Handle(new CreateTipoIdentificacionCommand("PASAPORTE"), CancellationToken.None);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().Be(3);
+        await repo.Received(1).AddAsync(
+            Arg.Is<TipoIdentificacion>(tipo => tipo.Codigo == 0 && tipo.Descripcion == "PASAPORTE"),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public async Task UpdateTipoIdentificacionCommandHandler_ExistingType_UpdatesTipo()
     {
         var repo = Substitute.For<ITipoIdentificacionRepository>();
-        repo.GetByIdAsync(2, Arg.Any<CancellationToken>())
-            .Returns(TipoIdentificacion.Materializar(2, "DNI"));
+        repo.GetByIdAsync(3, Arg.Any<CancellationToken>())
+            .Returns(TipoIdentificacion.Materializar(3, "PASAPORTE"));
 
         var result = await new UpdateTipoIdentificacionCommandHandler(repo)
-            .Handle(new UpdateTipoIdentificacionCommand(2, "Documento Nacional"), CancellationToken.None);
+            .Handle(new UpdateTipoIdentificacionCommand(3, "Documento"), CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         await repo.Received(1).UpdateAsync(
-            Arg.Is<TipoIdentificacion>(tipo => tipo.Codigo == 2 && tipo.Descripcion == "Documento Nacional"),
+            Arg.Is<TipoIdentificacion>(tipo => tipo.Codigo == 3 && tipo.Descripcion == "Documento"),
             Arg.Any<CancellationToken>());
     }
 }

@@ -198,7 +198,7 @@ public sealed class UpdateTipoIdentificacionCommandValidator : AbstractValidator
 {
     public UpdateTipoIdentificacionCommandValidator()
     {
-        RuleFor(c => c.Codigo).Must(codigo => codigo is 1 or 2);
+        RuleFor(c => c.Codigo).GreaterThan(0);
         RuleFor(c => c.Descripcion).NotEmpty();
     }
 }

@@ -33,7 +33,7 @@ public sealed class TipoIdentificacionRepositorySql : ITipoIdentificacionReposit
         const string sql = @"
             SELECT IDEN_CODIGO AS Codigo, ISNULL(IDEN_DESCRIPCION, '') AS Descripcion
             FROM TIPOIDENTIFICACION
-            ORDER BY IDEN_DESCRIPCION";
+            ORDER BY IDEN_CODIGO ASC";
 
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
