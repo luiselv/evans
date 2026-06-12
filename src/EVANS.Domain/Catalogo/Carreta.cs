@@ -19,8 +19,13 @@ public sealed class Carreta
     public int EmpresaCodigo { get; private set; }
     public int EstadoCodigo { get; private set; }
 
-    public static Carreta Crear(string placa, string? marca, string? certificado, int empresaCodigo) =>
-        new(0, placa, marca, certificado, empresaCodigo, CatalogoEstado.Activo);
+    public static Carreta Crear(
+        string placa,
+        string? marca,
+        string? certificado,
+        int empresaCodigo,
+        int estadoCodigo = CatalogoEstado.Activo) =>
+        new(0, placa, marca, certificado, empresaCodigo, estadoCodigo);
 
     public static Carreta Materializar(int codigo, string placa, string? marca, string? certificado, int empresaCodigo, int estadoCodigo) =>
         new(codigo, placa, marca, certificado, empresaCodigo, estadoCodigo);

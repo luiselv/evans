@@ -64,14 +64,16 @@ public sealed record CreateCarretaCommand(
     string Placa,
     string? Marca,
     string? Certificado,
-    int EmpresaCodigo) : IRequest<Result<int>>;
+    int EmpresaCodigo,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<int>>;
 
 public sealed record UpdateCarretaCommand(
     int Codigo,
     string Placa,
     string? Marca,
     string? Certificado,
-    int EmpresaCodigo) : IRequest<Result<bool>>;
+    int EmpresaCodigo,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<bool>>;
 
 public sealed record DeactivateCarretaCommand(int Codigo) : IRequest<Result<bool>>;
 

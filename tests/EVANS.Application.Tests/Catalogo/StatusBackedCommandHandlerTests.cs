@@ -61,13 +61,35 @@ public sealed class StatusBackedCommandHandlerTests
         repo.AddAsync(Arg.Any<Carreta>(), Arg.Any<CancellationToken>()).Returns(11);
 
         var result = await new CreateCarretaCommandHandler(repo).Handle(
-            new CreateCarretaCommand("xyz-789", "Volvo", "CERT", 1),
+            new CreateCarretaCommand("xyz-789", "Volvo", "CERT", 1, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(11);
         await repo.Received(1).AddAsync(
-            Arg.Is<Carreta>(c => c.Placa == "XYZ-789" && c.EstadoCodigo == CatalogoEstado.Activo),
+            Arg.Is<Carreta>(c => c.Placa == "XYZ-789" && c.EstadoCodigo == CatalogoEstado.Inactivo),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task UpdateCarretaCommandHandler_ExistingEntity_UpdatesSelectedStatus()
+    {
+        var repo = Substitute.For<IRepository<Carreta>>();
+        repo.GetByIdAsync(11, Arg.Any<CancellationToken>())
+            .Returns(Carreta.Materializar(11, "XYZ-789", "Volvo", "CERT", 1, CatalogoEstado.Activo));
+
+        var result = await new UpdateCarretaCommandHandler(repo).Handle(
+            new UpdateCarretaCommand(11, "abc-123", "Scania", "NEW", 2, CatalogoEstado.Inactivo),
+            CancellationToken.None);
+
+        result.IsSuccess.Should().BeTrue();
+        await repo.Received(1).UpdateAsync(
+            Arg.Is<Carreta>(c =>
+                c.Codigo == 11
+                && c.Placa == "ABC-123"
+                && c.Marca == "Scania"
+                && c.EmpresaCodigo == 2
+                && c.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 

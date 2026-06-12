@@ -139,6 +139,17 @@ public class CatalogoCommandValidatorTests
     }
 
     [Fact]
+    public void CreateCarretaValidator_InvalidEstadoCodigo_HasValidationError()
+    {
+        var validator = new CreateCarretaCommandValidator();
+        var command = new CreateCarretaCommand("XYZ-789", "Volvo", "CERT", 1, 0);
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldHaveValidationErrorFor(c => c.EstadoCodigo);
+    }
+
+    [Fact]
     public void DeactivateEmpresaValidator_CodigoZero_HasValidationError()
     {
         var validator = new DeactivateEmpresaCommandValidator();

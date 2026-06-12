@@ -86,7 +86,12 @@ public sealed class CreateCarretaCommandHandler(IRepository<Carreta> repository)
 
         try
         {
-            var entity = Carreta.Crear(request.Placa, request.Marca, request.Certificado, request.EmpresaCodigo);
+            var entity = Carreta.Crear(
+                request.Placa,
+                request.Marca,
+                request.Certificado,
+                request.EmpresaCodigo,
+                request.EstadoCodigo);
             return Result<int>.Ok(await repository.AddAsync(entity, cancellationToken));
         }
         catch (DomainException ex)
@@ -117,7 +122,7 @@ public sealed class UpdateCarretaCommandHandler(IRepository<Carreta> repository)
                 request.Marca,
                 request.Certificado,
                 request.EmpresaCodigo,
-                existing.EstadoCodigo);
+                request.EstadoCodigo);
             await repository.UpdateAsync(entity, cancellationToken);
             return Result<bool>.Ok(true);
         }
