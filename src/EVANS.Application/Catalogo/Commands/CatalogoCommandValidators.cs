@@ -100,6 +100,7 @@ public sealed class CreateCarretaCommandValidator : AbstractValidator<CreateCarr
     {
         RuleFor(c => c.Placa).NotEmpty();
         RuleFor(c => c.EmpresaCodigo).GreaterThan(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 
@@ -110,6 +111,7 @@ public sealed class UpdateCarretaCommandValidator : AbstractValidator<UpdateCarr
         RuleFor(c => c.Codigo).GreaterThan(0);
         RuleFor(c => c.Placa).NotEmpty();
         RuleFor(c => c.EmpresaCodigo).GreaterThan(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 

@@ -5,7 +5,7 @@ using EVANS.Infrastructure.Sql.Connections;
 
 namespace EVANS.Infrastructure.Sql.Catalogo;
 
-public sealed class CarretaRepositorySql : IRepository<Carreta>
+public sealed class CarretaRepositorySql : IRepository<Carreta>, ICarretaMaintenanceRepository
 {
     private readonly IEvansMasterConnectionFactory _masterFactory;
     public CarretaRepositorySql(IEvansMasterConnectionFactory masterFactory) => _masterFactory = masterFactory;
@@ -23,6 +23,14 @@ public sealed class CarretaRepositorySql : IRepository<Carreta>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
         var rows = await conn.QueryAsync<CarretaRow>(new CommandDefinition(SelectSql + " WHERE ESTA_CODIGO = @estadoActivo ORDER BY CARR_PLACA", new { estadoActivo = CatalogoEstado.Activo }, cancellationToken: ct));
+        return rows.Select(Map).ToList().AsReadOnly();
+    }
+
+    public async Task<IReadOnlyList<Carreta>> ListAllAsync(CancellationToken ct)
+    {
+        await using var conn = _masterFactory.Create();
+        await conn.OpenAsync(ct);
+        var rows = await conn.QueryAsync<CarretaRow>(new CommandDefinition(SelectSql + " ORDER BY CARR_CODIGO ASC", cancellationToken: ct));
         return rows.Select(Map).ToList().AsReadOnly();
     }
 

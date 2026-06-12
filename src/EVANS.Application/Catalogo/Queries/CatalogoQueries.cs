@@ -17,6 +17,7 @@ public sealed record ListVehiculosQuery : IRequest<IReadOnlyList<VehiculoDto>>;
 
 public sealed record GetCarretaByIdQuery(int Codigo) : IRequest<CarretaDto?>;
 public sealed record ListCarretasQuery : IRequest<IReadOnlyList<CarretaDto>>;
+public sealed record ListCarretasMaintenanceQuery : IRequest<IReadOnlyList<CarretaDto>>;
 
 public sealed record GetChoferByIdQuery(int Codigo) : IRequest<ChoferDto?>;
 public sealed record ListChoferesQuery : IRequest<IReadOnlyList<ChoferDto>>;
@@ -96,6 +97,13 @@ public sealed class ListCarretasQueryHandler(IRepository<Carreta> repository)
 {
     public async Task<IReadOnlyList<CarretaDto>> Handle(ListCarretasQuery request, CancellationToken cancellationToken) =>
         (await repository.ListActiveAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
+}
+
+public sealed class ListCarretasMaintenanceQueryHandler(ICarretaMaintenanceRepository repository)
+    : IRequestHandler<ListCarretasMaintenanceQuery, IReadOnlyList<CarretaDto>>
+{
+    public async Task<IReadOnlyList<CarretaDto>> Handle(ListCarretasMaintenanceQuery request, CancellationToken cancellationToken) =>
+        (await repository.ListAllAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
 }
 
 public sealed class GetChoferByIdQueryHandler(IRepository<Chofer> repository)
