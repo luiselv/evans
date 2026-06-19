@@ -102,6 +102,24 @@ public sealed class FrmPrincipalTests
             .Which.Should().BeOfType<frmMantTipoID>();
     }
 
+    [WinFormsFact]
+    public void CatalogosCarretasMenu_OpensCarretaFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var carretasMenu = FindMenuItem(form, "Carretas");
+        carretasMenu.Should().NotBeNull();
+
+        carretasMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmMantCarreta>();
+    }
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
     {
         var menuStrip = form.Controls.OfType<MenuStrip>().Single();
