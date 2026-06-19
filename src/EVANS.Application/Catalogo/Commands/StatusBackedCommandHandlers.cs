@@ -22,7 +22,8 @@ public sealed class CreateVehiculoCommandHandler(IRepository<Vehiculo> repositor
                 request.Placa,
                 request.ConfiguracionVehicular,
                 request.CertificadoInscripcion,
-                request.EmpresaCodigo);
+                request.EmpresaCodigo,
+                request.EstadoCodigo);
             return Result<int>.Ok(await repository.AddAsync(entity, cancellationToken));
         }
         catch (DomainException ex)
@@ -54,7 +55,7 @@ public sealed class UpdateVehiculoCommandHandler(IRepository<Vehiculo> repositor
                 request.ConfiguracionVehicular,
                 request.CertificadoInscripcion,
                 request.EmpresaCodigo,
-                existing.EstadoCodigo);
+                request.EstadoCodigo);
             await repository.UpdateAsync(entity, cancellationToken);
             return Result<bool>.Ok(true);
         }

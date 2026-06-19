@@ -97,6 +97,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IRepository<Empresa>, EmpresaRepositorySql>();
         services.AddTransient<IEmpresaMaintenanceRepository, EmpresaRepositorySql>();
         services.AddTransient<IRepository<Vehiculo>, VehiculoRepositorySql>();
+        services.AddTransient<IVehiculoMaintenanceRepository, VehiculoRepositorySql>();
         services.AddTransient<IRepository<Carreta>, CarretaRepositorySql>();
         services.AddTransient<ICarretaMaintenanceRepository, CarretaRepositorySql>();
         services.AddTransient<IRepository<Chofer>, ChoferRepositorySql>();

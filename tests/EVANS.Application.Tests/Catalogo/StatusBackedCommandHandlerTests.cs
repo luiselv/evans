@@ -14,13 +14,13 @@ public sealed class StatusBackedCommandHandlerTests
         repo.AddAsync(Arg.Any<Vehiculo>(), Arg.Any<CancellationToken>()).Returns(10);
 
         var result = await new CreateVehiculoCommandHandler(repo).Handle(
-            new CreateVehiculoCommand("Toyota", "abc-123", "C2", "CERT", 1),
+            new CreateVehiculoCommand("Toyota", "abc-123", "C2", "CERT", 1, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(10);
         await repo.Received(1).AddAsync(
-            Arg.Is<Vehiculo>(v => v.Placa == "ABC-123" && v.EstadoCodigo == CatalogoEstado.Activo),
+            Arg.Is<Vehiculo>(v => v.Placa == "ABC-123" && v.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 
@@ -32,12 +32,16 @@ public sealed class StatusBackedCommandHandlerTests
             .Returns(Vehiculo.Materializar(10, "Old", "OLD-123", "C2", null, 1, CatalogoEstado.Activo));
 
         var result = await new UpdateVehiculoCommandHandler(repo).Handle(
-            new UpdateVehiculoCommand(10, "Toyota", "abc-123", "C3", "CERT", 1),
+            new UpdateVehiculoCommand(10, "Toyota", "abc-123", "C3", "CERT", 1, CatalogoEstado.Inactivo),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         await repo.Received(1).UpdateAsync(
-            Arg.Is<Vehiculo>(v => v.Codigo == 10 && v.Placa == "ABC-123" && v.ConfiguracionVehicular == "C3"),
+            Arg.Is<Vehiculo>(v =>
+                v.Codigo == 10
+                && v.Placa == "ABC-123"
+                && v.ConfiguracionVehicular == "C3"
+                && v.EstadoCodigo == CatalogoEstado.Inactivo),
             Arg.Any<CancellationToken>());
     }
 

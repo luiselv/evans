@@ -8,6 +8,8 @@ public sealed class Vehiculo
         Marca = marca;
         Placa = NormalizePlaca(placa, "CAT-VEH-001");
         ConfiguracionVehicular = RequireText(configuracionVehicular, "CAT-VEH-002", "Configuracion vehicular is required.");
+        if (ConfiguracionVehicular.Length > 5)
+            throw new DomainException("CAT-VEH-003", "Configuracion vehicular cannot exceed 5 characters.");
         CertificadoInscripcion = certificadoInscripcion;
         EmpresaCodigo = empresaCodigo;
         EstadoCodigo = estadoCodigo;
@@ -21,8 +23,14 @@ public sealed class Vehiculo
     public int EmpresaCodigo { get; private set; }
     public int EstadoCodigo { get; private set; }
 
-    public static Vehiculo Crear(string? marca, string placa, string configuracionVehicular, string? certificadoInscripcion, int empresaCodigo) =>
-        new(0, marca, placa, configuracionVehicular, certificadoInscripcion, empresaCodigo, CatalogoEstado.Activo);
+    public static Vehiculo Crear(
+        string? marca,
+        string placa,
+        string configuracionVehicular,
+        string? certificadoInscripcion,
+        int empresaCodigo,
+        int estadoCodigo = CatalogoEstado.Activo) =>
+        new(0, marca, placa, configuracionVehicular, certificadoInscripcion, empresaCodigo, estadoCodigo);
 
     public static Vehiculo Materializar(int codigo, string? marca, string placa, string configuracionVehicular, string? certificadoInscripcion, int empresaCodigo, int estadoCodigo) =>
         new(codigo, marca, placa, configuracionVehicular, certificadoInscripcion, empresaCodigo, estadoCodigo);

@@ -73,8 +73,9 @@ public sealed class CreateVehiculoCommandValidator : AbstractValidator<CreateVeh
     public CreateVehiculoCommandValidator()
     {
         RuleFor(c => c.Placa).NotEmpty();
-        RuleFor(c => c.ConfiguracionVehicular).NotEmpty();
+        RuleFor(c => c.ConfiguracionVehicular).NotEmpty().MaximumLength(5);
         RuleFor(c => c.EmpresaCodigo).GreaterThan(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 
@@ -84,8 +85,9 @@ public sealed class UpdateVehiculoCommandValidator : AbstractValidator<UpdateVeh
     {
         RuleFor(c => c.Codigo).GreaterThan(0);
         RuleFor(c => c.Placa).NotEmpty();
-        RuleFor(c => c.ConfiguracionVehicular).NotEmpty();
+        RuleFor(c => c.ConfiguracionVehicular).NotEmpty().MaximumLength(5);
         RuleFor(c => c.EmpresaCodigo).GreaterThan(0);
+        RuleFor(c => c.EstadoCodigo).GreaterThan(0);
     }
 }
 
