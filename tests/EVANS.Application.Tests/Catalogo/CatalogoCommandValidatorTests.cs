@@ -128,6 +128,28 @@ public class CatalogoCommandValidatorTests
     }
 
     [Fact]
+    public void CreateVehiculoValidator_ConfiguracionExceedsSchemaLimit_HasValidationError()
+    {
+        var validator = new CreateVehiculoCommandValidator();
+        var command = new CreateVehiculoCommand("Volvo", "ABC-123", "ABCDEF", null, 10);
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldHaveValidationErrorFor(c => c.ConfiguracionVehicular);
+    }
+
+    [Fact]
+    public void CreateVehiculoValidator_InvalidEstadoCodigo_HasValidationError()
+    {
+        var validator = new CreateVehiculoCommandValidator();
+        var command = new CreateVehiculoCommand("Volvo", "ABC-123", "C2", null, 10, 0);
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldHaveValidationErrorFor(c => c.EstadoCodigo);
+    }
+
+    [Fact]
     public void CreateChoferValidator_InvalidEstadoCodigo_HasValidationError()
     {
         var validator = new CreateChoferCommandValidator();

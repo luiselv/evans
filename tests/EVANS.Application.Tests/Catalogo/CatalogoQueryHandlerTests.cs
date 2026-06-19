@@ -130,6 +130,28 @@ public class CatalogoQueryHandlerTests
     }
 
     [Fact]
+    public async Task ListVehiculosMaintenanceQuery_ReturnsAllStatuses()
+    {
+        var repo = Substitute.For<IVehiculoMaintenanceRepository>();
+        repo.ListAllAsync(Arg.Any<CancellationToken>())
+            .Returns(
+            [
+                Vehiculo.Materializar(1, "Volvo", "ABC-123", "C2", "CERT", 1, CatalogoEstado.Activo),
+                Vehiculo.Materializar(2, "Scania", "XYZ-789", "C3", null, 1, CatalogoEstado.Inactivo)
+            ]);
+
+        var result = await new ListVehiculosMaintenanceQueryHandler(repo)
+            .Handle(new ListVehiculosMaintenanceQuery(), CancellationToken.None);
+
+        result.Should().BeEquivalentTo(
+        [
+            new VehiculoDto(1, "Volvo", "ABC-123", "C2", "CERT", 1, CatalogoEstado.Activo),
+            new VehiculoDto(2, "Scania", "XYZ-789", "C3", null, 1, CatalogoEstado.Inactivo)
+        ]);
+        await repo.Received(1).ListAllAsync(Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public async Task ListCarretasMaintenanceQuery_ReturnsAllStatuses()
     {
         var repo = Substitute.For<ICarretaMaintenanceRepository>();

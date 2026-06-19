@@ -1,5 +1,6 @@
 using EVANS.Infrastructure.Sql.Catalogo;
 using EVANS.Infrastructure.Tests.GuiaRemision;
+using EVANS.Domain.Catalogo;
 
 namespace EVANS.Infrastructure.Tests.Catalogo;
 
@@ -35,5 +36,23 @@ public sealed class VehiculoRepositorySqlTests : IAsyncLifetime
         var vehiculo = await repo.GetByIdAsync(1, CancellationToken.None);
         vehiculo.Should().NotBeNull();
         vehiculo!.EstadoCodigo.Should().Be(2);
+    }
+
+    [Fact]
+    public async Task ListAllAsync_ReturnsActiveAndInactiveVehiculosOrderedByCodigo()
+    {
+        var repo = new VehiculoRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        await CatalogoSeed.EnsureInactiveEstadoAsync(_fixture.MasterConnectionString);
+
+        var createdCodigo = await repo.AddAsync(
+            Vehiculo.Crear("Scania", "XYZ-789", "C3", "CERT", 1, CatalogoEstado.Activo),
+            CancellationToken.None);
+        await repo.DeactivateAsync(1, CancellationToken.None);
+
+        var vehiculos = await repo.ListAllAsync(CancellationToken.None);
+
+        vehiculos.Should().Contain(v => v.Codigo == 1 && v.EstadoCodigo == CatalogoEstado.Inactivo);
+        vehiculos.Should().Contain(v => v.Codigo == createdCodigo && v.EstadoCodigo == CatalogoEstado.Activo);
+        vehiculos.Select(v => v.Codigo).Should().BeInAscendingOrder();
     }
 }

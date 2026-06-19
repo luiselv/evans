@@ -5,7 +5,7 @@ using EVANS.Infrastructure.Sql.Connections;
 
 namespace EVANS.Infrastructure.Sql.Catalogo;
 
-public sealed class VehiculoRepositorySql : IRepository<Vehiculo>
+public sealed class VehiculoRepositorySql : IRepository<Vehiculo>, IVehiculoMaintenanceRepository
 {
     private readonly IEvansMasterConnectionFactory _masterFactory;
 
@@ -24,6 +24,14 @@ public sealed class VehiculoRepositorySql : IRepository<Vehiculo>
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
         var rows = await conn.QueryAsync<VehiculoRow>(new CommandDefinition(SelectSql + " WHERE ESTA_CODIGO = @estadoActivo ORDER BY VEHI_PLACA", new { estadoActivo = CatalogoEstado.Activo }, cancellationToken: ct));
+        return rows.Select(Map).ToList().AsReadOnly();
+    }
+
+    public async Task<IReadOnlyList<Vehiculo>> ListAllAsync(CancellationToken ct)
+    {
+        await using var conn = _masterFactory.Create();
+        await conn.OpenAsync(ct);
+        var rows = await conn.QueryAsync<VehiculoRow>(new CommandDefinition(SelectSql + " ORDER BY VEHI_CODIGO ASC", cancellationToken: ct));
         return rows.Select(Map).ToList().AsReadOnly();
     }
 

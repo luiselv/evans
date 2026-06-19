@@ -48,6 +48,14 @@ public interface ICarretaMaintenanceRepository
 }
 
 /// <summary>
+/// Vehiculo maintenance screens must match the legacy form, which lists every row regardless of ESTA_CODIGO.
+/// </summary>
+public interface IVehiculoMaintenanceRepository
+{
+    Task<IReadOnlyList<Vehiculo>> ListAllAsync(CancellationToken ct);
+}
+
+/// <summary>
 /// Cliente has no ESTA_CODIGO in the legacy schema, so it has no deactivate operation.
 /// </summary>
 public interface IClienteRepository

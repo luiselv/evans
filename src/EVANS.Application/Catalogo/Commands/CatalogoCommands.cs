@@ -48,7 +48,8 @@ public sealed record CreateVehiculoCommand(
     string Placa,
     string ConfiguracionVehicular,
     string? CertificadoInscripcion,
-    int EmpresaCodigo) : IRequest<Result<int>>;
+    int EmpresaCodigo,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<int>>;
 
 public sealed record UpdateVehiculoCommand(
     int Codigo,
@@ -56,7 +57,8 @@ public sealed record UpdateVehiculoCommand(
     string Placa,
     string ConfiguracionVehicular,
     string? CertificadoInscripcion,
-    int EmpresaCodigo) : IRequest<Result<bool>>;
+    int EmpresaCodigo,
+    int EstadoCodigo = CatalogoEstado.Activo) : IRequest<Result<bool>>;
 
 public sealed record DeactivateVehiculoCommand(int Codigo) : IRequest<Result<bool>>;
 
