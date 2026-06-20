@@ -120,6 +120,25 @@ public sealed class FrmPrincipalTests
         form.MdiChildren.Should().ContainSingle()
             .Which.Should().BeOfType<frmMantCarreta>();
     }
+
+    [WinFormsFact]
+    public void CatalogosVehiculosMenu_OpensVehiculoFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var vehiculosMenu = FindMenuItem(form, "Vehículos");
+        vehiculosMenu.Should().NotBeNull();
+
+        vehiculosMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmMantVehiculo>();
+    }
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
     {
         var menuStrip = form.Controls.OfType<MenuStrip>().Single();
