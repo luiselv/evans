@@ -206,7 +206,9 @@ internal static class CatalogoMappings
         cliente.TipoIdCodigo,
         cliente.NroIdentificacion,
         cliente.Telefono,
+        cliente.Fax,
         cliente.Email,
+        cliente.Representante,
         cliente.Direcciones.Select(d => new DireccionDto(d.Calle, d.Ciudad, d.Provincia)).ToList());
 
     public static EmpresaDto ToDto(this Empresa empresa) => new(

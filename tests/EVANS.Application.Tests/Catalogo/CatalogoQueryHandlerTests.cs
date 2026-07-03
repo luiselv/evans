@@ -53,7 +53,7 @@ public class CatalogoQueryHandlerTests
     {
         var repo = Substitute.For<IClienteRepository>();
         repo.GetByIdAsync(3, Arg.Any<CancellationToken>())
-            .Returns(Cliente.Materializar(3, "ACME", 1, "20123456789", "555", "ops@acme.test",
+            .Returns(Cliente.Materializar(3, "ACME", 1, "20123456789", "555", "123", "ops@acme.test", "ANA",
                 [new Direccion("Av Lima", "Lima", "Lima")]));
 
         var result = await new GetClienteByIdQueryHandler(repo).Handle(new GetClienteByIdQuery(3), CancellationToken.None);
@@ -64,7 +64,9 @@ public class CatalogoQueryHandlerTests
             1,
             "20123456789",
             "555",
+            "123",
             "ops@acme.test",
+            "ANA",
             [new DireccionDto("Av Lima", "Lima", "Lima")]));
     }
 

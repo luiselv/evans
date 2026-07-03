@@ -8,7 +8,9 @@ public sealed record ClienteDto(
     int TipoIdCodigo,
     string NroIdentificacion,
     string? Telefono,
+    string? Fax,
     string? Email,
+    string? Representante,
     IReadOnlyList<DireccionDto> Direcciones);
 
 public sealed record EmpresaDto(

@@ -12,7 +12,9 @@ public sealed class Cliente
         int tipoIdCodigo,
         string nroIdentificacion,
         string? telefono,
+        string? fax,
         string? email,
+        string? representante,
         IReadOnlyList<Direccion> direcciones)
     {
         Codigo = codigo;
@@ -20,7 +22,9 @@ public sealed class Cliente
         TipoIdCodigo = tipoIdCodigo;
         NroIdentificacion = nroIdentificacion;
         Telefono = telefono;
+        Fax = fax;
         Email = email;
+        Representante = representante;
         _direcciones = direcciones.ToList();
     }
 
@@ -29,7 +33,9 @@ public sealed class Cliente
     public int TipoIdCodigo { get; private set; }
     public string NroIdentificacion { get; private set; }
     public string? Telefono { get; private set; }
+    public string? Fax { get; private set; }
     public string? Email { get; private set; }
+    public string? Representante { get; private set; }
     public IReadOnlyList<Direccion> Direcciones => _direcciones.AsReadOnly();
 
     public static Cliente Crear(
@@ -38,11 +44,13 @@ public sealed class Cliente
         string nroIdentificacion,
         int longitudRequerida,
         string? telefono,
+        string? fax,
         string? email,
+        string? representante,
         IReadOnlyList<Direccion> direcciones) =>
         new(0, NormalizeRazonSocial(razonSocial), tipoIdCodigo,
             ValidateNroIdentificacion(nroIdentificacion, longitudRequerida),
-            telefono, email, ValidateDirecciones(direcciones));
+            telefono, fax, email, representante, CopyDirecciones(direcciones));
 
     public static Cliente Materializar(
         int codigo,
@@ -50,10 +58,12 @@ public sealed class Cliente
         int tipoIdCodigo,
         string nroIdentificacion,
         string? telefono,
+        string? fax,
         string? email,
+        string? representante,
         IReadOnlyList<Direccion> direcciones) =>
         new(codigo, NormalizeRazonSocial(razonSocial), tipoIdCodigo, nroIdentificacion,
-            telefono, email, ValidateDirecciones(direcciones));
+            telefono, fax, email, representante, CopyDirecciones(direcciones));
 
     public void Actualizar(
         string razonSocial,
@@ -61,16 +71,20 @@ public sealed class Cliente
         string nroIdentificacion,
         int longitudRequerida,
         string? telefono,
+        string? fax,
         string? email,
+        string? representante,
         IReadOnlyList<Direccion> direcciones)
     {
         RazonSocial = NormalizeRazonSocial(razonSocial);
         TipoIdCodigo = tipoIdCodigo;
         NroIdentificacion = ValidateNroIdentificacion(nroIdentificacion, longitudRequerida);
         Telefono = telefono;
+        Fax = fax;
         Email = email;
+        Representante = representante;
         _direcciones.Clear();
-        _direcciones.AddRange(ValidateDirecciones(direcciones));
+        _direcciones.AddRange(CopyDirecciones(direcciones));
     }
 
     internal void SetCodigo(int codigo) => Codigo = codigo;
@@ -88,17 +102,8 @@ public sealed class Cliente
         if (value.Length != longitudRequerida)
             throw new DomainException("CAT-CLI-002", "NroIdentificacion length does not match TipoID.");
 
-        if (longitudRequerida == 11 && !Ruc.TryCreate(value, out _))
-            throw new DomainException("CAT-CLI-002", "RUC must be 11 numeric characters.");
-
         return value;
     }
 
-    private static IReadOnlyList<Direccion> ValidateDirecciones(IReadOnlyList<Direccion> direcciones)
-    {
-        if (direcciones.Count == 0)
-            throw new DomainException("CAT-CLI-003", "Cliente must have at least one direccion.");
-
-        return direcciones;
-    }
+    private static IReadOnlyList<Direccion> CopyDirecciones(IReadOnlyList<Direccion> direcciones) => direcciones.ToList();
 }

@@ -9,15 +9,12 @@ public sealed class CreateClienteCommandValidator : AbstractValidator<CreateClie
     {
         RuleFor(c => c.RazonSocial).NotEmpty();
         RuleFor(c => c.TipoIdCodigo).GreaterThan(0);
-        RuleFor(c => c.LongitudRequerida).Must(length => length is 8 or 11);
+        RuleFor(c => c.LongitudRequerida).InclusiveBetween(1, 11);
         RuleFor(c => c.NroIdentificacion)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must((command, value) => value.Length == command.LongitudRequerida)
-            .WithMessage("NroIdentificacion length must match LongitudRequerida.")
-            .Must((command, value) => command.LongitudRequerida != 11 || Ruc.TryCreate(value, out _))
-            .WithMessage("RUC must be 11 numeric characters.");
-        RuleFor(c => c.Direcciones).NotEmpty();
+            .WithMessage("NroIdentificacion length must match LongitudRequerida.");
     }
 }
 
@@ -28,15 +25,12 @@ public sealed class UpdateClienteCommandValidator : AbstractValidator<UpdateClie
         RuleFor(c => c.Codigo).GreaterThan(0);
         RuleFor(c => c.RazonSocial).NotEmpty();
         RuleFor(c => c.TipoIdCodigo).GreaterThan(0);
-        RuleFor(c => c.LongitudRequerida).Must(length => length is 8 or 11);
+        RuleFor(c => c.LongitudRequerida).InclusiveBetween(1, 11);
         RuleFor(c => c.NroIdentificacion)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must((command, value) => value.Length == command.LongitudRequerida)
-            .WithMessage("NroIdentificacion length must match LongitudRequerida.")
-            .Must((command, value) => command.LongitudRequerida != 11 || Ruc.TryCreate(value, out _))
-            .WithMessage("RUC must be 11 numeric characters.");
-        RuleFor(c => c.Direcciones).NotEmpty();
+            .WithMessage("NroIdentificacion length must match LongitudRequerida.");
     }
 }
 
