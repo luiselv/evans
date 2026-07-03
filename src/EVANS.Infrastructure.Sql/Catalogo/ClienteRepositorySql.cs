@@ -22,7 +22,9 @@ public sealed class ClienteRepositorySql : IClienteRepository
                 ISNULL(IDEN_CODIGO, 0) AS TipoIdCodigo,
                 ISNULL(CLIE_NROIDENTIFICACION, '') AS NroIdentificacion,
                 CLIE_TELEFONO AS Telefono,
-                CLIE_EMAIL AS Email
+                CLIE_FAX AS Fax,
+                CLIE_EMAIL AS Email,
+                CLIE_REPRESENTANTE AS Representante
             FROM CLIENTE
             WHERE CLIE_CODIGO = @codigo";
 
@@ -44,7 +46,9 @@ public sealed class ClienteRepositorySql : IClienteRepository
                 ISNULL(IDEN_CODIGO, 0) AS TipoIdCodigo,
                 ISNULL(CLIE_NROIDENTIFICACION, '') AS NroIdentificacion,
                 CLIE_TELEFONO AS Telefono,
-                CLIE_EMAIL AS Email
+                CLIE_FAX AS Fax,
+                CLIE_EMAIL AS Email,
+                CLIE_REPRESENTANTE AS Representante
             FROM CLIENTE
             ORDER BY CLIE_NOMBRE";
 
@@ -64,8 +68,8 @@ public sealed class ClienteRepositorySql : IClienteRepository
     public async Task<int> AddAsync(Cliente cliente, CancellationToken ct)
     {
         const string sql = @"
-            INSERT INTO CLIENTE (CLIE_NOMBRE, IDEN_CODIGO, CLIE_NROIDENTIFICACION, CLIE_TELEFONO, CLIE_EMAIL)
-            VALUES (@razonSocial, @tipoIdCodigo, @nroIdentificacion, @telefono, @email);
+            INSERT INTO CLIENTE (CLIE_NOMBRE, IDEN_CODIGO, CLIE_NROIDENTIFICACION, CLIE_TELEFONO, CLIE_FAX, CLIE_EMAIL, CLIE_REPRESENTANTE)
+            VALUES (@razonSocial, @tipoIdCodigo, @nroIdentificacion, @telefono, @fax, @email, @representante);
             SELECT CAST(SCOPE_IDENTITY() AS int);";
 
         await using var conn = _masterFactory.Create();
@@ -89,7 +93,9 @@ public sealed class ClienteRepositorySql : IClienteRepository
                 IDEN_CODIGO = @tipoIdCodigo,
                 CLIE_NROIDENTIFICACION = @nroIdentificacion,
                 CLIE_TELEFONO = @telefono,
-                CLIE_EMAIL = @email
+                CLIE_FAX = @fax,
+                CLIE_EMAIL = @email,
+                CLIE_REPRESENTANTE = @representante
             WHERE CLIE_CODIGO = @codigo";
 
         await using var conn = _masterFactory.Create();
@@ -118,7 +124,7 @@ public sealed class ClienteRepositorySql : IClienteRepository
         var direcciones = (await conn.QueryAsync<Direccion>(
             new CommandDefinition(sql, new { clienteCodigo }, cancellationToken: ct))).ToList();
 
-        return direcciones.Count == 0 ? [Direccion.Empty] : direcciones.AsReadOnly();
+        return direcciones.AsReadOnly();
     }
 
     private static async Task ReplaceDireccionesAsync(
@@ -161,7 +167,9 @@ public sealed class ClienteRepositorySql : IClienteRepository
             row.TipoIdCodigo,
             row.NroIdentificacion,
             row.Telefono,
+            row.Fax,
             row.Email,
+            row.Representante,
             direcciones);
 
     private static object ToParameters(Cliente cliente) => new
@@ -171,7 +179,9 @@ public sealed class ClienteRepositorySql : IClienteRepository
         tipoIdCodigo = cliente.TipoIdCodigo,
         nroIdentificacion = cliente.NroIdentificacion,
         telefono = cliente.Telefono,
-        email = cliente.Email
+        fax = cliente.Fax,
+        email = cliente.Email,
+        representante = cliente.Representante
     };
 
     private sealed record ClienteRow(
@@ -180,5 +190,7 @@ public sealed class ClienteRepositorySql : IClienteRepository
         int TipoIdCodigo,
         string NroIdentificacion,
         string? Telefono,
-        string? Email);
+        string? Fax,
+        string? Email,
+        string? Representante);
 }

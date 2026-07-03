@@ -7,14 +7,14 @@ namespace EVANS.Application.Tests.Catalogo;
 public class CatalogoCommandValidatorTests
 {
     [Fact]
-    public void CreateClienteValidator_WithoutDirecciones_HasValidationError()
+    public void CreateClienteValidator_WithoutDirecciones_IsValidForLegacySchema()
     {
         var validator = new CreateClienteCommandValidator();
-        var command = new CreateClienteCommand("ACME", 1, "20123456789", 11, null, null, []);
+        var command = new CreateClienteCommand("ACME", 1, "20123456789", 11, null, null, null, null, []);
 
         var result = validator.TestValidate(command);
 
-        result.ShouldHaveValidationErrorFor(c => c.Direcciones);
+        result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact]
@@ -26,6 +26,8 @@ public class CatalogoCommandValidatorTests
             2,
             "07654321",
             8,
+            null,
+            null,
             null,
             null,
             [new DireccionDto("Av Lima", "Lima", "Lima")]);
@@ -68,6 +70,8 @@ public class CatalogoCommandValidatorTests
             8,
             null,
             null,
+            null,
+            null,
             [new DireccionDto("Av Lima", "Lima", "Lima")]);
 
         var result = validator.TestValidate(command);
@@ -87,11 +91,24 @@ public class CatalogoCommandValidatorTests
             8,
             null,
             null,
+            null,
+            null,
             [new DireccionDto("Av Lima", "Lima", "Lima")]);
 
         var result = validator.TestValidate(command);
 
         result.ShouldHaveValidationErrorFor(c => c.NroIdentificacion);
+    }
+
+    [Fact]
+    public void CreateClienteValidator_PassportLengthWithinSchemaLimit_IsValid()
+    {
+        var validator = new CreateClienteCommandValidator();
+        var command = new CreateClienteCommand("ACME", 3, "PASS12345", 9, null, null, null, null, []);
+
+        var result = validator.TestValidate(command);
+
+        result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact]

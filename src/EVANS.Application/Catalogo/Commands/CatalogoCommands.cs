@@ -11,7 +11,9 @@ public sealed record CreateClienteCommand(
     string NroIdentificacion,
     int LongitudRequerida,
     string? Telefono,
+    string? Fax,
     string? Email,
+    string? Representante,
     IReadOnlyList<DireccionDto> Direcciones) : IRequest<Result<int>>;
 
 public sealed record UpdateClienteCommand(
@@ -21,7 +23,9 @@ public sealed record UpdateClienteCommand(
     string NroIdentificacion,
     int LongitudRequerida,
     string? Telefono,
+    string? Fax,
     string? Email,
+    string? Representante,
     IReadOnlyList<DireccionDto> Direcciones) : IRequest<Result<bool>>;
 
 public sealed record CreateEmpresaCommand(

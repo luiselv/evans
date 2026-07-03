@@ -24,7 +24,9 @@ public sealed class CreateClienteCommandHandler(IClienteRepository repository)
                 request.NroIdentificacion,
                 request.LongitudRequerida,
                 request.Telefono,
+                request.Fax,
                 request.Email,
+                request.Representante,
                 request.Direcciones.Select(ToDireccion).ToList());
 
             return Result<int>.Ok(await repository.AddAsync(cliente, cancellationToken));
@@ -60,7 +62,9 @@ public sealed class UpdateClienteCommandHandler(IClienteRepository repository)
                 request.NroIdentificacion,
                 request.LongitudRequerida,
                 request.Telefono,
+                request.Fax,
                 request.Email,
+                request.Representante,
                 request.Direcciones.Select(ToDireccion).ToList());
 
             await repository.UpdateAsync(cliente, cancellationToken);

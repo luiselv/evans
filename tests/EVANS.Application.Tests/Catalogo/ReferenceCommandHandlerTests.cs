@@ -22,14 +22,17 @@ public sealed class ReferenceCommandHandlerTests
                 "20123456789",
                 11,
                 "555",
+                "123",
                 "ops@acme.test",
+                "ANA",
                 [new DireccionDto("Av Lima", "Lima", "Lima")]),
             CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(20);
         await repo.Received(1).AddAsync(
-            Arg.Is<Cliente>(c => c.RazonSocial == "ACME" && c.Direcciones.Count == 1),
+            Arg.Is<Cliente>(c => c.RazonSocial == "ACME" && c.Fax == "123"
+                && c.Representante == "ANA" && c.Direcciones.Count == 1),
             Arg.Any<CancellationToken>());
     }
 
@@ -46,6 +49,8 @@ public sealed class ReferenceCommandHandlerTests
                 1,
                 "20123456789",
                 11,
+                null,
+                null,
                 null,
                 null,
                 [new DireccionDto("Av Lima", "Lima", "Lima")]),

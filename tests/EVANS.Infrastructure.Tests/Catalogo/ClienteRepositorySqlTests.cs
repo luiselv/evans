@@ -1,5 +1,6 @@
 using EVANS.Infrastructure.Sql.Catalogo;
 using EVANS.Infrastructure.Tests.GuiaRemision;
+using EVANS.Domain.Catalogo;
 
 namespace EVANS.Infrastructure.Tests.Catalogo;
 
@@ -37,5 +38,21 @@ public sealed class ClienteRepositorySqlTests : IAsyncLifetime
         var clientes = await repo.ListAsync(CancellationToken.None);
 
         clientes.Should().Contain(c => c.Codigo == 1 && c.RazonSocial == "Remitente Test SA");
+    }
+
+    [Fact]
+    public async Task AddAsync_PersistsLegacyOptionalFieldsWithoutDireccion()
+    {
+        var repo = new ClienteRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        var cliente = Cliente.Crear(
+            "CLIENTE SIN DIRECCION", 1, "20123456789", 11, "555", "123", "ops@test.local", "ANA", []);
+
+        var codigo = await repo.AddAsync(cliente, CancellationToken.None);
+        var persisted = await repo.GetByIdAsync(codigo, CancellationToken.None);
+
+        persisted.Should().NotBeNull();
+        persisted!.Fax.Should().Be("123");
+        persisted.Representante.Should().Be("ANA");
+        persisted.Direcciones.Should().BeEmpty();
     }
 }
