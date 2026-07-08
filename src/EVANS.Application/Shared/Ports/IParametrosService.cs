@@ -6,4 +6,5 @@ public interface IParametrosService
 {
     Task<ParametrosDto> ObtenerParametrosAsync(CancellationToken ct = default);
     Task<decimal> ObtenerIgvRateAsync(CancellationToken ct = default);
+    Task ActualizarParametrosAsync(ParametrosDto parametros, CancellationToken ct = default);
 }

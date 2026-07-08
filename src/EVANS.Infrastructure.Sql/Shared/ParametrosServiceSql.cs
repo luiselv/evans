@@ -1,6 +1,7 @@
 using Dapper;
 using EVANS.Application.Shared.DTOs;
 using EVANS.Application.Shared.Ports;
+using EVANS.Infrastructure.Sql.Catalogo;
 using EVANS.Infrastructure.Sql.Connections;
 using Microsoft.Extensions.Logging;
 
@@ -74,6 +75,38 @@ public sealed class ParametrosServiceSql : IParametrosService
                 "Failed to read PARAMETROS; using safe defaults.");
             return DefaultParametros();
         }
+    }
+
+    public async Task ActualizarParametrosAsync(ParametrosDto parametros, CancellationToken ct = default)
+    {
+        const string sql = @"
+            UPDATE PARAMETROS
+            SET PARA_IGV = @IgvRate,
+                PARA_FACTSERIE = @FacturaSerie,
+                PARA_FACTNRO1 = @FacturaNro1,
+                PARA_FACTNRO2 = @FacturaNro2,
+                PARA_BOLSERIE = @BoletaSerie,
+                PARA_BOLNRO1 = @BoletaNro1,
+                PARA_BOLNRO2 = @BoletaNro2,
+                PARA_GREMSERIE = @GuiaRemisionSerie,
+                PARA_GREMNRO1 = @GuiaRemisionNro1,
+                PARA_GREMNRO2 = @GuiaRemisionNro2,
+                PARA_MANIFIESTO = @Manifiesto,
+                PARA_REMITENTE = @Remitente,
+                PARA_EMAILREMITENTE = @EmailRemitente,
+                PARA_PASSREMITENTE = @PassRemitente,
+                PARA_SMTP = @Smtp,
+                PARA_PUERTO = @Puerto";
+
+        using var conn = _masterFactory.Create();
+        await conn.OpenAsync(ct);
+
+        await CatalogoSqlWriteScope.ExecuteAsync(conn, tx =>
+            conn.ExecuteAsync(new CommandDefinition(
+                sql,
+                parametros,
+                tx,
+                cancellationToken: ct)), ct);
     }
 
     private static ParametrosDto ToDto(ParametrosRow row)
