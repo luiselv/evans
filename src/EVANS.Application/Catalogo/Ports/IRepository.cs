@@ -89,10 +89,10 @@ public interface ITipoIdentificacionRepository
 }
 
 /// <summary>
-/// Agencia is read-only in the legacy application.
+/// Agencia is read-only in the legacy application and its legacy Listar method returns every row.
 /// </summary>
 public interface IAgenciaRepository
 {
     Task<Agencia?> GetByIdAsync(int codigo, CancellationToken ct);
-    Task<IReadOnlyList<Agencia>> ListActiveAsync(CancellationToken ct);
+    Task<IReadOnlyList<Agencia>> ListAsync(CancellationToken ct);
 }

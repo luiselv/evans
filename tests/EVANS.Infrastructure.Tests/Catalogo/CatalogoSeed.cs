@@ -28,4 +28,17 @@ internal static class CatalogoSeed
                 INSERT INTO ESTADO (ESTA_CODIGO, ESTA_DESCRIPCION) VALUES (2, 'Inactivo');
             SET IDENTITY_INSERT ESTADO OFF;");
     }
+
+    public static async Task EnsureInactiveAgenciaAsync(string connectionString)
+    {
+        await EnsureInactiveEstadoAsync(connectionString);
+
+        await using var conn = new SqlConnection(connectionString);
+        await conn.OpenAsync();
+
+        await conn.ExecuteAsync(@"
+            IF NOT EXISTS (SELECT 1 FROM AGENCIA WHERE AGEN_DIRECCION = 'Agencia Inactiva')
+                INSERT INTO AGENCIA (AGEN_DIRECCION, DEST_CODIGO, ESTA_CODIGO)
+                VALUES ('Agencia Inactiva', 1, 2);");
+    }
 }

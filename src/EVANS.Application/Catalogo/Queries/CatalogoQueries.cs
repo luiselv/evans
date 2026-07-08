@@ -195,7 +195,7 @@ public sealed class ListAgenciasQueryHandler(IAgenciaRepository repository)
     : IRequestHandler<ListAgenciasQuery, IReadOnlyList<AgenciaDto>>
 {
     public async Task<IReadOnlyList<AgenciaDto>> Handle(ListAgenciasQuery request, CancellationToken cancellationToken) =>
-        (await repository.ListActiveAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
+        (await repository.ListAsync(cancellationToken)).Select(CatalogoMappings.ToDto).ToList();
 }
 
 internal static class CatalogoMappings

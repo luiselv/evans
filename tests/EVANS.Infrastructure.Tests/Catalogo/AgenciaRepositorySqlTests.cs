@@ -27,13 +27,14 @@ public sealed class AgenciaRepositorySqlTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task ListActiveAsync_ReturnsOnlyActiveAgencias()
+    public async Task ListAsync_ReturnsAllLegacyAgencias()
     {
         var repo = new AgenciaRepositorySql(new FixedMasterConnectionFactory(_fixture.MasterConnectionString));
+        await CatalogoSeed.EnsureInactiveAgenciaAsync(_fixture.MasterConnectionString);
 
-        var agencias = await repo.ListActiveAsync(CancellationToken.None);
+        var agencias = await repo.ListAsync(CancellationToken.None);
 
         agencias.Should().Contain(a => a.Codigo == 1 && a.Direccion == "Agencia Central");
-        agencias.Should().OnlyContain(a => a.EstadoCodigo == 1);
+        agencias.Should().Contain(a => a.Direccion == "Agencia Inactiva" && a.EstadoCodigo != 1);
     }
 }

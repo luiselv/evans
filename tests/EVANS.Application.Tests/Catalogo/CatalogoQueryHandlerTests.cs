@@ -100,13 +100,14 @@ public class CatalogoQueryHandlerTests
     public async Task ListAgenciasQuery_MapsReadOnlySchemaShape()
     {
         var repo = Substitute.For<IAgenciaRepository>();
-        repo.ListActiveAsync(Arg.Any<CancellationToken>())
-            .Returns([Agencia.Materializar(4, "Av Lima", 10, CatalogoEstado.Activo)]);
+        repo.ListAsync(Arg.Any<CancellationToken>())
+            .Returns([Agencia.Materializar(4, "Av Lima", 10, CatalogoEstado.Inactivo)]);
 
         var result = await new ListAgenciasQueryHandler(repo).Handle(new ListAgenciasQuery(), CancellationToken.None);
 
         result.Should().ContainSingle().Which.Should().Be(
-            new AgenciaDto(4, "Av Lima", 10, CatalogoEstado.Activo));
+            new AgenciaDto(4, "Av Lima", 10, CatalogoEstado.Inactivo));
+        await repo.Received(1).ListAsync(Arg.Any<CancellationToken>());
     }
 
     [Fact]
