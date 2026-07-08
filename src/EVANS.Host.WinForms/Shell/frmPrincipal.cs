@@ -25,6 +25,7 @@ public partial class frmPrincipal : Form
         mnuComprobantes.Click += mnuComprobantes_Click;
         mnuRecepciones.Click  += mnuRecepciones_Click;
         mnuConsultaRuc.Click  += mnuConsultaRuc_Click;
+        mnuClientes.Click += mnuClientes_Click;
         mnuEmpresas.Click += mnuEmpresas_Click;
         mnuChoferes.Click += mnuChoferes_Click;
         mnuVehiculos.Click += mnuVehiculos_Click;
@@ -93,6 +94,13 @@ public partial class frmPrincipal : Form
     private void mnuEmpresas_Click(object? sender, EventArgs e)
     {
         var form = ActivatorUtilities.CreateInstance<frmMantEmpresa>(_services);
+        form.MdiParent = this;
+        form.Show();
+    }
+
+    private void mnuClientes_Click(object? sender, EventArgs e)
+    {
+        var form = ActivatorUtilities.CreateInstance<frmMantCliente>(_services);
         form.MdiParent = this;
         form.Show();
     }

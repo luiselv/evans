@@ -65,6 +65,25 @@ public sealed class FrmPrincipalTests
     }
 
     [WinFormsFact]
+    public void CatalogosClientesMenu_OpensClienteFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var clientesMenu = FindMenuItem(form, "Clientes");
+        clientesMenu.Should().NotBeNull();
+
+        clientesMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmMantCliente>();
+    }
+
+    [WinFormsFact]
     public void CatalogosChoferesMenu_OpensChoferFormAsMdiChild()
     {
         var services = new ServiceCollection()
