@@ -17,6 +17,7 @@ partial class frmPrincipal
     private ToolStripMenuItem mnuDestinos;
     private ToolStripMenuItem mnuEstados;
     private ToolStripMenuItem mnuTiposIdentificacion;
+    private ToolStripMenuItem mnuUsuarios;
     private ToolStripMenuItem mnuConsultaRuc;
     private ToolStripMenuItem mnuReportes;
     private ToolStripMenuItem mnuEnviosMensuales;
@@ -46,6 +47,7 @@ partial class frmPrincipal
         mnuDestinos = new ToolStripMenuItem();
         mnuEstados = new ToolStripMenuItem();
         mnuTiposIdentificacion = new ToolStripMenuItem();
+        mnuUsuarios = new ToolStripMenuItem();
         mnuConsultaRuc = new ToolStripMenuItem();
         mnuReportes = new ToolStripMenuItem();
         mnuEnviosMensuales = new ToolStripMenuItem();
@@ -64,7 +66,7 @@ partial class frmPrincipal
         mnuComprobantes.Text = "Comprobantes";
         mnuRecepciones.Text = "Recepciones";
         mnuCatalogos.Text = "Catálogos";
-        mnuCatalogos.DropDownItems.AddRange([mnuClientes, mnuEmpresas, mnuChoferes, mnuVehiculos, mnuCarretas, mnuDestinos, mnuEstados, mnuTiposIdentificacion, mnuConsultaRuc]);
+        mnuCatalogos.DropDownItems.AddRange([mnuClientes, mnuEmpresas, mnuChoferes, mnuVehiculos, mnuCarretas, mnuDestinos, mnuEstados, mnuTiposIdentificacion, mnuUsuarios, mnuConsultaRuc]);
 
         mnuClientes.Text = "Clientes";
         mnuEmpresas.Text = "Empresas";
@@ -74,6 +76,7 @@ partial class frmPrincipal
         mnuDestinos.Text = "Destinos";
         mnuEstados.Text = "Estados";
         mnuTiposIdentificacion.Text = "Tipos de Identificación";
+        mnuUsuarios.Text = "Usuarios";
         mnuConsultaRuc.Text = "Consulta RUC";
         mnuReportes.Text = "Reportes";
         mnuReportes.DropDownItems.AddRange([mnuEnviosMensuales, mnuGuiasPorCliente, mnuReporteVentas]);

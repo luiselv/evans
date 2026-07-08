@@ -1,0 +1,504 @@
+namespace EVANS.UI.WinForms.Identidad;
+
+partial class frmMantUsuarios
+{
+    private System.ComponentModel.IContainer components = null!;
+    private Button btnNuevo = null!;
+    private Button btnGrabar = null!;
+    private Button btnEditar = null!;
+    private Button btnCancelar = null!;
+    private Button btnSalir = null!;
+    private TabControl tabControl1 = null!;
+    private TabPage tabPageListado = null!;
+    private TabPage tabPageDetalles = null!;
+    private Button btnBuscar = null!;
+    private TextBox txtBuscar = null!;
+    private ListView lvListado = null!;
+    private ColumnHeader columnHeaderCodigo = null!;
+    private ColumnHeader columnHeaderNombreCompleto = null!;
+    private ColumnHeader columnHeaderUsuario = null!;
+    private Label lblListadoInfo = null!;
+    private RadioButton optTodos = null!;
+    private RadioButton optBuscar = null!;
+    private ComboBox cbEstado = null!;
+    private CheckBox chkAdmin = null!;
+    private TextBox txtRepetir = null!;
+    private TextBox txtClave = null!;
+    private TextBox txtEmpleado = null!;
+    private TextBox txtUsuario = null!;
+    private TextBox txtCodigo = null!;
+    private Label lblCodigo = null!;
+    private Label lblNombreUsuario = null!;
+    private Label lblClave = null!;
+    private Label lblEstado = null!;
+    private Label lblConfirmarClave = null!;
+    private Label lblmsg = null!;
+    private Label lblNombreEmpleado = null!;
+    private Label lblClaveRequired = null!;
+    private Label lblEstadoRequired = null!;
+    private Label lblConfirmarRequired = null!;
+    private Label lblUsuarioRequired = null!;
+    private Label lblEmpleadoRequired = null!;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+            components?.Dispose();
+        base.Dispose(disposing);
+    }
+
+    private void InitializeComponent()
+    {
+        components = new System.ComponentModel.Container();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMantUsuarios));
+        btnNuevo = new Button();
+        btnGrabar = new Button();
+        btnEditar = new Button();
+        btnCancelar = new Button();
+        btnSalir = new Button();
+        tabControl1 = new TabControl();
+        tabPageListado = new TabPage();
+        btnBuscar = new Button();
+        txtBuscar = new TextBox();
+        lvListado = new ListView();
+        columnHeaderCodigo = new ColumnHeader();
+        columnHeaderNombreCompleto = new ColumnHeader();
+        columnHeaderUsuario = new ColumnHeader();
+        lblListadoInfo = new Label();
+        optTodos = new RadioButton();
+        optBuscar = new RadioButton();
+        tabPageDetalles = new TabPage();
+        cbEstado = new ComboBox();
+        chkAdmin = new CheckBox();
+        txtRepetir = new TextBox();
+        txtClave = new TextBox();
+        txtEmpleado = new TextBox();
+        txtUsuario = new TextBox();
+        txtCodigo = new TextBox();
+        lblCodigo = new Label();
+        lblNombreUsuario = new Label();
+        lblClave = new Label();
+        lblEstado = new Label();
+        lblConfirmarClave = new Label();
+        lblmsg = new Label();
+        lblNombreEmpleado = new Label();
+        lblClaveRequired = new Label();
+        lblEstadoRequired = new Label();
+        lblConfirmarRequired = new Label();
+        lblUsuarioRequired = new Label();
+        lblEmpleadoRequired = new Label();
+        tabControl1.SuspendLayout();
+        tabPageListado.SuspendLayout();
+        tabPageDetalles.SuspendLayout();
+        SuspendLayout();
+
+        btnNuevo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnNuevo.BackColor = SystemColors.Control;
+        btnNuevo.Cursor = Cursors.Default;
+        btnNuevo.ForeColor = SystemColors.ControlText;
+        btnNuevo.Image = (Image)resources.GetObject("btnNuevo.Image")!;
+        btnNuevo.Location = new Point(561, 86);
+        btnNuevo.Name = "btnNuevo";
+        btnNuevo.RightToLeft = RightToLeft.No;
+        btnNuevo.Size = new Size(62, 48);
+        btnNuevo.TabIndex = 32;
+        btnNuevo.Text = "Nuevo";
+        btnNuevo.TextAlign = ContentAlignment.BottomCenter;
+        btnNuevo.UseVisualStyleBackColor = false;
+
+        btnGrabar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnGrabar.BackColor = SystemColors.Control;
+        btnGrabar.Cursor = Cursors.Default;
+        btnGrabar.ForeColor = SystemColors.ControlText;
+        btnGrabar.Image = (Image)resources.GetObject("btnGrabar.Image")!;
+        btnGrabar.Location = new Point(561, 140);
+        btnGrabar.Name = "btnGrabar";
+        btnGrabar.RightToLeft = RightToLeft.No;
+        btnGrabar.Size = new Size(62, 48);
+        btnGrabar.TabIndex = 33;
+        btnGrabar.Text = "Grabar";
+        btnGrabar.TextAlign = ContentAlignment.BottomCenter;
+        btnGrabar.UseVisualStyleBackColor = false;
+
+        btnEditar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnEditar.BackColor = SystemColors.Control;
+        btnEditar.Cursor = Cursors.Default;
+        btnEditar.ForeColor = SystemColors.ControlText;
+        btnEditar.Image = (Image)resources.GetObject("btnEditar.Image")!;
+        btnEditar.Location = new Point(561, 194);
+        btnEditar.Name = "btnEditar";
+        btnEditar.RightToLeft = RightToLeft.No;
+        btnEditar.Size = new Size(62, 48);
+        btnEditar.TabIndex = 34;
+        btnEditar.Text = "Editar";
+        btnEditar.TextAlign = ContentAlignment.BottomCenter;
+        btnEditar.UseVisualStyleBackColor = false;
+
+        btnCancelar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnCancelar.BackColor = SystemColors.Control;
+        btnCancelar.Cursor = Cursors.Default;
+        btnCancelar.ForeColor = SystemColors.ControlText;
+        btnCancelar.Image = (Image)resources.GetObject("btnCancelar.Image")!;
+        btnCancelar.Location = new Point(561, 248);
+        btnCancelar.Name = "btnCancelar";
+        btnCancelar.RightToLeft = RightToLeft.No;
+        btnCancelar.Size = new Size(62, 48);
+        btnCancelar.TabIndex = 35;
+        btnCancelar.Text = "Cancelar";
+        btnCancelar.TextAlign = ContentAlignment.BottomCenter;
+        btnCancelar.UseVisualStyleBackColor = false;
+
+        btnSalir.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnSalir.BackColor = SystemColors.Control;
+        btnSalir.Cursor = Cursors.Default;
+        btnSalir.ForeColor = SystemColors.ControlText;
+        btnSalir.Image = (Image)resources.GetObject("btnSalir.Image")!;
+        btnSalir.Location = new Point(561, 302);
+        btnSalir.Name = "btnSalir";
+        btnSalir.RightToLeft = RightToLeft.No;
+        btnSalir.Size = new Size(62, 48);
+        btnSalir.TabIndex = 36;
+        btnSalir.Text = "Salir";
+        btnSalir.TextAlign = ContentAlignment.BottomCenter;
+        btnSalir.UseVisualStyleBackColor = false;
+
+        tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        tabControl1.Controls.Add(tabPageListado);
+        tabControl1.Controls.Add(tabPageDetalles);
+        tabControl1.Location = new Point(12, 12);
+        tabControl1.Name = "TabControl1";
+        tabControl1.SelectedIndex = 0;
+        tabControl1.Size = new Size(537, 458);
+        tabControl1.TabIndex = 37;
+
+        tabPageListado.BackColor = SystemColors.Control;
+        tabPageListado.Controls.Add(btnBuscar);
+        tabPageListado.Controls.Add(txtBuscar);
+        tabPageListado.Controls.Add(lvListado);
+        tabPageListado.Controls.Add(lblListadoInfo);
+        tabPageListado.Controls.Add(optTodos);
+        tabPageListado.Controls.Add(optBuscar);
+        tabPageListado.Location = new Point(4, 23);
+        tabPageListado.Name = "TabPage1";
+        tabPageListado.Padding = new Padding(3);
+        tabPageListado.Size = new Size(529, 431);
+        tabPageListado.TabIndex = 0;
+        tabPageListado.Text = "Listado";
+
+        btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        btnBuscar.BackColor = SystemColors.Control;
+        btnBuscar.Cursor = Cursors.Default;
+        btnBuscar.ForeColor = SystemColors.ControlText;
+        btnBuscar.Image = (Image)resources.GetObject("btnBuscar.Image")!;
+        btnBuscar.ImageAlign = ContentAlignment.MiddleLeft;
+        btnBuscar.Location = new Point(437, 13);
+        btnBuscar.Name = "btnBuscar";
+        btnBuscar.RightToLeft = RightToLeft.No;
+        btnBuscar.Size = new Size(72, 25);
+        btnBuscar.TabIndex = 9;
+        btnBuscar.Text = "Buscar";
+        btnBuscar.TextAlign = ContentAlignment.MiddleRight;
+        btnBuscar.UseVisualStyleBackColor = false;
+
+        txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        txtBuscar.Location = new Point(200, 16);
+        txtBuscar.MaxLength = 0;
+        txtBuscar.Name = "txtBuscar";
+        txtBuscar.Size = new Size(231, 20);
+        txtBuscar.TabIndex = 8;
+
+        lvListado.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        lvListado.Columns.AddRange(new ColumnHeader[] { columnHeaderCodigo, columnHeaderNombreCompleto, columnHeaderUsuario });
+        lvListado.Font = new Font("Verdana", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+        lvListado.FullRowSelect = true;
+        lvListado.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+        lvListado.Location = new Point(20, 47);
+        lvListado.Name = "lvListado";
+        lvListado.Size = new Size(489, 341);
+        lvListado.TabIndex = 10;
+        lvListado.UseCompatibleStateImageBehavior = false;
+        lvListado.View = View.Details;
+
+        columnHeaderCodigo.Text = "ID";
+        columnHeaderCodigo.Width = 32;
+        columnHeaderNombreCompleto.Text = "Nombre completo";
+        columnHeaderNombreCompleto.Width = 265;
+        columnHeaderUsuario.Text = "Usuario";
+        columnHeaderUsuario.Width = 181;
+
+        lblListadoInfo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        lblListadoInfo.BackColor = Color.FromArgb(128, 128, 128);
+        lblListadoInfo.Cursor = Cursors.Default;
+        lblListadoInfo.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblListadoInfo.ForeColor = Color.White;
+        lblListadoInfo.Location = new Point(20, 400);
+        lblListadoInfo.Name = "Label6";
+        lblListadoInfo.RightToLeft = RightToLeft.No;
+        lblListadoInfo.Size = new Size(489, 17);
+        lblListadoInfo.TabIndex = 25;
+        lblListadoInfo.Text = "Haga doble clic sobre un registro para ver los detalles";
+        lblListadoInfo.TextAlign = ContentAlignment.TopCenter;
+
+        optTodos.BackColor = SystemColors.Control;
+        optTodos.Cursor = Cursors.Default;
+        optTodos.ForeColor = SystemColors.ControlText;
+        optTodos.Location = new Point(23, 13);
+        optTodos.Name = "optTodos";
+        optTodos.RightToLeft = RightToLeft.No;
+        optTodos.Size = new Size(55, 25);
+        optTodos.TabIndex = 6;
+        optTodos.TabStop = true;
+        optTodos.Text = "Todos";
+        optTodos.UseVisualStyleBackColor = false;
+
+        optBuscar.BackColor = SystemColors.Control;
+        optBuscar.Cursor = Cursors.Default;
+        optBuscar.ForeColor = SystemColors.ControlText;
+        optBuscar.Location = new Point(105, 13);
+        optBuscar.Name = "optBuscar";
+        optBuscar.RightToLeft = RightToLeft.No;
+        optBuscar.Size = new Size(89, 25);
+        optBuscar.TabIndex = 7;
+        optBuscar.TabStop = true;
+        optBuscar.Text = "Por nombre :";
+        optBuscar.UseVisualStyleBackColor = false;
+
+        tabPageDetalles.BackColor = SystemColors.Control;
+        tabPageDetalles.Controls.Add(cbEstado);
+        tabPageDetalles.Controls.Add(chkAdmin);
+        tabPageDetalles.Controls.Add(txtRepetir);
+        tabPageDetalles.Controls.Add(txtClave);
+        tabPageDetalles.Controls.Add(txtEmpleado);
+        tabPageDetalles.Controls.Add(txtUsuario);
+        tabPageDetalles.Controls.Add(txtCodigo);
+        tabPageDetalles.Controls.Add(lblCodigo);
+        tabPageDetalles.Controls.Add(lblNombreUsuario);
+        tabPageDetalles.Controls.Add(lblClave);
+        tabPageDetalles.Controls.Add(lblEstado);
+        tabPageDetalles.Controls.Add(lblConfirmarClave);
+        tabPageDetalles.Controls.Add(lblmsg);
+        tabPageDetalles.Controls.Add(lblNombreEmpleado);
+        tabPageDetalles.Controls.Add(lblClaveRequired);
+        tabPageDetalles.Controls.Add(lblEstadoRequired);
+        tabPageDetalles.Controls.Add(lblConfirmarRequired);
+        tabPageDetalles.Controls.Add(lblUsuarioRequired);
+        tabPageDetalles.Controls.Add(lblEmpleadoRequired);
+        tabPageDetalles.Location = new Point(4, 23);
+        tabPageDetalles.Name = "TabPage2";
+        tabPageDetalles.Padding = new Padding(3);
+        tabPageDetalles.Size = new Size(529, 431);
+        tabPageDetalles.TabIndex = 1;
+        tabPageDetalles.Text = "Detalles";
+
+        cbEstado.FormattingEnabled = true;
+        cbEstado.Location = new Point(209, 223);
+        cbEstado.Name = "cbEstado";
+        cbEstado.Size = new Size(181, 21);
+        cbEstado.TabIndex = 66;
+
+        chkAdmin.AutoSize = true;
+        chkAdmin.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+        chkAdmin.Location = new Point(209, 262);
+        chkAdmin.Name = "chkAdmin";
+        chkAdmin.Size = new Size(159, 17);
+        chkAdmin.TabIndex = 65;
+        chkAdmin.Text = "Es Administrador de Sistema";
+        chkAdmin.UseVisualStyleBackColor = true;
+
+        txtRepetir.Location = new Point(209, 187);
+        txtRepetir.MaxLength = 30;
+        txtRepetir.Name = "txtRepetir";
+        txtRepetir.PasswordChar = '*';
+        txtRepetir.Size = new Size(181, 20);
+        txtRepetir.TabIndex = 63;
+
+        txtClave.Location = new Point(209, 149);
+        txtClave.MaxLength = 30;
+        txtClave.Name = "txtClave";
+        txtClave.PasswordChar = '*';
+        txtClave.Size = new Size(181, 20);
+        txtClave.TabIndex = 61;
+
+        txtEmpleado.CharacterCasing = CharacterCasing.Upper;
+        txtEmpleado.Font = new Font("Verdana", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+        txtEmpleado.Location = new Point(209, 77);
+        txtEmpleado.MaxLength = 70;
+        txtEmpleado.Name = "txtEmpleado";
+        txtEmpleado.Size = new Size(181, 21);
+        txtEmpleado.TabIndex = 43;
+
+        txtUsuario.CharacterCasing = CharacterCasing.Upper;
+        txtUsuario.Font = new Font("Verdana", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+        txtUsuario.Location = new Point(209, 113);
+        txtUsuario.MaxLength = 50;
+        txtUsuario.Name = "txtUsuario";
+        txtUsuario.Size = new Size(181, 21);
+        txtUsuario.TabIndex = 46;
+
+        txtCodigo.CharacterCasing = CharacterCasing.Upper;
+        txtCodigo.Font = new Font("Verdana", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+        txtCodigo.Location = new Point(209, 40);
+        txtCodigo.MaxLength = 0;
+        txtCodigo.Name = "txtCodigo";
+        txtCodigo.ReadOnly = true;
+        txtCodigo.Size = new Size(78, 21);
+        txtCodigo.TabIndex = 42;
+
+        lblCodigo.AutoSize = true;
+        lblCodigo.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblCodigo.Location = new Point(151, 43);
+        lblCodigo.Name = "Label4";
+        lblCodigo.Size = new Size(54, 13);
+        lblCodigo.TabIndex = 57;
+        lblCodigo.Text = "Código :";
+
+        lblNombreUsuario.AutoSize = true;
+        lblNombreUsuario.BackColor = SystemColors.Control;
+        lblNombreUsuario.Cursor = Cursors.Default;
+        lblNombreUsuario.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblNombreUsuario.ForeColor = SystemColors.ControlText;
+        lblNombreUsuario.Location = new Point(102, 116);
+        lblNombreUsuario.Name = "Label5";
+        lblNombreUsuario.RightToLeft = RightToLeft.No;
+        lblNombreUsuario.Size = new Size(103, 13);
+        lblNombreUsuario.TabIndex = 49;
+        lblNombreUsuario.Text = "Nombre usuario :";
+
+        lblClave.AutoSize = true;
+        lblClave.BackColor = SystemColors.Control;
+        lblClave.Cursor = Cursors.Default;
+        lblClave.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblClave.ForeColor = SystemColors.ControlText;
+        lblClave.Location = new Point(158, 152);
+        lblClave.Name = "Label3";
+        lblClave.RightToLeft = RightToLeft.No;
+        lblClave.Size = new Size(47, 13);
+        lblClave.TabIndex = 49;
+        lblClave.Text = "Clave :";
+
+        lblEstado.AutoSize = true;
+        lblEstado.BackColor = SystemColors.Control;
+        lblEstado.Cursor = Cursors.Default;
+        lblEstado.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblEstado.ForeColor = SystemColors.ControlText;
+        lblEstado.Location = new Point(151, 226);
+        lblEstado.Name = "Label8";
+        lblEstado.RightToLeft = RightToLeft.No;
+        lblEstado.Size = new Size(54, 13);
+        lblEstado.TabIndex = 49;
+        lblEstado.Text = "Estado :";
+
+        lblConfirmarClave.AutoSize = true;
+        lblConfirmarClave.BackColor = SystemColors.Control;
+        lblConfirmarClave.Cursor = Cursors.Default;
+        lblConfirmarClave.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblConfirmarClave.ForeColor = SystemColors.ControlText;
+        lblConfirmarClave.Location = new Point(102, 190);
+        lblConfirmarClave.Name = "Label9";
+        lblConfirmarClave.RightToLeft = RightToLeft.No;
+        lblConfirmarClave.Size = new Size(103, 13);
+        lblConfirmarClave.TabIndex = 49;
+        lblConfirmarClave.Text = "Confirmar clave :";
+
+        lblmsg.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        lblmsg.BackColor = Color.FromArgb(128, 128, 128);
+        lblmsg.Cursor = Cursors.Default;
+        lblmsg.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblmsg.ForeColor = Color.White;
+        lblmsg.Location = new Point(20, 397);
+        lblmsg.Name = "lblmsg";
+        lblmsg.RightToLeft = RightToLeft.No;
+        lblmsg.Size = new Size(489, 17);
+        lblmsg.TabIndex = 48;
+        lblmsg.Text = "Los campos marcados con asterisco (*) son obligatorios";
+        lblmsg.TextAlign = ContentAlignment.TopCenter;
+
+        lblNombreEmpleado.AutoSize = true;
+        lblNombreEmpleado.BackColor = SystemColors.Control;
+        lblNombreEmpleado.Cursor = Cursors.Default;
+        lblNombreEmpleado.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+        lblNombreEmpleado.ForeColor = SystemColors.ControlText;
+        lblNombreEmpleado.Location = new Point(89, 81);
+        lblNombreEmpleado.Name = "Label1";
+        lblNombreEmpleado.RightToLeft = RightToLeft.No;
+        lblNombreEmpleado.Size = new Size(116, 13);
+        lblNombreEmpleado.TabIndex = 51;
+        lblNombreEmpleado.Text = "Nombre empleado :";
+
+        lblClaveRequired.BackColor = SystemColors.Control;
+        lblClaveRequired.Cursor = Cursors.Default;
+        lblClaveRequired.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+        lblClaveRequired.ForeColor = SystemColors.ControlText;
+        lblClaveRequired.Location = new Point(394, 150);
+        lblClaveRequired.Name = "Label10";
+        lblClaveRequired.RightToLeft = RightToLeft.No;
+        lblClaveRequired.Size = new Size(9, 17);
+        lblClaveRequired.TabIndex = 53;
+        lblClaveRequired.Text = "*";
+
+        lblEstadoRequired.BackColor = SystemColors.Control;
+        lblEstadoRequired.Cursor = Cursors.Default;
+        lblEstadoRequired.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+        lblEstadoRequired.ForeColor = SystemColors.ControlText;
+        lblEstadoRequired.Location = new Point(394, 224);
+        lblEstadoRequired.Name = "Label12";
+        lblEstadoRequired.RightToLeft = RightToLeft.No;
+        lblEstadoRequired.Size = new Size(9, 17);
+        lblEstadoRequired.TabIndex = 53;
+        lblEstadoRequired.Text = "*";
+
+        lblConfirmarRequired.BackColor = SystemColors.Control;
+        lblConfirmarRequired.Cursor = Cursors.Default;
+        lblConfirmarRequired.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+        lblConfirmarRequired.ForeColor = SystemColors.ControlText;
+        lblConfirmarRequired.Location = new Point(394, 190);
+        lblConfirmarRequired.Name = "Label2";
+        lblConfirmarRequired.RightToLeft = RightToLeft.No;
+        lblConfirmarRequired.Size = new Size(9, 17);
+        lblConfirmarRequired.TabIndex = 53;
+        lblConfirmarRequired.Text = "*";
+
+        lblUsuarioRequired.BackColor = SystemColors.Control;
+        lblUsuarioRequired.Cursor = Cursors.Default;
+        lblUsuarioRequired.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+        lblUsuarioRequired.ForeColor = SystemColors.ControlText;
+        lblUsuarioRequired.Location = new Point(394, 114);
+        lblUsuarioRequired.Name = "Label7";
+        lblUsuarioRequired.RightToLeft = RightToLeft.No;
+        lblUsuarioRequired.Size = new Size(9, 17);
+        lblUsuarioRequired.TabIndex = 53;
+        lblUsuarioRequired.Text = "*";
+
+        lblEmpleadoRequired.BackColor = SystemColors.Control;
+        lblEmpleadoRequired.Cursor = Cursors.Default;
+        lblEmpleadoRequired.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+        lblEmpleadoRequired.ForeColor = SystemColors.ControlText;
+        lblEmpleadoRequired.Location = new Point(394, 77);
+        lblEmpleadoRequired.Name = "Label11";
+        lblEmpleadoRequired.RightToLeft = RightToLeft.No;
+        lblEmpleadoRequired.Size = new Size(9, 17);
+        lblEmpleadoRequired.TabIndex = 53;
+        lblEmpleadoRequired.Text = "*";
+
+        AutoScaleDimensions = new SizeF(6F, 13F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(635, 490);
+        Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        Controls.Add(btnNuevo);
+        Controls.Add(btnGrabar);
+        Controls.Add(btnEditar);
+        Controls.Add(btnCancelar);
+        Controls.Add(btnSalir);
+        Controls.Add(tabControl1);
+        Icon = (Icon)resources.GetObject("$this.Icon")!;
+        Name = "frmMantUsuarios";
+        Text = "Registro de Usuarios";
+        tabControl1.ResumeLayout(false);
+        tabPageListado.ResumeLayout(false);
+        tabPageListado.PerformLayout();
+        tabPageDetalles.ResumeLayout(false);
+        tabPageDetalles.PerformLayout();
+        ResumeLayout(false);
+    }
+
+}
