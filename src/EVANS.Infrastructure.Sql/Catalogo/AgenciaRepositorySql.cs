@@ -21,12 +21,12 @@ public sealed class AgenciaRepositorySql : IAgenciaRepository
         return row is null ? null : Map(row);
     }
 
-    public async Task<IReadOnlyList<Agencia>> ListActiveAsync(CancellationToken ct)
+    public async Task<IReadOnlyList<Agencia>> ListAsync(CancellationToken ct)
     {
         await using var conn = _masterFactory.Create();
         await conn.OpenAsync(ct);
         var rows = await conn.QueryAsync<AgenciaRow>(
-            new CommandDefinition(SelectSql + " WHERE ESTA_CODIGO = @estadoActivo ORDER BY AGEN_DIRECCION", new { estadoActivo = CatalogoEstado.Activo }, cancellationToken: ct));
+            new CommandDefinition(SelectSql + " ORDER BY AGEN_CODIGO", cancellationToken: ct));
         return rows.Select(Map).ToList().AsReadOnly();
     }
 

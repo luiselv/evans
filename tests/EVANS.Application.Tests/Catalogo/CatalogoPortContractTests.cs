@@ -43,7 +43,7 @@ public class CatalogoPortContractTests
             .Select(method => method.Name)
             .ToArray();
 
-        methods.Should().BeEquivalentTo("GetByIdAsync", "ListActiveAsync");
+        methods.Should().BeEquivalentTo("GetByIdAsync", "ListAsync");
     }
 
     [Fact]
