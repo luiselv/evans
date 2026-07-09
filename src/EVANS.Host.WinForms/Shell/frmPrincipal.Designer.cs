@@ -19,6 +19,8 @@ partial class frmPrincipal
     private ToolStripMenuItem mnuTiposIdentificacion;
     private ToolStripMenuItem mnuUsuarios;
     private ToolStripMenuItem mnuConsultaRuc;
+    private ToolStripMenuItem mnuConfiguracion;
+    private ToolStripMenuItem mnuParametros;
     private ToolStripMenuItem mnuReportes;
     private ToolStripMenuItem mnuEnviosMensuales;
     private ToolStripMenuItem mnuGuiasPorCliente;
@@ -49,6 +51,8 @@ partial class frmPrincipal
         mnuTiposIdentificacion = new ToolStripMenuItem();
         mnuUsuarios = new ToolStripMenuItem();
         mnuConsultaRuc = new ToolStripMenuItem();
+        mnuConfiguracion = new ToolStripMenuItem();
+        mnuParametros = new ToolStripMenuItem();
         mnuReportes = new ToolStripMenuItem();
         mnuEnviosMensuales = new ToolStripMenuItem();
         mnuGuiasPorCliente = new ToolStripMenuItem();
@@ -57,7 +61,7 @@ partial class frmPrincipal
         menuStrip.SuspendLayout();
         SuspendLayout();
 
-        menuStrip.Items.AddRange([mnuGuias, mnuManifiestos, mnuComprobantes, mnuRecepciones, mnuCatalogos, mnuReportes]);
+        menuStrip.Items.AddRange([mnuGuias, mnuManifiestos, mnuComprobantes, mnuRecepciones, mnuCatalogos, mnuConfiguracion, mnuReportes]);
         menuStrip.Location = new Point(0, 0);
         menuStrip.Size = new Size(1024, 24);
 
@@ -78,6 +82,9 @@ partial class frmPrincipal
         mnuTiposIdentificacion.Text = "Tipos de Identificación";
         mnuUsuarios.Text = "Usuarios";
         mnuConsultaRuc.Text = "Consulta RUC";
+        mnuConfiguracion.Text = "Configuración";
+        mnuConfiguracion.DropDownItems.AddRange([mnuParametros]);
+        mnuParametros.Text = "Parámetros del sistema";
         mnuReportes.Text = "Reportes";
         mnuReportes.DropDownItems.AddRange([mnuEnviosMensuales, mnuGuiasPorCliente, mnuReporteVentas]);
         mnuEnviosMensuales.Text = "Envíos Mensuales";

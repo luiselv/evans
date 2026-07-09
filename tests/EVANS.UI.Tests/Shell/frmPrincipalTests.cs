@@ -1,5 +1,7 @@
 using EVANS.Host.WinForms.Shell;
+using EVANS.Application.Shared.Ports;
 using EVANS.UI.WinForms.Catalogo;
+using EVANS.UI.WinForms.Identidad;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -158,6 +160,27 @@ public sealed class FrmPrincipalTests
         form.MdiChildren.Should().ContainSingle()
             .Which.Should().BeOfType<frmMantVehiculo>();
     }
+
+    [WinFormsFact]
+    public void ConfiguracionParametrosMenu_OpensParametrosFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .AddSingleton(Substitute.For<IParametrosService>())
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var parametrosMenu = FindMenuItem(form, "Parámetros del sistema");
+        parametrosMenu.Should().NotBeNull();
+
+        parametrosMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmParametros>();
+    }
+
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
     {
         var menuStrip = form.Controls.OfType<MenuStrip>().Single();
