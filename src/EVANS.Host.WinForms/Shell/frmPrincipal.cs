@@ -67,34 +67,31 @@ public partial class frmPrincipal : Form
 
     private void mnuComprobantes_Click(object? sender, EventArgs e)
     {
-        if (FeatureFlags.ComprobanteV2Enabled)
+        var mediator = _services.GetRequiredService<IMediator>();
+        var factory  = _services.GetRequiredService<DocumentPrinterFactory>();
+
+        var form = new frmComprobante(
+            mediator,
+            guiaRef: null,
+            printerResolver: factory.For)
         {
-            var mediator = _services.GetRequiredService<IMediator>();
-            var factory  = _services.GetRequiredService<DocumentPrinterFactory>();
-
-            using var form = new frmComprobante(
-                mediator,
-                guiaRef: null,
-                printerResolver: factory.For);
-
-            form.MdiParent = this;
-            form.Show();
-        }
-        // else: legacy path — frmComprobante VB not yet wired; menu is a no-op for now
+            MdiParent = this
+        };
+        form.Show();
     }
 
     private void mnuRecepciones_Click(object? sender, EventArgs e)
     {
-        if (FeatureFlags.RecepcionV2Enabled)
-        {
-            var mediator  = _services.GetRequiredService<IMediator>();
-            var catalogos = _services.GetRequiredService<ICatalogosRecepcionRepository>();
+        var mediator  = _services.GetRequiredService<IMediator>();
+        var catalogos = _services.GetRequiredService<ICatalogosRecepcionRepository>();
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
 
-            using var form = new frmRecepcion(mediator, catalogos, DateTime.Today.Year);
-            form.MdiParent = this;
-            form.Show();
-        }
-        // else: legacy path — legacy frmRecepcion.vb handles this
+        var form = new frmRecepcion(mediator, catalogos, year)
+        {
+            MdiParent = this
+        };
+        form.Show();
     }
 
     private void mnuConsultaRuc_Click(object? sender, EventArgs e)
