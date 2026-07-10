@@ -1,4 +1,5 @@
 using EVANS.Application.Identidad.Ports;
+using EVANS.Application.Manifiesto.Ports;
 using EVANS.Application.Recepcion.Ports;
 using EVANS.Domain.GuiaRemision;
 using EVANS.Reports.Comprobante;
@@ -6,6 +7,7 @@ using EVANS.UI.WinForms.Catalogo;
 using EVANS.UI.WinForms.Comprobante;
 using EVANS.UI.WinForms.GuiaRemision;
 using EVANS.UI.WinForms.Identidad;
+using EVANS.UI.WinForms.Manifiesto;
 using EVANS.UI.WinForms.Recepcion;
 using EVANS.UI.WinForms.Reportes;
 using MediatR;
@@ -22,6 +24,7 @@ public partial class frmPrincipal : Form
         _services = services;
         InitializeComponent();
         mnuGuias.Click        += mnuGuias_Click;
+        mnuManifiestos.Click  += mnuManifiestos_Click;
         mnuComprobantes.Click += mnuComprobantes_Click;
         mnuRecepciones.Click  += mnuRecepciones_Click;
         mnuConsultaRuc.Click  += mnuConsultaRuc_Click;
@@ -45,6 +48,21 @@ public partial class frmPrincipal : Form
         var mediator = _services.GetRequiredService<IMediator>();
         using var form = new frmGuiaRemision(mediator, new Standalone(), DateTime.Today.Year);
         form.ShowDialog(this);
+    }
+
+    private void mnuManifiestos_Click(object? sender, EventArgs e)
+    {
+        var mediator = _services.GetRequiredService<IMediator>();
+        var catalogos = _services.GetRequiredService<ICatalogosManifiestoRepository>();
+        var printerFactory = _services.GetService<Func<IManifiestoDocumentPrinter>>();
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+
+        var form = new frmManifiesto(mediator, catalogos, printerFactory, year)
+        {
+            MdiParent = this
+        };
+        form.Show();
     }
 
     private void mnuComprobantes_Click(object? sender, EventArgs e)

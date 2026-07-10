@@ -1,7 +1,14 @@
 using EVANS.Host.WinForms.Shell;
+using EVANS.Application.Identidad.DTOs;
+using EVANS.Application.Identidad.Ports;
+using EVANS.Application.Manifiesto.DTOs;
+using EVANS.Application.Manifiesto.Ports;
+using EVANS.Application.Manifiesto.Queries;
 using EVANS.Application.Shared.Ports;
+using EVANS.Application.Shared.DTOs;
 using EVANS.UI.WinForms.Catalogo;
 using EVANS.UI.WinForms.Identidad;
+using EVANS.UI.WinForms.Manifiesto;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -179,6 +186,41 @@ public sealed class FrmPrincipalTests
 
         form.MdiChildren.Should().ContainSingle()
             .Which.Should().BeOfType<frmParametros>();
+    }
+
+    [WinFormsFact]
+    public void ManifiestosMenu_OpensManifiestoFormAsMdiChild()
+    {
+        var mediator = Substitute.For<IMediator>();
+        mediator.Send(Arg.Any<BuscarManifiestosQuery>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<ManifiestoResumenDto>>([]));
+
+        var catalogos = Substitute.For<ICatalogosManifiestoRepository>();
+        catalogos.ObtenerCatalogosAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new CatalogosManifiestoDto([], [], [], [], [])));
+
+        var currentSession = Substitute.For<ICurrentSession>();
+        currentSession.Current.Returns(new SesionActualDto(
+            new UsuarioSesionDto("admin", "Administrador", true),
+            new ParametrosDto(0.18m, "F", "1", "2", "B", "1", "2", "G", "1", "2", "M", "", "", "", "", 0),
+            2026));
+
+        var services = new ServiceCollection()
+            .AddSingleton(mediator)
+            .AddSingleton(catalogos)
+            .AddSingleton(currentSession)
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var manifiestosMenu = FindMenuItem(form, "Manifiestos");
+        manifiestosMenu.Should().NotBeNull();
+
+        manifiestosMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmManifiesto>();
     }
 
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
