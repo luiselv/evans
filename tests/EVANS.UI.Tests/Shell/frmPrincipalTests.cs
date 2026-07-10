@@ -1,3 +1,4 @@
+using System.Reflection;
 using EVANS.Host.WinForms.Shell;
 using EVANS.Application.Identidad.DTOs;
 using EVANS.Application.Identidad.Ports;
@@ -281,6 +282,26 @@ public sealed class FrmPrincipalTests
 
         form.MdiChildren.Should().ContainSingle()
             .Which.Should().BeOfType<frmRecepcion>();
+    }
+
+    [WinFormsFact]
+    public void AnnualMenus_UseCurrentSessionYear()
+    {
+        var currentSession = Substitute.For<ICurrentSession>();
+        currentSession.Current.Returns(new SesionActualDto(
+            new UsuarioSesionDto("admin", "Administrador", true),
+            new ParametrosDto(0.18m, "F", "1", "2", "B", "1", "2", "G", "1", "2", "M", "", "", "", "", 0),
+            2026));
+
+        var services = new ServiceCollection()
+            .AddSingleton(currentSession)
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        var getCurrentYear = typeof(frmPrincipal).GetMethod("GetCurrentYear", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        getCurrentYear.Should().NotBeNull();
+        getCurrentYear!.Invoke(form, []).Should().Be(2026);
     }
 
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
