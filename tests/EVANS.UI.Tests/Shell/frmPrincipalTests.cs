@@ -4,11 +4,16 @@ using EVANS.Application.Identidad.Ports;
 using EVANS.Application.Manifiesto.DTOs;
 using EVANS.Application.Manifiesto.Ports;
 using EVANS.Application.Manifiesto.Queries;
+using EVANS.Application.Recepcion.DTOs;
+using EVANS.Application.Recepcion.Ports;
 using EVANS.Application.Shared.Ports;
 using EVANS.Application.Shared.DTOs;
+using EVANS.Reports.Comprobante;
 using EVANS.UI.WinForms.Catalogo;
+using EVANS.UI.WinForms.Comprobante;
 using EVANS.UI.WinForms.Identidad;
 using EVANS.UI.WinForms.Manifiesto;
+using EVANS.UI.WinForms.Recepcion;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -221,6 +226,61 @@ public sealed class FrmPrincipalTests
 
         form.MdiChildren.Should().ContainSingle()
             .Which.Should().BeOfType<frmManifiesto>();
+    }
+
+    [WinFormsFact]
+    public void ComprobantesMenu_OpensComprobanteFormAsMdiChild()
+    {
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .AddSingleton(new DocumentPrinterFactory(new BoletaPdfRenderer(), new FacturaPdfRenderer()))
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var comprobantesMenu = FindMenuItem(form, "Comprobantes");
+        comprobantesMenu.Should().NotBeNull();
+
+        comprobantesMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmComprobante>();
+    }
+
+    [WinFormsFact]
+    public void RecepcionesMenu_OpensRecepcionFormAsMdiChild()
+    {
+        var catalogos = Substitute.For<ICatalogosRecepcionRepository>();
+        catalogos.ListarClientesAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<ClienteLookupDto>>([]));
+        catalogos.ListarDestinosAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<DestinoLookupDto>>([]));
+        catalogos.ListarEstadosAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<EstadoLookupDto>>([]));
+
+        var currentSession = Substitute.For<ICurrentSession>();
+        currentSession.Current.Returns(new SesionActualDto(
+            new UsuarioSesionDto("admin", "Administrador", true),
+            new ParametrosDto(0.18m, "F", "1", "2", "B", "1", "2", "G", "1", "2", "M", "", "", "", "", 0),
+            2026));
+
+        var services = new ServiceCollection()
+            .AddSingleton(Substitute.For<IMediator>())
+            .AddSingleton(catalogos)
+            .AddSingleton(currentSession)
+            .BuildServiceProvider();
+
+        using var form = new frmPrincipal(services);
+        form.Show();
+
+        var recepcionesMenu = FindMenuItem(form, "Recepciones");
+        recepcionesMenu.Should().NotBeNull();
+
+        recepcionesMenu!.PerformClick();
+
+        form.MdiChildren.Should().ContainSingle()
+            .Which.Should().BeOfType<frmRecepcion>();
     }
 
     private static ToolStripMenuItem? FindMenuItem(Form form, string text)
