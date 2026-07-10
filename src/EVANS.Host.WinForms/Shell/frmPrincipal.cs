@@ -46,7 +46,7 @@ public partial class frmPrincipal : Form
     private void mnuGuias_Click(object? sender, EventArgs e)
     {
         var mediator = _services.GetRequiredService<IMediator>();
-        using var form = new frmGuiaRemision(mediator, new Standalone(), DateTime.Today.Year);
+        using var form = new frmGuiaRemision(mediator, new Standalone(), GetCurrentYear());
         form.ShowDialog(this);
     }
 
@@ -55,8 +55,7 @@ public partial class frmPrincipal : Form
         var mediator = _services.GetRequiredService<IMediator>();
         var catalogos = _services.GetRequiredService<ICatalogosManifiestoRepository>();
         var printerFactory = _services.GetService<Func<IManifiestoDocumentPrinter>>();
-        var currentSession = _services.GetRequiredService<ICurrentSession>();
-        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        var year = GetCurrentYear();
 
         var form = new frmManifiesto(mediator, catalogos, printerFactory, year)
         {
@@ -84,8 +83,7 @@ public partial class frmPrincipal : Form
     {
         var mediator  = _services.GetRequiredService<IMediator>();
         var catalogos = _services.GetRequiredService<ICatalogosRecepcionRepository>();
-        var currentSession = _services.GetRequiredService<ICurrentSession>();
-        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        var year = GetCurrentYear();
 
         var form = new frmRecepcion(mediator, catalogos, year)
         {
@@ -172,25 +170,28 @@ public partial class frmPrincipal : Form
 
     private void mnuEnviosMensuales_Click(object? sender, EventArgs e)
     {
-        var currentSession = _services.GetRequiredService<ICurrentSession>();
-        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        var year = GetCurrentYear();
         using var form = ActivatorUtilities.CreateInstance<frmConsEnviosMensuales>(_services, year);
         form.ShowDialog(this);
     }
 
     private void mnuGuiasPorCliente_Click(object? sender, EventArgs e)
     {
-        var currentSession = _services.GetRequiredService<ICurrentSession>();
-        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        var year = GetCurrentYear();
         using var form = ActivatorUtilities.CreateInstance<frmConsGuiasPorCliente>(_services, year);
         form.ShowDialog(this);
     }
 
     private void mnuReporteVentas_Click(object? sender, EventArgs e)
     {
-        var currentSession = _services.GetRequiredService<ICurrentSession>();
-        var year = currentSession.Current?.Year ?? DateTime.Today.Year;
+        var year = GetCurrentYear();
         using var form = ActivatorUtilities.CreateInstance<frmReporteVentas>(_services, year);
         form.ShowDialog(this);
+    }
+
+    private int GetCurrentYear()
+    {
+        var currentSession = _services.GetRequiredService<ICurrentSession>();
+        return currentSession.Current?.Year ?? DateTime.Today.Year;
     }
 }
