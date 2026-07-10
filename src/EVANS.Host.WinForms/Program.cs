@@ -69,10 +69,11 @@ static class Program
         var parametros = parametrosService.ObtenerParametrosAsync().GetAwaiter().GetResult();
 
         var currentSession = host.Services.GetRequiredService<ICurrentSession>();
-        currentSession.Start(loginForm.AuthenticatedUser!, parametros, DateTime.Today.Year);
+        var selectedYear = loginForm.SelectedYear;
+        currentSession.Start(loginForm.AuthenticatedUser!, parametros, selectedYear);
 
         var mainForm = host.Services.GetRequiredService<frmPrincipal>();
-        mainForm.Text = $"{mainForm.Text} | Usuario: {currentSession.Current!.Usuario.NombreCompleto}";
+        mainForm.Text = $"{mainForm.Text} - {selectedYear} | Usuario: {currentSession.Current!.Usuario.NombreCompleto}";
 
         WinFormsApp.Run(mainForm);
     }

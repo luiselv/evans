@@ -117,6 +117,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddEvansIdentidad(this IServiceCollection services)
     {
         services.AddTransient<IUsuarioRepository, UsuarioRepositorySql>();
+        services.AddTransient<IYearlyDatabaseCatalog, YearlyDatabaseCatalogSql>();
+        services.AddSingleton<IYearlySchemaScriptProvider, PhysicalYearlySchemaScriptProvider>();
+        services.AddTransient<IYearlyDatabaseProvisioner, YearlyDatabaseProvisionerSql>();
         return services;
     }
 
