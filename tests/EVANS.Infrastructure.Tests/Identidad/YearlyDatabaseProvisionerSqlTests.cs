@@ -42,11 +42,14 @@ public sealed class YearlyDatabaseProvisionerSqlTests : IAsyncLifetime
         var tableCount = await yearly.ExecuteScalarAsync<int>(
             "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME IN ('GuiaRemision', 'Comprobante', 'Manifiesto', 'Recepcion')");
         var keyCount = await yearly.ExecuteScalarAsync<int>(
-            "SELECT COUNT(*) FROM sys.key_constraints WHERE name IN ('PK_GuiaRemision', 'PK_Comprobante', 'PK_Manifiesto', 'PK_Recepcion')");
+            "SELECT COUNT(*) FROM sys.key_constraints WHERE name IN ('PK_GuiaRemision', 'PK_Comprobante', 'PK_Manifiesto')");
+        var foreignKeyCount = await yearly.ExecuteScalarAsync<int>(
+            "SELECT COUNT(*) FROM sys.foreign_keys WHERE name = 'FK_DETALLEGUIA_GUIAREMISION'");
         var years = await catalog.ListYearsAsync(CancellationToken.None);
 
         tableCount.Should().Be(4);
-        keyCount.Should().Be(4);
+        keyCount.Should().Be(3);
+        foreignKeyCount.Should().Be(1);
         years.Should().Contain(_provisionedYear);
     }
 

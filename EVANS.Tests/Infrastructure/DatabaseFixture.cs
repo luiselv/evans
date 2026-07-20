@@ -25,6 +25,7 @@ public class DatabaseFixture : IAsyncLifetime
         await Task.WhenAll(_evans.StartAsync(), _yearly.StartAsync());
         await ApplySchema(EvansConnectionString,  SchemaPath("schema-evans.sql"));
         await ApplySchema(YearlyConnectionString, SchemaPath("schema-yearly.sql"));
+        await ApplyMigrations(YearlyConnectionString, MigrationPath("yearly"));
 
         _evansRespawner  = await Respawner.CreateAsync(EvansConnectionString,  new RespawnerOptions { DbAdapter = DbAdapter.SqlServer });
         _yearlyRespawner = await Respawner.CreateAsync(YearlyConnectionString, new RespawnerOptions { DbAdapter = DbAdapter.SqlServer });
@@ -57,11 +58,25 @@ public class DatabaseFixture : IAsyncLifetime
         }
     }
 
+    private static async Task ApplyMigrations(string connectionString, string migrationDirectory)
+    {
+        foreach (var scriptPath in Directory.GetFiles(migrationDirectory, "*.sql").OrderBy(Path.GetFileName))
+            await ApplySchema(connectionString, scriptPath);
+    }
+
     private static string SchemaPath(string file)
     {
         var dir = AppContext.BaseDirectory;
         while (dir != null && !File.Exists(Path.Combine(dir, "db", file)))
             dir = Directory.GetParent(dir)?.FullName;
         return Path.Combine(dir!, "db", file);
+    }
+
+    private static string MigrationPath(string context)
+    {
+        var dir = AppContext.BaseDirectory;
+        while (dir != null && !Directory.Exists(Path.Combine(dir, "db", "migrations", context)))
+            dir = Directory.GetParent(dir)?.FullName;
+        return Path.Combine(dir!, "db", "migrations", context);
     }
 }

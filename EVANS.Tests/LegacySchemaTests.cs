@@ -162,6 +162,19 @@ public class LegacySchemaTests : TestBase
     }
 
     [Fact]
+    public async Task YearlyDb_HasProductionDetalleGuiaForeignKey()
+    {
+        await using var conn = YearlyConn();
+        var count = await ExecScalarAsync(conn, @"
+            SELECT COUNT(*) FROM sys.foreign_keys
+            WHERE name = 'FK_DETALLEGUIA_GUIAREMISION'
+              AND parent_object_id = OBJECT_ID('dbo.DetalleGuia')
+              AND referenced_object_id = OBJECT_ID('dbo.GuiaRemision')");
+
+        Assert.Equal(1, count);
+    }
+
+    [Fact]
     public async Task YearlyDb_HasIndexesOnDetailTables()
     {
         await using var conn = YearlyConn();
@@ -186,4 +199,5 @@ public class LegacySchemaTests : TestBase
                 'IX_Manifiesto_Fecha')");
         Assert.Equal(5, count);
     }
+
 }
