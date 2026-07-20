@@ -1,24 +1,10 @@
-DECLARE @sql NVARCHAR(MAX)
-DECLARE @dbName VARCHAR(4)
-SET @dbName = CAST(YEAR(GETDATE()) AS VARCHAR(4))
-
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = @dbName)
+-- Legacy compatibility bootstrap for a yearly database.
+-- Run this script only with sqlcmd -d <year>; the canonical baseline is
+-- db/schema-yearly.sql and hardening is versioned in db/migrations/yearly.
+IF DB_NAME() = N'master'
 BEGIN
-    SET @sql = 
-		N'CREATE DATABASE ' + QUOTENAME(@dbName)
-    EXEC sp_executesql @sql
-    PRINT 'Base de datos creada: ' + @dbName
-
-	SET @sql = 
-		N'USE ' + QUOTENAME(@dbName)
-    EXEC sp_executesql @sql
-END
-ELSE
-BEGIN
-    PRINT 'La base de datos ' + @dbName + ' ya existe.'
-	SET @sql = 
-		N'USE ' + QUOTENAME(@dbName)
-    EXEC sp_executesql @sql
+    RAISERROR('Run scripts/02 transactions.sql against the target yearly database, not master.', 16, 1);
+    SET NOEXEC ON;
 END
 
 SET ANSI_NULLS ON
@@ -197,4 +183,25 @@ CREATE TABLE [dbo].[DetalleManifiesto](
 	[GREM_CODIGO] [int] NOT NULL
 ) ON [PRIMARY]
 END
+GO
+
+-- Constraints present in the 2010 production schema.
+IF NOT EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'PK_GuiaRemision' AND type = 'PK')
+    ALTER TABLE [dbo].[GuiaRemision] ADD CONSTRAINT PK_GuiaRemision PRIMARY KEY (GREM_CODIGO);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'PK_Comprobante' AND type = 'PK')
+    ALTER TABLE [dbo].[Comprobante] ADD CONSTRAINT PK_Comprobante PRIMARY KEY (COMP_CODIGO);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.key_constraints WHERE name = 'PK_Manifiesto' AND type = 'PK')
+    ALTER TABLE [dbo].[Manifiesto] ADD CONSTRAINT PK_Manifiesto PRIMARY KEY (MANI_CODIGO);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DETALLEGUIA_GUIAREMISION')
+    ALTER TABLE [dbo].[DetalleGuia] WITH CHECK
+        ADD CONSTRAINT FK_DETALLEGUIA_GUIAREMISION
+        FOREIGN KEY (GREM_CODIGO) REFERENCES [dbo].[GuiaRemision](GREM_CODIGO);
+GO
+
 /* ============================== END TRANSACTIONS DATABASE SCRIPT =============================== */

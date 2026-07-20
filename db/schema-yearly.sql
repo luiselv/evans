@@ -1,7 +1,7 @@
 -- Yearly transactional database schema
--- Derived from production SQL Server DB (attached as "2014", copy of 2010).
--- Real DB has no PKs, no FKs, no defaults, no CHECK constraints.
--- Recepcion/DetalleRecepcion not present in pre-2014 DBs but exist in clsRecepcion.vb.
+-- Derived from the attached 2010 production database.
+-- Structural hardening is intentionally kept in db/migrations/yearly.
+-- The source schema includes Recepcion and DetalleRecepcion.
 
 CREATE TABLE GuiaRemision (
     GREM_CODIGO          INT           IDENTITY(1,1) NOT NULL,
@@ -134,26 +134,10 @@ CREATE TABLE DetalleRecepcion (
 );
 GO
 
--- Primary keys on header IDENTITY columns (additive — never recreated, just added).
--- Detail tables have no natural unique key; only indexes are added there.
+-- Structural invariants present in the 2010 production schema.
 ALTER TABLE GuiaRemision ADD CONSTRAINT PK_GuiaRemision PRIMARY KEY (GREM_CODIGO);
 ALTER TABLE Comprobante  ADD CONSTRAINT PK_Comprobante  PRIMARY KEY (COMP_CODIGO);
 ALTER TABLE Manifiesto   ADD CONSTRAINT PK_Manifiesto   PRIMARY KEY (MANI_CODIGO);
-ALTER TABLE Recepcion    ADD CONSTRAINT PK_Recepcion    PRIMARY KEY (RECE_CODIGO);
-GO
-
--- Indexes on logical FK columns (detail→header joins, always filtered by these).
-CREATE NONCLUSTERED INDEX IX_DetalleGuia_GREM        ON DetalleGuia(GREM_CODIGO);
-CREATE NONCLUSTERED INDEX IX_DetalleComprobante_COMP ON DetalleComprobante(COMP_CODIGO);
-CREATE NONCLUSTERED INDEX IX_DetalleManifiesto_MANI  ON DetalleManifiesto(MANI_CODIGO);
-CREATE NONCLUSTERED INDEX IX_DetalleManifiesto_GREM  ON DetalleManifiesto(GREM_CODIGO);
-CREATE NONCLUSTERED INDEX IX_DetalleRecepcion_RECE   ON DetalleRecepcion(RECE_CODIGO);
-GO
-
--- Indexes on frequent filter columns.
-CREATE NONCLUSTERED INDEX IX_GuiaRemision_SerieNumero ON GuiaRemision(GREM_SERIE, GREM_NUMERO);
-CREATE NONCLUSTERED INDEX IX_GuiaRemision_Fecha       ON GuiaRemision(GREM_FECHAEMISION);
-CREATE NONCLUSTERED INDEX IX_Comprobante_SerieNumero  ON Comprobante(COMP_SERIE, COMP_NUMERO);
-CREATE NONCLUSTERED INDEX IX_Comprobante_Fecha        ON Comprobante(COMP_FECHA);
-CREATE NONCLUSTERED INDEX IX_Manifiesto_Fecha         ON Manifiesto(MANI_FECHA);
+ALTER TABLE DetalleGuia ADD CONSTRAINT FK_DETALLEGUIA_GUIAREMISION
+    FOREIGN KEY (GREM_CODIGO) REFERENCES GuiaRemision(GREM_CODIGO);
 GO
